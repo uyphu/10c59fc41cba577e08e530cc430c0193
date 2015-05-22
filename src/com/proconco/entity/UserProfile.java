@@ -11,6 +11,8 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.IgnoreSave;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.OnLoad;
+import com.proconco.dao.GroupDao;
+import com.proconco.dao.PositionDao;
 
 
 /**
@@ -86,9 +88,25 @@ public class UserProfile {
 	@IgnoreSave
 	private Long positionId;
 	
+	@IgnoreSave
+	private Group group;
+	
+	@IgnoreSave
+	private Position position;
+	
 	@OnLoad
 	private void onLoad() {
+		if (groupKey != null) {
+			GroupDao dao = new GroupDao();
+			group = dao.find(groupKey.getId());
+			groupId = groupKey.getId();
+		}
 		
+		if (positionKey != null) {
+			PositionDao dao = new PositionDao();
+			position = dao.find(positionKey.getId());
+			positionId = positionKey.getId();
+		}
 	}
 	
 	/**
