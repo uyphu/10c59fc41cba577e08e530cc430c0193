@@ -1,6 +1,6 @@
 package com.proconco.entity;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import com.google.api.server.spi.config.AnnotationBoolean;
