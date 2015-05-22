@@ -9,6 +9,8 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.IgnoreSave;
+import com.googlecode.objectify.annotation.Load;
+import com.googlecode.objectify.annotation.OnLoad;
 
 
 /**
@@ -31,6 +33,7 @@ public class UserProfile {
 	private String pwd;
 	
 	/** The group key. */
+	@Load
 	private Key<Group> groupKey;
 	
 	/** The failed login. */
@@ -46,6 +49,7 @@ public class UserProfile {
 	private String sessionId;
 	
 	/** The position key. */
+	@Load
 	private Key<Position> positionKey;
 	
 	/** The disable flg. */
@@ -81,6 +85,11 @@ public class UserProfile {
 	/** The position id. */
 	@IgnoreSave
 	private Long positionId;
+	
+	@OnLoad
+	private void onLoad() {
+		
+	}
 	
 	/**
 	 * Instantiates a new user profile.
