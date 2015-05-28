@@ -1,5 +1,6 @@
 package com.proconco.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.IgnoreSave;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnLoad;
 
 /**
@@ -20,6 +22,7 @@ public class Group {
 	private Long id;
 	
 	/** The grp name. */
+	@Index
 	private String grpName;
 	
 	/** The del flag. */
@@ -40,7 +43,7 @@ public class Group {
 	/** The user profiles. */
 	@Ignore
 	@IgnoreSave
-	private List<UserProfile> userProfiles;
+	private List<User> users;
 	
 	@OnLoad
     private void loadData() {
@@ -71,6 +74,20 @@ public class Group {
 		this.crtTms = crtTms;
 		this.updUid = updUid;
 		this.updTms = updTms;
+	}
+	
+	/**
+	 * Instantiates a new group.
+	 *
+	 * @param grpName the grp name
+	 * @param delFlag the del flag
+	 * @param crtUid the crt uid
+	 */
+	public Group(String grpName, String delFlag, String crtUid) {
+		this.grpName = grpName;
+		this.delFlag = delFlag;
+		this.crtUid = crtUid;
+		this.crtTms = Calendar.getInstance().getTime();
 	}
 	
 	/**
@@ -225,17 +242,17 @@ public class Group {
 	 *
 	 * @return the user profiles
 	 */
-	public final List<UserProfile> getUserProfiles() {
-		return this.userProfiles;
+	public final List<User> getUsers() {
+		return this.users;
 	}
 	
 	/**
 	 * Sets the user profiles.
 	 *
-	 * @param userProfiles the new user profiles
+	 * @param users the new user profiles
 	 */
-	public final void setUserProfiles(List<UserProfile> userProfiles) {
-		this.userProfiles = userProfiles;
+	public final void setUsers(List<User> users) {
+		this.users = users;
 	}
 	
 }

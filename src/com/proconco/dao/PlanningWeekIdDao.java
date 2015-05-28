@@ -1,8 +1,10 @@
 package com.proconco.dao;
 
+import java.util.List;
+
 import com.googlecode.objectify.Key;
 import com.proconco.entity.PlanningWeekId;
-import com.proconco.entity.UserProfile;
+import com.proconco.entity.User;
 
 /**
  * The Class PlanningWeekIdDao.
@@ -30,9 +32,9 @@ public class PlanningWeekIdDao extends AbstractDao<PlanningWeekId> {
 				planningWeekId = new PlanningWeekId(i, ++week, year, 2L);
 			}
 			
-			Key<UserProfile> key = Key.create(UserProfile.class, planningWeekId.getUserProfileId());
+			Key<User> key = Key.create(User.class, planningWeekId.getUserId());
 			if (key != null) {
-				planningWeekId.setUserProfileKey(key);
+				planningWeekId.setUserKey(key);
 			}
 			
 			persist(planningWeekId);
@@ -48,8 +50,9 @@ public class PlanningWeekIdDao extends AbstractDao<PlanningWeekId> {
 	 * Clean data.
 	 */
 	public void cleanData() {
-		for (Long i = 1L; i < 1000; i++) {
-			delete(find(i));
+		List<PlanningWeekId> list = findAll();
+		for (PlanningWeekId item : list) {
+			delete(item);
 		}
 	}
 }

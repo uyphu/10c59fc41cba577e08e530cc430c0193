@@ -1,6 +1,7 @@
 package com.proconco.dao;
 
 import java.util.Calendar;
+import java.util.List;
 
 import com.proconco.entity.PlanningWeek;
 
@@ -33,8 +34,9 @@ public class PlanningWeekDao extends AbstractDao<PlanningWeek> {
 	 * Clean data.
 	 */
 	public void cleanData() {
-		for (Long i = 1L; i < 1000; i++) {
-			delete(find(i));
+		List<PlanningWeek> list = findAll();
+		for (PlanningWeek item : list) {
+			delete(item);
 		}
 	}
 

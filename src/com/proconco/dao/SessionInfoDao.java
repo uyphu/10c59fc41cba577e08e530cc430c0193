@@ -1,9 +1,10 @@
 package com.proconco.dao;
 
 import java.util.Calendar;
+import java.util.List;
 
 import com.proconco.entity.SessionInfo;
-import com.proconco.entity.UserProfile;
+import com.proconco.entity.User;
 
 /**
  * The Class SessionInfoDao.
@@ -22,21 +23,21 @@ public class SessionInfoDao extends AbstractDao<SessionInfo> {
 	 */
 	public void initData() {
 		SessionInfo sessionInfo;
-		UserProfileDao userProfileDao = new UserProfileDao();
+		UserDao userDao = new UserDao();
 		for (Long i = 1L; i < 1000; i++) {
 			if (i % 2 == 0) {
-				UserProfile userProfile = userProfileDao.find(1L);
-				if (userProfile != null) {
-					sessionInfo = new SessionInfo(i, userProfile.getId(), userProfile.getUserNm(), 
+				User user = userDao.find(1L);
+				if (user != null) {
+					sessionInfo = new SessionInfo(i, user.getId(), user.getLogin(), 
 							Calendar.getInstance().getTime(), "crtUid", Calendar.getInstance().getTime(), 
 							"updUid", Calendar.getInstance().getTime());
 					persist(sessionInfo);
 				}
 						
 			} else {
-				UserProfile userProfile = userProfileDao.find(1L);
-				if (userProfile != null) {
-					sessionInfo = new SessionInfo(i, userProfile.getId(), userProfile.getUserNm(), 
+				User user = userDao.find(1L);
+				if (user != null) {
+					sessionInfo = new SessionInfo(i, user.getId(), user.getLogin(), 
 							Calendar.getInstance().getTime(), "crtUid", Calendar.getInstance().getTime(), 
 							"updUid", Calendar.getInstance().getTime());
 					persist(sessionInfo);
@@ -50,8 +51,9 @@ public class SessionInfoDao extends AbstractDao<SessionInfo> {
 	 * Clean data.
 	 */
 	public void cleanData() {
-		for (Long i = 1L; i < 1000; i++) {
-			delete(find(i));
+		List<SessionInfo> list = findAll();
+		for (SessionInfo sessionInfo : list) {
+			delete(sessionInfo);
 		}
 	}
 }

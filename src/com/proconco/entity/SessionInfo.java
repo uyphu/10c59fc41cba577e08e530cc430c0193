@@ -16,7 +16,7 @@ public class SessionInfo {
 	private Long id;
 	
 	/** The user id. */
-	private Long userProfileId;
+	private Long userId;
 	
 	/** The user nm. */
 	private String userNm;
@@ -46,7 +46,7 @@ public class SessionInfo {
 	/**
 	 * Instantiates a new session info.
 	 *
-	 * @param userProfileId the user profile id
+	 * @param userId the user profile id
 	 * @param userNm the user nm
 	 * @param lstSucLogin the lst suc login
 	 * @param crtUid the crt uid
@@ -54,9 +54,9 @@ public class SessionInfo {
 	 * @param updUid the upd uid
 	 * @param updTms the upd tms
 	 */
-	public SessionInfo(Long userProfileId, String userNm, Date lstSucLogin, String crtUid, Date crtTms,
+	public SessionInfo(Long userId, String userNm, Date lstSucLogin, String crtUid, Date crtTms,
 			String updUid, Date updTms) {
-		this.userProfileId = userProfileId;
+		this.userId = userId;
 		this.userNm = userNm;
 		this.lstSucLogin = lstSucLogin;
 		this.crtUid = crtUid;
@@ -69,7 +69,7 @@ public class SessionInfo {
 	 * Instantiates a new session info.
 	 *
 	 * @param id the id
-	 * @param userProfileId the user profile id
+	 * @param userId the user profile id
 	 * @param userNm the user nm
 	 * @param lstSucLogin the lst suc login
 	 * @param crtUid the crt uid
@@ -77,10 +77,10 @@ public class SessionInfo {
 	 * @param updUid the upd uid
 	 * @param updTms the upd tms
 	 */
-	public SessionInfo(Long id, Long userProfileId, String userNm, Date lstSucLogin, String crtUid, Date crtTms,
+	public SessionInfo(Long id, Long userId, String userNm, Date lstSucLogin, String crtUid, Date crtTms,
 			String updUid, Date updTms) {
 		this.id = id;
-		this.userProfileId = userProfileId;
+		this.userId = userId;
 		this.userNm = userNm;
 		this.lstSucLogin = lstSucLogin;
 		this.crtUid = crtUid;
@@ -112,17 +112,17 @@ public class SessionInfo {
 	 *
 	 * @return the user profile id
 	 */
-	public final Long getUserProfileId() {
-		return this.userProfileId;
+	public final Long getUserId() {
+		return this.userId;
 	}
 
 	/**
 	 * Sets the user profile id.
 	 *
-	 * @param userProfileId the new user profile id
+	 * @param userId the new user profile id
 	 */
-	public final void setUserProfileId(Long userProfileId) {
-		this.userProfileId = userProfileId;
+	public final void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	/**

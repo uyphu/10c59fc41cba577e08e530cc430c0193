@@ -1,6 +1,7 @@
 package com.proconco.dao;
 
 import java.util.Calendar;
+import java.util.List;
 
 import com.proconco.entity.Report;
 
@@ -39,8 +40,9 @@ public class ReportDao extends AbstractDao<Report> {
 	 * Clean data.
 	 */
 	public void cleanData() {
-		for (Long i = 1L; i < 1000; i++) {
-			delete(find(i));
+		List<Report> list = findAll();
+		for (Report item : list) {
+			delete(item);
 		}
 	}
 }

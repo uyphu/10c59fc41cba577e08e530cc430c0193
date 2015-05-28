@@ -1,6 +1,7 @@
 package com.proconco.dao;
 
 import java.util.Calendar;
+import java.util.List;
 
 import com.proconco.entity.SystemSecurity;
 
@@ -34,8 +35,9 @@ public class SystemSecurityDao extends AbstractDao<SystemSecurity> {
 	 * Clean data.
 	 */
 	public void cleanData() {
-		for (Long i = 1L; i < 1000; i++) {
-			delete(find(i));
+		List<SystemSecurity> list = findAll();
+		for (SystemSecurity item : list) {
+			delete(item);
 		}
 	}
 }

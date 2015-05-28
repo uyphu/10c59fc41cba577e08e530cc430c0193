@@ -8,9 +8,8 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.IgnoreSave;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.OnLoad;
-import com.proconco.dao.UserProfileDao;
+import com.proconco.dao.UserDao;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ReportId.
  */
@@ -29,23 +28,23 @@ public class ReportId {
 	
 	/** The user profile key. */
 	@Load
-	private Key<UserProfile> userProfileKey;
+	private Key<User> userKey;
 	
 	/** The user profile id. */
 	@IgnoreSave
-	private Long userProfileId;
+	private Long userId;
 	
 	/** The user profile. */
 	@IgnoreSave
-	private UserProfile userProfile;
+	private User user;
 	/**
 	 * Instantiates a new report id.
 	 */
 	@OnLoad
 	public void onLoad() {
-		if (userProfileKey != null) {
-			UserProfileDao dao = new UserProfileDao();
-			userProfile = dao.find(userProfileKey);
+		if (userKey != null) {
+			UserDao dao = new UserDao();
+			user = dao.find(userKey);
 		}
 	}
 	
@@ -58,12 +57,12 @@ public class ReportId {
 	 *
 	 * @param week the week
 	 * @param year the year
-	 * @param userProfileKey the user profile key
+	 * @param userKey the user profile key
 	 */
-	public ReportId(Integer week, Integer year, Key<UserProfile> userProfileKey) {
+	public ReportId(Integer week, Integer year, Key<User> userKey) {
 		this.week = week;
 		this.year = year;
-		this.userProfileKey = userProfileKey;
+		this.userKey = userKey;
 	}
 	
 	/**
@@ -72,13 +71,13 @@ public class ReportId {
 	 * @param id the id
 	 * @param week the week
 	 * @param year the year
-	 * @param userProfileKey the user profile key
+	 * @param userKey the user profile key
 	 */
-	public ReportId(Long id, Integer week, Integer year, Key<UserProfile> userProfileKey) {
+	public ReportId(Long id, Integer week, Integer year, Key<User> userKey) {
 		this.id = id;
 		this.week = week;
 		this.year = year;
-		this.userProfileKey = userProfileKey;
+		this.userKey = userKey;
 	}
 	
 	/**
@@ -86,12 +85,12 @@ public class ReportId {
 	 *
 	 * @param week the week
 	 * @param year the year
-	 * @param userProfileId the user profile id
+	 * @param userId the user profile id
 	 */
-	public ReportId(Integer week, Integer year, Long userProfileId) {
+	public ReportId(Integer week, Integer year, Long userId) {
 		this.week = week;
 		this.year = year;
-		this.userProfileId = userProfileId;
+		this.userId = userId;
 	}
 	
 	/**
@@ -100,13 +99,13 @@ public class ReportId {
 	 * @param id the id
 	 * @param week the week
 	 * @param year the year
-	 * @param userProfileId the user profile id
+	 * @param userId the user profile id
 	 */
-	public ReportId(Long id, Integer week, Integer year, Long userProfileId) {
+	public ReportId(Long id, Integer week, Integer year, Long userId) {
 		this.id = id;
 		this.week = week;
 		this.year = year;
-		this.userProfileId = userProfileId;
+		this.userId = userId;
 	}
 
 	/**
@@ -177,17 +176,17 @@ public class ReportId {
 	 * @return the user profile key
 	 */
 	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE) 
-	public final Key<UserProfile> getUserProfileKey() {
-		return this.userProfileKey;
+	public final Key<User> getUserKey() {
+		return this.userKey;
 	}
 
 	/**
 	 * Sets the user profile key.
 	 *
-	 * @param userProfileKey the new user profile key
+	 * @param userKey the new user profile key
 	 */
-	public final void setUserProfileKey(Key<UserProfile> userProfileKey) {
-		this.userProfileKey = userProfileKey;
+	public final void setUserKey(Key<User> userKey) {
+		this.userKey = userKey;
 	}
 
 	/**
@@ -195,17 +194,17 @@ public class ReportId {
 	 *
 	 * @return the user profile id
 	 */
-	public final Long getUserProfileId() {
-		return this.userProfileId;
+	public final Long getUserId() {
+		return this.userId;
 	}
 
 	/**
 	 * Sets the user profile id.
 	 *
-	 * @param userProfileId the new user profile id
+	 * @param userId the new user profile id
 	 */
-	public final void setUserProfileId(Long userProfileId) {
-		this.userProfileId = userProfileId;
+	public final void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	/**
@@ -213,17 +212,17 @@ public class ReportId {
 	 *
 	 * @return the user profile
 	 */
-	public final UserProfile getUserProfile() {
-		return this.userProfile;
+	public final User getUser() {
+		return this.user;
 	}
 
 	/**
 	 * Sets the user profile.
 	 *
-	 * @param userProfile the new user profile
+	 * @param user the new user profile
 	 */
-	public final void setUserProfile(UserProfile userProfile) {
-		this.userProfile = userProfile;
+	public final void setUser(User user) {
+		this.user = user;
 	}
 	
 }

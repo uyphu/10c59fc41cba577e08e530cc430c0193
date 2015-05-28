@@ -1,11 +1,12 @@
 package com.proconco.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Position.
  */
@@ -17,8 +18,9 @@ public class Position {
 	private Long id;
 
 	/** The post name. */
+	@Index
 	private String postName;
-	// private Set<UserProfile> userProfiles = new HashSet<UserProfile>(0);
+	
 	/** The del flag. */
 	private String delFlag;
 
@@ -64,6 +66,20 @@ public class Position {
 		this.crtTms = crtTms;
 		this.updUid = updUid;
 		this.updTms = updTms;
+	}
+	
+	/**
+	 * Instantiates a new position.
+	 *
+	 * @param postName the post name
+	 * @param delFlag the del flag
+	 * @param crtUid the crt uid
+	 */
+	public Position(String postName, String delFlag, String crtUid) {
+		this.postName = postName;
+		this.delFlag = delFlag;
+		this.crtUid = crtUid;
+		this.crtTms = Calendar.getInstance().getTime();
 	}
 
 	/**

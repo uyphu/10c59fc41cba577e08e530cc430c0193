@@ -1,8 +1,10 @@
 package com.proconco.dao;
 
+import java.util.List;
+
 import com.googlecode.objectify.Key;
 import com.proconco.entity.ReportId;
-import com.proconco.entity.UserProfile;
+import com.proconco.entity.User;
 
 /**
  * The Class ReportIdDao.
@@ -30,9 +32,9 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 				reportId = new ReportId(i, ++week, year, 2L);
 			}
 			
-			Key<UserProfile> key = Key.create(UserProfile.class, reportId.getUserProfileId());
+			Key<User> key = Key.create(User.class, reportId.getUserId());
 			if (key != null) {
-				reportId.setUserProfileKey(key);
+				reportId.setUserKey(key);
 			}
 			
 			persist(reportId);
@@ -48,8 +50,9 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 	 * Clean data.
 	 */
 	public void cleanData() {
-		for (Long i = 1L; i < 1000; i++) {
-			delete(find(i));
+		List<ReportId> list = findAll();
+		for (ReportId item : list) {
+			delete(item);
 		}
 	}
 }

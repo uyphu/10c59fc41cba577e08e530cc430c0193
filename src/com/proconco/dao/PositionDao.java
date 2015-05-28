@@ -1,6 +1,7 @@
 package com.proconco.dao;
 
 import java.util.Calendar;
+import java.util.List;
 
 import com.proconco.entity.Position;
 
@@ -22,7 +23,7 @@ public class PositionDao extends AbstractDao<Position> {
 	public void initData() {
 		Position position;
 		
-		for (Long i = 1L; i < 1000; i++) {
+		for (Long i = 1L; i < 10; i++) {
 			position = new Position(i, "postName" + String.valueOf(i), "N", "crtUid" + String.valueOf(i), Calendar
 					.getInstance().getTime(), "updUid" + String.valueOf(i), Calendar.getInstance().getTime());
 			persist(position);
@@ -34,8 +35,9 @@ public class PositionDao extends AbstractDao<Position> {
 	 * Clean data.
 	 */
 	public void cleanData() {
-		for (Long i = 1L; i < 1000; i++) {
-			delete(find(i));
+		List<Position> list = findAll();
+		for (Position item : list) {
+			delete(item);
 		}
 	}
 }

@@ -12,6 +12,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
+import com.proconco.entity.Authority;
 import com.proconco.entity.Group;
 import com.proconco.entity.PlanningWeek;
 import com.proconco.entity.PlanningWeekId;
@@ -20,12 +21,13 @@ import com.proconco.entity.Report;
 import com.proconco.entity.ReportId;
 import com.proconco.entity.SessionInfo;
 import com.proconco.entity.SystemSecurity;
-import com.proconco.entity.UserProfile;
+import com.proconco.entity.User;
 
 
 public abstract class AbstractDao<T> implements Dao<T> {
 	
 	static {
+		ObjectifyService.register(Authority.class);
 		ObjectifyService.register(Group.class);
 		ObjectifyService.register(PlanningWeek.class);
 		ObjectifyService.register(PlanningWeekId.class);
@@ -34,7 +36,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 		ObjectifyService.register(ReportId.class);
 		ObjectifyService.register(SessionInfo.class);
 		ObjectifyService.register(SystemSecurity.class);
-		ObjectifyService.register(UserProfile.class);
+		ObjectifyService.register(User.class);
 	}
 	
 	public static Objectify ofy() {
