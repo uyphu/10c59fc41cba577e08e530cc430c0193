@@ -1,11 +1,14 @@
 package com.proconco.endpoint;
 
+import java.util.Calendar;
+
 import javax.annotation.Nullable;
 import javax.inject.Named;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.ConflictException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -52,6 +55,8 @@ public class PositionEndpoint {
 		// for us
 		// when we use put
 		PositionDao dao = new PositionDao();
+		position.setCrtTms(Calendar.getInstance().getTime());
+		position.setUpdTms(Calendar.getInstance().getTime());
 		dao.persist(position);
 		return position;
 	}
@@ -70,6 +75,7 @@ public class PositionEndpoint {
 		}
 		PositionDao dao = new PositionDao();
 		dao.update(position);
+		position.setUpdTms(Calendar.getInstance().getTime());
 		return position;
 	}
 
@@ -127,6 +133,15 @@ public class PositionEndpoint {
 	public void cleanData() {
 		PositionDao dao = new PositionDao();
 		dao.cleanData();
+	}
+	
+	@ApiMethod(name = "searchPosition", httpMethod=HttpMethod.GET, path="search_position")
+	public CollectionResponse<Position> searchPosition(
+			@Nullable @Named("querySearch") String querySearch,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws NotFoundException {
+		PositionDao dao = new PositionDao();
+		return dao.searchPosition(querySearch, cursorString, count);
 	}
 
 }

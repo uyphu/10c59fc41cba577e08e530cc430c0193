@@ -126,6 +126,35 @@ public class UserEndpoint {
 	} 
 	
 	/**
+	 * Logout.
+	 *
+	 * @return the user
+	 */
+	@ApiMethod(name = "logout", httpMethod=HttpMethod.GET, path="logout_user")
+	public User logout() {
+//		UserDao dao = new UserDao();
+//		return dao.login(login, password);
+		//delete Token key;
+		return new User();
+	} 
+	
+	/**
+	 * Gets the account.
+	 *
+	 * @return the account
+	 */
+	@ApiMethod(name = "getAccount", httpMethod=HttpMethod.GET, path="get_account")
+	public User getAccount() {
+		return new User();
+	} 
+	
+	@ApiMethod(name = "addRole", httpMethod=HttpMethod.POST, path="add_role")
+	public void  addRole(@Named("login") String login, @Named("role") String role)  throws NotFoundException{
+		UserDao dao = new UserDao();
+		dao.addRole(login, role);
+	}
+	
+	/**
 	 * Inits the data.
 	 */
 	@ApiMethod(name = "initData", path="initData")

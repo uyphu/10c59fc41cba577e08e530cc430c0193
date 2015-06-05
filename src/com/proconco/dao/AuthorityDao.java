@@ -1,7 +1,10 @@
 package com.proconco.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.googlecode.objectify.cmd.Query;
 import com.proconco.entity.Authority;
 
 /**
@@ -14,6 +17,23 @@ public class AuthorityDao extends AbstractDao<Authority>{
 	 */
 	public AuthorityDao() {
 		super(Authority.class);
+	}
+	
+	/**
+	 * Gets the authority by name.
+	 *
+	 * @param name the name
+	 * @return the authority by name
+	 */
+	public Authority getAuthorityByName(String name) {
+		Map<String, Object> columns = new HashMap<String, Object>();
+		columns.put("name", name);
+		Query<Authority> query = getQuery(columns);
+		List<Authority> list = executeQuery(query, 1);
+		if (list != null && list.size() > 0) {
+			return list.get(0);
+		} 
+		return null;
 	}
 
 	@Override

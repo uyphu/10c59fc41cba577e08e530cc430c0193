@@ -1,5 +1,6 @@
 package com.proconco.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,10 +13,12 @@ import com.googlecode.objectify.annotation.IgnoreSave;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.OnLoad;
+import com.proconco.dao.AuthorityDao;
 import com.proconco.dao.GroupDao;
 import com.proconco.dao.PositionDao;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class UserProfile.
  */
@@ -60,10 +63,14 @@ public class User {
     
     /** The create date. */
     private Date createDate;
-
+    
     /** The authority keys. */
     @Load
-    private Key<Authority>[] authorityKeys;
+    private List<Key<Authority>> authorityKeys;
+
+    /** The authority keys. */
+    //@Load
+    //private Key<Authority>[] authorityKeys;
 
 	/** The group key. */
 	@Load
@@ -86,7 +93,12 @@ public class User {
 	private List<Long> authorityIds;
 	
 	/** The authorities. */
+	@IgnoreSave
 	private List<Authority> authorities;
+	
+	/** The roles. */
+	@IgnoreSave
+	private List<String> roles;
 	
 	/** The group id. */
 	@IgnoreSave
@@ -122,7 +134,14 @@ public class User {
 		}
 		
 		if (authorityKeys != null) {
-			
+			roles = new ArrayList<String>();
+			for (Key<Authority> key : authorityKeys) {
+				AuthorityDao dao = new AuthorityDao();
+				Authority authority = dao.find(key.getId());
+				if (authority != null) {
+					roles.add(authority.getName());
+				}
+			}
 		}
 	}
 	
@@ -423,7 +442,7 @@ public class User {
 	 * @return the authority keys
 	 */
 	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE) 
-	public final Key<Authority>[] getAuthorityKeys() {
+	public final List<Key<Authority>> getAuthorityKeys() {
 		return this.authorityKeys;
 	}
 
@@ -432,7 +451,7 @@ public class User {
 	 *
 	 * @param authorityKeys the new authority keys
 	 */
-	public final void setAuthorityKeys(Key<Authority>[] authorityKeys) {
+	public final void setAuthorityKeys(List<Key<Authority>> authorityKeys) {
 		this.authorityKeys = authorityKeys;
 	}
 
@@ -527,7 +546,7 @@ public class User {
 	public final void setAuthorityIds(List<Long> authorityIds) {
 		this.authorityIds = authorityIds;
 	}
-
+	
 	/**
 	 * Gets the authorities.
 	 *
@@ -544,6 +563,24 @@ public class User {
 	 */
 	public final void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	/**
+	 * Gets the roles.
+	 *
+	 * @return the roles
+	 */
+	public final List<String> getRoles() {
+		return this.roles;
+	}
+
+	/**
+	 * Sets the roles.
+	 *
+	 * @param roles the new roles
+	 */
+	public final void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 	/**

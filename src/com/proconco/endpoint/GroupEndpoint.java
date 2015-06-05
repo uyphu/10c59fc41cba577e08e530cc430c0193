@@ -96,8 +96,12 @@ public class GroupEndpoint {
 	 * @return the group
 	 */
 	@ApiMethod(name = "getGroup")
-	public Group getGroup(@Named("id") Long id) {
-		return findRecord(id);
+	public Group getGroup(@Named("id") Long id) throws NotFoundException {
+		Group record = findRecord(id);
+		if (record == null) {
+			throw new NotFoundException("Group Record does not exist");
+		}
+		return record;
 	}
 	
 	/**
