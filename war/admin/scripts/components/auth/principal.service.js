@@ -52,17 +52,34 @@ angular.module('jhipsterApp')
                 }
 
                 // retrieve the identity data from the server, update the identity object, and then resolve.
-                Account.get().$promise
-                    .then(function (account) {
-                        _identity = account.data;
+//                Account.get().$promise
+//                    .then(function (account) {
+//                        _identity = account.data;
+//                        _authenticated = true;
+//                        deferred.resolve(_identity);
+//                    })
+//                    .catch(function() {
+//                        _identity = null;
+//                        _authenticated = false;
+//                        deferred.resolve(_identity);
+//                    });
+                Account.getAccount().then(function (account) {
+                	if (account != null) {
+                		_identity = account.result;
                         _authenticated = true;
                         deferred.resolve(_identity);
-                    })
-                    .catch(function() {
-                        _identity = null;
-                        _authenticated = false;
-                        deferred.resolve(_identity);
-                    });
+					} else {
+						_identity = null;
+	                    _authenticated = false;
+	                    deferred.resolve(_identity);
+					}
+                    
+                })
+                .catch(function() {
+                    _identity = null;
+                    _authenticated = false;
+                    deferred.resolve(_identity);
+                });
                 return deferred.promise;
             }
         };

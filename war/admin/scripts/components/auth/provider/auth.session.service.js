@@ -15,15 +15,12 @@ angular.module('jhipsterApp')
 //                    return response;
 //                });
                 
-                var loggedIn = false;
     			var p=$q.defer();
     			var requestData = {};
-    			requestData.email = credentials.username;
-    			requestData.pwd = credentials.password;
-    			gapi.client.userprofileendpoint.login(requestData).execute(function(resp) {
+    			requestData.login = credentials.username;
+    			requestData.password = credentials.password;
+    			gapi.client.userendpoint.login(requestData).execute(function(resp) {
                     if (resp != null) {
-//                    	loggedIn = true;
-//                    	changeAuth(loggedIn);
                     	p.resolve(resp);
     				} else {
     					p.resolve(null);
@@ -33,12 +30,15 @@ angular.module('jhipsterApp')
             },
             logout: function() {
                 // logout from the server
-                $http.post('api/logout').success(function (response) {
-                    localStorageService.clearAll();
-                    // to get a new csrf token call the api
-                    $http.get('api/account');
-                    return response;
-                });
+//                $http.post('api/logout').success(function (response) {
+//                    localStorageService.clearAll();
+//                    // to get a new csrf token call the api
+//                    $http.get('api/account');
+//                    return response;
+//                });
+            	gapi.client.userendpoint.logout().execute(function(resp) {
+            		localStorageService.clearAll();
+    			});
             },
             getToken: function () {
                 var token = localStorageService.get('token');

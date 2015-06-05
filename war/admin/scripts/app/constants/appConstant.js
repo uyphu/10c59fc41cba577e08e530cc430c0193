@@ -59,3 +59,9 @@ AppConstant.ALL_ENDPOINT_LOADED = false;
 
 /** The Constant API_LOAD_TYPE. */
 AppConstant.API_LOAD_TYPE = 0; 
+
+/** The Constant ACCOUNT. */
+AppConstant.ACCOUNT = null;
+
+/** The Constant POSITION_ENDPOINT_LOADED. */
+AppConstant.POSITION_ENDPOINT_LOADED = false;
