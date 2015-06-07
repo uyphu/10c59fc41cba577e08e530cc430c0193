@@ -1,0 +1,23 @@
+{
+    "proconcoappApp": {
+        "group" : {
+            "home": {
+                "title": "Groups",
+                "createLabel": "Créer un nouveau Group",
+                "createOrEditLabel": "Créer ou éditer un Group"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Group {{ id }} ?"
+            },
+            "detail": {
+                "title": "Group"
+            },
+            "grpName": "GrpName",
+            "delFlag": "DelFlag",
+            "crtUid": "CrtUid",
+            "ctrTms": "CtrTms",
+            "updUid": "UpdUid",
+            "updTms": "UpdTms"
+        }
+    }
+}

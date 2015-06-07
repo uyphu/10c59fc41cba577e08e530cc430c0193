@@ -1,0 +1,70 @@
+
+<div>
+    <h2><span translate="proconcoappApp.group.detail.title">Group</span> {{group.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.group.grpName">GrpName</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{group.grpName}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.group.delFlag">DelFlag</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{group.delFlag}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.group.crtUid">CrtUid</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{group.crtUid}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.group.ctrTms">CtrTms</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{group.ctrTms}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.group.updUid">UpdUid</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{group.updUid}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.group.updTms">UpdTms</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{group.updTms}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="group"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

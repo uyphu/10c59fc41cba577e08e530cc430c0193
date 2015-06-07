@@ -1,8 +1,13 @@
 package com.proconco.dao;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.NotFoundException;
+import com.googlecode.objectify.cmd.Query;
 import com.proconco.entity.Group;
 
 /**
@@ -39,5 +44,48 @@ public class GroupDao extends AbstractDao<Group> {
 		for (Group item : list) {
 			delete(item);
 		}
+	}
+	
+	/**
+	 * Gets the query.
+	 *
+	 * @param querySearch the query search
+	 * @return the query
+	 * @throws NotFoundException the not found exception
+	 */
+	public Query<Group> getQuery(String querySearch) throws NotFoundException{ 
+		try {
+			if (querySearch != null) {
+				Query<Group> query;
+				Map<String,Object> map = new HashMap<String, Object>();
+				if (querySearch.indexOf("delFlag:") != -1) {
+					String[] queries = querySearch.split(":");
+					map.put("delFlag", Long.parseLong(queries[1]));
+					query = getQuery(map);
+				} else {
+					query = getQueryByName("grpName", querySearch);
+				}
+				return query;
+			} else {
+				return ofy().load().type(Group.class);
+			}
+		} catch (Exception e) {
+			throw new NotFoundException("No found record. Cause:" + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Search group.
+	 *
+	 * @param querySearch the query search
+	 * @param cursorString the cursor string
+	 * @param count the count
+	 * @return the collection response
+	 * @throws NotFoundException the not found exception
+	 */
+	public CollectionResponse<Group> searchGroup(String querySearch, String cursorString, Integer count)
+			throws NotFoundException {
+		Query<Group> query = getQuery(querySearch);
+		return executeQuery(query, cursorString, count);
 	}
 }

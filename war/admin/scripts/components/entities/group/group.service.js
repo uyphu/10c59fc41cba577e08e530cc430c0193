@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('jhipsterApp')
-   .factory('Position', function ($q, DateUtils) {
-	   return {
+    .factory('Group', function ($q, DateUtils) {
+    	return {
 		   	init: function() {
 				var hwdefer=$q.defer();
 				var oauthloaddefer=$q.defer();
 				var oauthdefer=$q.defer();
 				if (!AppConstant.POSITION_ENDPOINT_LOADED) {
-					gapi.client.load('positionendpoint', AppConstant.ENDPOINT_VERSION, function() {
+					gapi.client.load('groupendpoint', AppConstant.ENDPOINT_VERSION, function() {
 						AppConstant.POSITION_ENDPOINT_LOADED = true;
 						hwdefer.resolve(gapi);
 					}, AppConstant.ROOT_API);
@@ -25,7 +25,7 @@ angular.module('jhipsterApp')
     			var requestData = {};
     			requestData.cursor = cursor;
     			requestData.count = AppConstant.MAX_PAGE_SIZE;
-    			gapi.client.positionendpoint.listPosition(requestData).execute(function(resp) {
+    			gapi.client.groupendpoint.listGroup(requestData).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);
     				} else {
@@ -35,11 +35,11 @@ angular.module('jhipsterApp')
     			return p.promise;
    			},
    			
-   			insert: function (position) {
+   			insert: function (group) {
    				var p=$q.defer();
-    			position.crtUid = AppConstant.ACCOUNT.login;
-    			position.updUid = AppConstant.ACCOUNT.login;
-    			gapi.client.positionendpoint.insertPosition(position).execute(function(resp) {
+    			group.crtUid = AppConstant.ACCOUNT.login;
+    			group.updUid = AppConstant.ACCOUNT.login;
+    			gapi.client.groupendpoint.insertGroup(group).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp.result);
     				} else {
@@ -49,10 +49,10 @@ angular.module('jhipsterApp')
     			return p.promise;
    			},
    			
-   			update: function (position) {
+   			update: function (group) {
    				var p=$q.defer();
-    			position.updUid = AppConstant.ACCOUNT.login;
-    			gapi.client.positionendpoint.updatePosition(position).execute(function(resp) {
+    			group.updUid = AppConstant.ACCOUNT.login;
+    			gapi.client.groupendpoint.updateGroup(group).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp.result);
     				} else {
@@ -66,7 +66,7 @@ angular.module('jhipsterApp')
    				var p=$q.defer();
    				var requestData = {};
    				requestData.id = id;
-    			gapi.client.positionendpoint.removePosition(requestData).execute(function(resp) {
+    			gapi.client.groupendpoint.removeGroup(requestData).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);
     				} else {
@@ -80,9 +80,9 @@ angular.module('jhipsterApp')
    				var p=$q.defer();
    				var requestData = {};
    				requestData.id = id;
-    			gapi.client.positionendpoint.getPosition(requestData).execute(function(resp) {
+    			gapi.client.groupendpoint.getGroup(requestData).execute(function(resp) {
                     if (resp != null) {
-                    	p.resolve(resp);
+                    	p.resolve(resp.result);
     				} else {
     					p.resolve(null);
     				}
@@ -90,4 +90,4 @@ angular.module('jhipsterApp')
     			return p.promise;
    			}
 	   };
-   });
+    });

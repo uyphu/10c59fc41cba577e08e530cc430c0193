@@ -46,23 +46,47 @@ public class PositionDao extends AbstractDao<Position> {
 		}
 	}
 	
-	public CollectionResponse<Position> searchPosition(String querySearch, String cursorString, Integer count) throws NotFoundException{ 
+	/**
+	 * Gets the query.
+	 *
+	 * @param querySearch the query search
+	 * @return the query
+	 * @throws NotFoundException the not found exception
+	 */
+	public Query<Position> getQuery(String querySearch) throws NotFoundException{ 
 		try {
 			if (querySearch != null) {
+				Query<Position> query;
 				Map<String,Object> map = new HashMap<String, Object>();
-				if (querySearch.indexOf("id:") != -1) {
+				if (querySearch.indexOf("delFlag:") != -1) {
 					String[] queries = querySearch.split(":");
-					map.put("id", Long.parseLong(queries[1]));
+					map.put("delFlag", Long.parseLong(queries[1]));
+					query = getQuery(map);
 				} else {
-					map.put("postName", querySearch);
+					query = getQueryByName("postName", querySearch);
 				}
-				Query<Position> query = getQuery(map);
-				return executeQuery(query, cursorString, count);
+				return query;
+			} else {
+				return ofy().load().type(Position.class);
 			}
 		} catch (Exception e) {
 			throw new NotFoundException("No found record. Cause:" + e.getMessage());
 		}
-		return null;
+	}
+	
+	/**
+	 * Search position.
+	 *
+	 * @param querySearch the query search
+	 * @param cursorString the cursor string
+	 * @param count the count
+	 * @return the collection response
+	 * @throws NotFoundException the not found exception
+	 */
+	public CollectionResponse<Position> searchPosition(String querySearch, String cursorString, Integer count)
+			throws NotFoundException {
+		Query<Position> query = getQuery(querySearch);
+		return executeQuery(query, cursorString, count);
 	}
 
 }

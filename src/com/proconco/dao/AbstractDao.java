@@ -152,6 +152,18 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	}
 	
 	/**
+	 * Gets the query by name.
+	 *
+	 * @param field the field
+	 * @param value the value
+	 * @return the query by name
+	 */
+	public Query<T> getQueryByName(String field, String value) {
+		Query<T> query = ofy().load().type(clazz).filter(field + " >= ", value).filter(field + " < ", value + "\uFFFD");
+		return query;
+	}
+	
+	/**
 	 * Execute query.
 	 *
 	 * @param query the query

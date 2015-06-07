@@ -1,10 +1,13 @@
 package com.proconco.endpoint;
 
+import java.util.Calendar;
+
 import javax.annotation.Nullable;
 import javax.inject.Named;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.ConflictException;
@@ -52,6 +55,8 @@ public class GroupEndpoint {
 		// for us
 		// when we use put
 		GroupDao dao = new GroupDao();
+		group.setCrtTms(Calendar.getInstance().getTime());
+		group.setUpdTms(Calendar.getInstance().getTime());
 		dao.persist(group);
 		return group;
 	}
@@ -70,6 +75,7 @@ public class GroupEndpoint {
 		}
 		GroupDao dao = new GroupDao();
 		dao.update(group);
+		group.setUpdTms(Calendar.getInstance().getTime());
 		return group;
 	}
 
@@ -96,12 +102,8 @@ public class GroupEndpoint {
 	 * @return the group
 	 */
 	@ApiMethod(name = "getGroup")
-	public Group getGroup(@Named("id") Long id) throws NotFoundException {
-		Group record = findRecord(id);
-		if (record == null) {
-			throw new NotFoundException("Group Record does not exist");
-		}
-		return record;
+	public Group getGroup(@Named("id") Long id) {
+		return findRecord(id);
 	}
 	
 	/**
@@ -132,5 +134,13 @@ public class GroupEndpoint {
 		GroupDao dao = new GroupDao();
 		dao.cleanData();
 	}
-
+	
+	@ApiMethod(name = "searchGroup", httpMethod=HttpMethod.GET, path="search_group")
+	public CollectionResponse<Group> searchGroup(
+			@Nullable @Named("querySearch") String querySearch,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) throws NotFoundException {
+		GroupDao dao = new GroupDao();
+		return dao.searchGroup(querySearch, cursorString, count);
+	}
 }

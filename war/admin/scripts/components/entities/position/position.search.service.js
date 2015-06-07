@@ -2,9 +2,6 @@
 
 angular.module('jhipsterApp')
    .factory('PositionSearch', function ($resource, $q) {
-//       return $resource('api/_search/positions/:query', {}, {
-//           'query': { method: 'GET', isArray: true}
-//       });
 	   return {
 		   searchPosition: function(querySearch, cursor){
 			    var p=$q.defer();
@@ -13,8 +10,8 @@ angular.module('jhipsterApp')
 	   			requestData.count = AppConstant.MAX_PAGE_SIZE;
 	   			requestData.querySearch = querySearch;
 	   			gapi.client.positionendpoint.searchPosition(requestData).execute(function(resp) {
-	                   if (resp != null) {
-	                   	p.resolve(resp.result);
+	                if (resp != null && resp.items != null) {
+	                   	p.resolve(resp);
 	   				} else {
 	   					p.resolve(null);
 	   				}
