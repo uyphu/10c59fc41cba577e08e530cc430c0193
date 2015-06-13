@@ -1,0 +1,149 @@
+<div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1 translate="proconcoappApp.report.detail.title">Report {{reportId.id}}</h1>
+            <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" class="form-control" name="id"
+                               ng-model="report.id" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.amt">Amt</label>
+                        <input type="number" class="form-control" name="amt"
+                               ng-model="report.amt" required min="0">
+
+                        <div ng-show="editForm.amt.$invalid">
+                            <p class="help-block"
+                               ng-show="editForm.amt.$error.required" translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                            <p class="help-block"
+                               ng-show="editForm.amt.$error.min" translate="entity.validation.min" translate-value-min="0">
+                                This field should be more than 0.
+                            </p>
+                            <p class="help-block"
+                               ng-show="editForm.amt.$error.number" translate="entity.validation.number">
+                                This field should be a number.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.marketRpt">MarketRpt</label>
+                        <input type="text" class="form-control" name="marketRpt"
+                               ng-model="report.marketRpt" required>
+
+                        <div ng-show="editForm.marketRpt.$invalid">
+                            <p class="help-block"
+                               ng-show="editForm.marketRpt.$error.required" translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.monday">Monday</label>
+                        <input type="text" class="form-control" name="monday"
+                               ng-model="report.monday">
+
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.tuesday">Tuesday</label>
+                        <input type="text" class="form-control" name="tuesday"
+                               ng-model="report.tuesday">
+
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.wednesday">Wednesday</label>
+                        <input type="text" class="form-control" name="wednesday"
+                               ng-model="report.wednesday">
+
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.thursday">Thursday</label>
+                        <input type="text" class="form-control" name="thursday"
+                               ng-model="report.thursday">
+
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.friday">Friday</label>
+                        <input type="text" class="form-control" name="friday"
+                               ng-model="report.friday">
+
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.saturday">Saturday</label>
+                        <input type="text" class="form-control" name="saturday"
+                               ng-model="report.saturday">
+
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.sunday">Sunday</label>
+                        <input type="text" class="form-control" name="sunday"
+                               ng-model="report.sunday">
+
+                    </div>
+<!--                     <div class="form-group"> -->
+<!--                         <label translate="proconcoappApp.report.delFlag">DelFlag</label> -->
+<!--                         <input type="text" class="form-control" name="delFlag" -->
+<!--                                ng-model="report.delFlag" required ng-minlength="1" ng-maxlength="1" ng-pattern="/[YN]/"> -->
+
+<!--                         <div ng-show="editForm.delFlag.$invalid"> -->
+<!--                             <p class="help-block" -->
+<!--                                ng-show="editForm.delFlag.$error.required" translate="entity.validation.required"> -->
+<!--                                 This field is required. -->
+<!--                             </p> -->
+<!--                             <p class="help-block" -->
+<!--                                ng-show="editForm.delFlag.$error.minlength" translate="entity.validation.minlength" translate-value-min="1"> -->
+<!--                                 This field is required to be at least 1 characters. -->
+<!--                             </p> -->
+<!--                             <p class="help-block" -->
+<!--                                ng-show="editForm.delFlag.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="1"> -->
+<!--                                 This field cannot be longer than 1 characters. -->
+<!--                             </p> -->
+<!--                             <p class="help-block" -->
+<!--                                ng-show="editForm.delFlag.$error.pattern" translate="entity.validation.pattern" translate-value-pattern="[YN]"> -->
+<!--                                 This field should follow pattern "[YN]". -->
+<!--                             </p> -->
+<!--                         </div> -->
+<!--                     </div> -->
+<!--                     <div class="form-group"> -->
+<!--                         <label translate="proconcoappApp.report.crtUid">CrtUid</label> -->
+<!--                         <input type="text" class="form-control" name="crtUid" -->
+<!--                                ng-model="report.crtUid"> -->
+
+<!--                     </div> -->
+<!--                     <div class="form-group"> -->
+<!--                         <label translate="proconcoappApp.report.crtTms">CrtTms</label> -->
+<!--                         <input type="date" class="form-control" name="crtTms" -->
+<!--                                ng-model="report.crtTms"> -->
+
+<!--                     </div> -->
+<!--                     <div class="form-group"> -->
+<!--                         <label translate="proconcoappApp.report.updUid">UpdUid</label> -->
+<!--                         <input type="text" class="form-control" name="updUid" -->
+<!--                                ng-model="report.updUid"> -->
+
+<!--                     </div> -->
+<!--                     <div class="form-group"> -->
+<!--                         <label translate="proconcoappApp.report.updTms">UpdTms</label> -->
+<!--                         <input type="date" class="form-control" name="updTms" -->
+<!--                                ng-model="report.updTms"> -->
+
+<!--                     </div> -->
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                    </button>
+                    <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

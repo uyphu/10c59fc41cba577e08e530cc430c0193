@@ -1,0 +1,58 @@
+<div>
+    <h2><span translate="proconcoappApp.reportId.detail.title">ReportId</span> {{reportId.id}}</h2>
+    <button type="submit"
+            ui-sref="reportDetail({id:reportId.id})"
+            class="btn btn-info btn-sm">
+        <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.detail"> Detail</span>
+    </button>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.reportId.week">Week</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{reportId.week}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.reportId.year">Year</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{reportId.year}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.reportId.user">user</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{reportId.user.login}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.reportId.ctrTms">CtrTms</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{reportId.crtTms}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="reportId"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>
