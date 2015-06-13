@@ -1,5 +1,7 @@
 package com.proconco.entity;
 
+import java.util.Date;
+
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.googlecode.objectify.Key;
@@ -37,6 +39,9 @@ public class ReportId {
 	/** The user profile. */
 	@IgnoreSave
 	private User user;
+	
+	/** The crt tms. */
+	private Date crtTms;
 	/**
 	 * Instantiates a new report id.
 	 */
@@ -45,6 +50,7 @@ public class ReportId {
 		if (userKey != null) {
 			UserDao dao = new UserDao();
 			user = dao.find(userKey);
+			userId = user.getId();
 		}
 	}
 	
@@ -223,6 +229,14 @@ public class ReportId {
 	 */
 	public final void setUser(User user) {
 		this.user = user;
+	}
+
+	public Date getCrtTms() {
+		return crtTms;
+	}
+
+	public void setCrtTms(Date crtTms) {
+		this.crtTms = crtTms;
 	}
 	
 }

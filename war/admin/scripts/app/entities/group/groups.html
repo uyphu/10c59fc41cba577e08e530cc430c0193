@@ -3,6 +3,16 @@
     <h2 translate="proconcoappApp.group.home.title">Groups</h2>
 
     <div class="container">
+    	<!-- spinner -->
+		<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
+		<!-- end spinner -->
+		<div class="row">
+			<div class="col-md-8">
+				<div class="alert alert-danger" ng-show="invalidQuerySearch" translate="proconcoappApp.group.error.message.querySearch">
+			        Invalid query search!
+			    </div>
+		    </div>
+		</div>
         <div class="row">
             <div class="col-md-4">
                 <button class="btn btn-primary" data-toggle="modal" data-target="#saveGroupModal" ng-click="clear()">
@@ -12,7 +22,7 @@
             <div class="col-md-8">
                 <form name="searchForm" class="form-inline">
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                        <input type="text" class="form-control" ng-model="searchQuery" ng-change="change()" id="searchQuery" placeholder="query">
                     </div>
                     <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Group</span>
                     </button>
@@ -33,6 +43,11 @@
                         <h4 class="modal-title" id="myGroupLabel" translate="proconcoappApp.group.home.createOrEditLabel">Create or edit a Group</h4>
                     </div>
                     <div class="modal-body">
+                    	<div class="form-group">
+							<div class="alert alert-danger" ng-show="invalidName" translate="proconcoappApp.group.error.message.invalidName">
+						        Invalid name!
+						    </div>
+					    </div>
                         <div class="form-group">
                             <label>ID</label>
                             <input type="text" class="form-control" name="id"
@@ -63,6 +78,7 @@
                                 </p>
                             </div>
                         </div>
+                        <!-- 
                         <div class="form-group">
                             <label translate="proconcoappApp.group.crtUid">CrtUid</label>
                             <input type="text" class="form-control" name="crtUid"
@@ -87,7 +103,7 @@
                                    ng-model="group.updTms">
 
                         </div>
-
+						 -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

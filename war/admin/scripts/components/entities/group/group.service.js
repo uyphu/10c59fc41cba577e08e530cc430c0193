@@ -7,9 +7,9 @@ angular.module('jhipsterApp')
 				var hwdefer=$q.defer();
 				var oauthloaddefer=$q.defer();
 				var oauthdefer=$q.defer();
-				if (!AppConstant.POSITION_ENDPOINT_LOADED) {
+				if (!AppConstant.GROUP_ENDPOINT_LOADED) {
 					gapi.client.load('groupendpoint', AppConstant.ENDPOINT_VERSION, function() {
-						AppConstant.POSITION_ENDPOINT_LOADED = true;
+						AppConstant.GROUP_ENDPOINT_LOADED = true;
 						hwdefer.resolve(gapi);
 					}, AppConstant.ROOT_API);
 				}
@@ -37,11 +37,9 @@ angular.module('jhipsterApp')
    			
    			insert: function (group) {
    				var p=$q.defer();
-    			group.crtUid = AppConstant.ACCOUNT.login;
-    			group.updUid = AppConstant.ACCOUNT.login;
     			gapi.client.groupendpoint.insertGroup(group).execute(function(resp) {
                     if (resp != null) {
-                    	p.resolve(resp.result);
+                    	p.resolve(resp);
     				} else {
     					p.resolve(null);
     				}
@@ -51,10 +49,9 @@ angular.module('jhipsterApp')
    			
    			update: function (group) {
    				var p=$q.defer();
-    			group.updUid = AppConstant.ACCOUNT.login;
     			gapi.client.groupendpoint.updateGroup(group).execute(function(resp) {
                     if (resp != null) {
-                    	p.resolve(resp.result);
+                    	p.resolve(resp);
     				} else {
     					p.resolve(null);
     				}
@@ -82,7 +79,7 @@ angular.module('jhipsterApp')
    				requestData.id = id;
     			gapi.client.groupendpoint.getGroup(requestData).execute(function(resp) {
                     if (resp != null) {
-                    	p.resolve(resp.result);
+                    	p.resolve(resp);
     				} else {
     					p.resolve(null);
     				}

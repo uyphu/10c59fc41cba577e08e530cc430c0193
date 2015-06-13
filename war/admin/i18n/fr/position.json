@@ -17,10 +17,11 @@
            "crtUid": "CrtUidfr",
            "crtTms": "CrtTmsfr",
            "updUid": "UpdUidfr",
-           "updTms": "CrtTmsfr"",
+           "updTms": "CrtTmsfr",
            "error": {
            		"message": {
-           			"querySearch":"Invalid query search!fr"
+           			"querySearch":"Invalid query search!fr",
+           			"invalidName":"Invalid name!fr"
            		}
            }
        }

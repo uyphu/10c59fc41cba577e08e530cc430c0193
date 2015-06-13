@@ -7,7 +7,8 @@ angular.module('jhipsterApp')
        $scope.cursor = null;
        $scope.invalidQuerySearch = null;
        $scope.spinneractive = false;
-       $scope.startcounter = 0;
+       $scope.invalidName = null;
+       //$scope.startcounter = 0;
        $scope.loadAll = function() {
     	   if (!AppConstant.POSITION_ENDPOINT_LOADED) {
     		   Position.init().then(function(){
@@ -48,7 +49,9 @@ angular.module('jhipsterApp')
        };
        
        function listData(cursor) {
+    	   $scope.startSpin();
     	   Position.loadAll(cursor).then(function(data) {
+    		   $scope.stopSpin();
     		   if (data != null) {
     			   if (data.items != null) {
 	    			   for (var i = 0; i < data.items.length; i++) {
@@ -62,12 +65,23 @@ angular.module('jhipsterApp')
 
        $scope.save = function () {
            if ($scope.position.id != null) {
+        	   $scope.position.updUid = AppConstant.ACCOUNT.login;
                Position.update($scope.position).then(function (data){
-            	   $scope.refresh();
+            	   if (data.error != null) {
+            		   showError(data.code);
+            	   } else {
+            		   $scope.refresh();
+            	   }
                });
            } else {
+        	   $scope.position.crtUid = AppConstant.ACCOUNT.login;
+        	   $scope.position.updUid = AppConstant.ACCOUNT.login;
         	   Position.insert($scope.position).then(function (data){
-            	   $scope.refresh();
+        		   if (data.error != null) {
+            		   showError(data.code);
+            	   } else {
+            		   $scope.refresh();
+            	   }
                });
            }
        };
@@ -89,46 +103,51 @@ angular.module('jhipsterApp')
 
        $scope.search = function () {
     	   $scope.invalidQuerySearch = null;
-    	   if ($scope.searchQuery.indexOf('id:') != -1) {
-			   var query = $scope.searchQuery.split(':', 2);
-			   try {
-				   var id = parseInt(query[1]);
-				   if (!isNaN(id)) {
-					   $scope.startSpin();
-					   Position.get(id).then(function(data){
-						   startTimer();
-						   $scope.positions = [];
-						   if (data != null) {
-							   $scope.positions.push(data.result);
-						   }
-					   });
-				   } else {
-					   $scope.invalidQuerySearch = 'ERROR';
-				   }
-				} catch (e) {
-					$scope.invalidQuerySearch = 'ERROR';
-				}
-			   
-			   
-		   } else {
-			   PositionSearch.searchPosition($scope.searchQuery, $scope.cursor).then(function(data) {
-	    		   if ($scope.cursor == null) {
-	    			   $scope.positions = [];
-	    		   }
-	    		   if (data != null) {
-	    			   for (var i = 0; i < data.items.length; i++) {
-	                       $scope.positions.push(data.items[i]);
-	      			   }
-	    			   $scope.cursor = data.nextPageToken;
-	    		   }
-	       		}, 
-	       		function(response) {
-	               if(response.status === 404) {
-	                   $scope.loadAll();
-	               }
-	       		});
-		   }
-    	   
+    	   if ($scope.searchQuery != null && $scope.searchQuery != '') {
+    		   if ($scope.searchQuery.indexOf('id:') != -1) {
+    			   var query = $scope.searchQuery.split(':', 2);
+    			   try {
+    				   var id = parseInt(query[1]);
+    				   if (!isNaN(id)) {
+    					   $scope.startSpin();
+    					   Position.get(id).then(function(data){
+    						   startTimer();
+    						   $scope.positions = [];
+    						   if (data != null) {
+    							   $scope.positions.push(data.result);
+    						   }
+    					   });
+    				   } else {
+    					   $scope.invalidQuerySearch = 'ERROR';
+    				   }
+    				} catch (e) {
+    					$scope.invalidQuerySearch = 'ERROR';
+    				}
+    			   
+    			   
+    		   } else {
+    			   $scope.startSpin();
+    			   PositionSearch.searchPosition($scope.searchQuery, $scope.cursor).then(function(data) {
+    				   $scope.stopSpin();
+    	    		   if ($scope.cursor == null) {
+    	    			   $scope.positions = [];
+    	    		   }
+    	    		   if (data != null) {
+    	    			   for (var i = 0; i < data.items.length; i++) {
+    	                       $scope.positions.push(data.items[i]);
+    	      			   }
+    	    			   $scope.cursor = data.nextPageToken;
+    	    		   }
+    	       		}, 
+    	       		function(response) {
+    	               if(response.status === 404) {
+    	                   $scope.loadAll();
+    	               }
+    	       		});
+    		   }
+    	   } else {
+    		   listData(null)
+    	   }
        };
 
        $scope.refresh = function () {
@@ -138,6 +157,7 @@ angular.module('jhipsterApp')
        };
 
        $scope.clear = function () {
+    	   $scope.invalidName = null;
            $scope.position = {postName: null, delFlag: null, crtUid: null, id: null};
            $scope.editForm.$setPristine();
            $scope.editForm.$setUntouched();
@@ -150,7 +170,7 @@ angular.module('jhipsterApp')
        $scope.startSpin = function() {
     	   if (!$scope.spinneractive) {
     		   usSpinnerService.spin('spinner-1');
-    		   $scope.startcounter++;
+    		   //$scope.startcounter++;
     	   }
        };
 
@@ -169,10 +189,16 @@ angular.module('jhipsterApp')
 	   });
 	   
 	   function startTimer() {
-           var timer = $timeout(function () {
+           //var timer = $timeout(function () {
         	   $scope.stopSpin();
-           }, 6000);
-       }
+           //}, 6000);
+       };
+	   
+	   function showError(errorCode) {
+		   if (errorCode == 409) {
+			   $scope.invalidName = 'ERROR';
+		   }
+       };
        
        $scope.loadAll();
    });

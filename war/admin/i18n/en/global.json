@@ -8,6 +8,7 @@
                 "main": "Entities",
                 "group": "Group",
                	"position": "Position",
+               	"reportId": "ReportId",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -78,7 +79,8 @@
             "delete": "Delete",
             "edit": "Edit",
             "save": "Save",
-            "view": "View"
+            "view": "View",
+            "detail": "Detail"
         },
         "detail": {
             "field": "Field",

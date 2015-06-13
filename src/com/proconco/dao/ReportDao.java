@@ -45,4 +45,17 @@ public class ReportDao extends AbstractDao<Report> {
 			delete(item);
 		}
 	}
+	
+	/**
+	 * Insert.
+	 *
+	 * @param report the report
+	 * @return the report
+	 */
+	public Report insert(Report report) {
+		report.setCrtTms(Calendar.getInstance().getTime());
+		report.setUpdTms(Calendar.getInstance().getTime());
+		persist(report);
+		return report;
+	}
 }

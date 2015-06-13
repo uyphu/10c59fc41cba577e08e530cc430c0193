@@ -8,6 +8,7 @@
                 "main": "Entités",
                 "position": "Positionfr",
                 "group": "Groupfr",
+                "reportId": "ReportIdfr",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -78,7 +79,8 @@
             "edit": "Editer",
             "delete": "Supprimer",
             "save": "Sauvegarder",
-            "view": "Voir"
+            "view": "Voir",
+            "detail": "Detailfr"
         },
         "detail": {
             "field": "Champs",

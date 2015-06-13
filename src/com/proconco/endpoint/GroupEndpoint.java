@@ -10,10 +10,11 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
-import com.google.api.server.spi.response.ConflictException;
-import com.google.api.server.spi.response.NotFoundException;
 import com.proconco.dao.GroupDao;
 import com.proconco.entity.Group;
+import com.proconco.exception.ErrorCode;
+import com.proconco.exception.ErrorCodeDetail;
+import com.proconco.exception.ProconcoException;
 
 @Api(name = "groupendpoint", namespace = @ApiNamespace(ownerDomain = "proconco.com", ownerName = "proconco.com", packagePath = "entity"))
 public class GroupEndpoint {
@@ -38,7 +39,7 @@ public class GroupEndpoint {
 	* @return The object to be added.
 	*/
 	@ApiMethod(name = "insertGroup")
-	public Group insertGroup(Group group) throws ConflictException {
+	public Group insertGroup(Group group) throws ProconcoException {
 		// If if is not null, then check if it exists. If yes, throw an
 		// Exception
 		// that it is already present
@@ -47,7 +48,8 @@ public class GroupEndpoint {
 				group.setId(null);
 			} else {
 				if (findRecord(group.getId()) != null) {
-					throw new ConflictException("Object already exists");
+					throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+							ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
 				}
 			}
 		}
@@ -55,9 +57,15 @@ public class GroupEndpoint {
 		// for us
 		// when we use put
 		GroupDao dao = new GroupDao();
-		group.setCrtTms(Calendar.getInstance().getTime());
-		group.setUpdTms(Calendar.getInstance().getTime());
-		dao.persist(group);
+		Group pos = dao.getGroupByName(group.getGrpName());
+		if (pos == null) {
+			group.setCrtTms(Calendar.getInstance().getTime());
+			group.setUpdTms(Calendar.getInstance().getTime());
+			dao.persist(group);
+		} else {
+			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+		}
 		return group;
 	}
 
@@ -69,13 +77,21 @@ public class GroupEndpoint {
 	 * @return The object to be updated.
 	 */
 	@ApiMethod(name = "updateGroup")
-	public Group updateGroup(Group group) throws NotFoundException {
+	public Group updateGroup(Group group) throws ProconcoException {
 		if (findRecord(group.getId()) == null) {
-			throw new NotFoundException("Group Record does not exist");
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
 		}
 		GroupDao dao = new GroupDao();
-		dao.update(group);
-		group.setUpdTms(Calendar.getInstance().getTime());
+		Group pos = dao.getGroupByName(group.getGrpName());
+		if (pos == null || pos.getId() == group.getId()) {
+			group.setCrtTms(Calendar.getInstance().getTime());
+			group.setUpdTms(Calendar.getInstance().getTime());
+			dao.update(group);
+		} else {
+			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+		}
 		return group;
 	}
 
@@ -86,10 +102,11 @@ public class GroupEndpoint {
 	 *            The id of the object to be deleted.
 	 */
 	@ApiMethod(name = "removeGroup")
-	public void removeGroup(@Named("id") Long id) throws NotFoundException {
+	public void removeGroup(@Named("id") Long id) throws ProconcoException {
 		Group record = findRecord(id);
-		if (record == null) {
-			throw new NotFoundException("Group Record does not exist");
+		if (record != null) {
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
 		}
 		GroupDao dao = new GroupDao();
 		dao.delete(record);
@@ -139,7 +156,7 @@ public class GroupEndpoint {
 	public CollectionResponse<Group> searchGroup(
 			@Nullable @Named("querySearch") String querySearch,
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("count") Integer count) throws NotFoundException {
+			@Nullable @Named("count") Integer count) throws ProconcoException {
 		GroupDao dao = new GroupDao();
 		return dao.searchGroup(querySearch, cursorString, count);
 	}

@@ -37,11 +37,9 @@ angular.module('jhipsterApp')
    			
    			insert: function (position) {
    				var p=$q.defer();
-    			position.crtUid = AppConstant.ACCOUNT.login;
-    			position.updUid = AppConstant.ACCOUNT.login;
     			gapi.client.positionendpoint.insertPosition(position).execute(function(resp) {
                     if (resp != null) {
-                    	p.resolve(resp.result);
+                    	p.resolve(resp);
     				} else {
     					p.resolve(null);
     				}
@@ -51,10 +49,9 @@ angular.module('jhipsterApp')
    			
    			update: function (position) {
    				var p=$q.defer();
-    			position.updUid = AppConstant.ACCOUNT.login;
     			gapi.client.positionendpoint.updatePosition(position).execute(function(resp) {
                     if (resp != null) {
-                    	p.resolve(resp.result);
+                    	p.resolve(resp);
     				} else {
     					p.resolve(null);
     				}

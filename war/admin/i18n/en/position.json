@@ -20,9 +20,11 @@
            "updTms": "CrtTms",
            "error":{
            		"message":{
-           			"querySearch":"Invalid query search!"
+           			"querySearch":"Invalid query search!",
+           			"invalidName":"Invalid name!"
            		}
            }
+           
        }
    }
 }

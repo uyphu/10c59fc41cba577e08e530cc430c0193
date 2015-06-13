@@ -40,6 +40,12 @@
                     <h4 class="modal-title" id="myPositionLabel" translate="proconcoappApp.position.home.createOrEditLabel">Create or edit a Position</h4>
                 </div>
                 <div class="modal-body">
+                	<div class="form-group">
+						<div class="alert alert-danger" ng-show="invalidName" translate="proconcoappApp.position.error.message.invalidName">
+					        Invalid name!
+					    </div>
+				    </div>
+				    
                     <div class="form-group">
                         <label>ID</label>
                         <input type="text" class="form-control" name="id"
