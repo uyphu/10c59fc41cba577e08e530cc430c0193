@@ -15,7 +15,14 @@
             "week": "Week",
             "year": "Year",
             "user": "user",
-            "planningWeek": "planningWeek"
+            "ctrTms": "CtrTmsfr",
+            "planningWeek": "planningWeekfr",
+            "error":{
+           		"message":{
+           			"querySearch":"Invalid query search!fr",
+           			"invalidName":"Invalid name!fr"
+           		}
+           }
         }
     }
 }

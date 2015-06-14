@@ -1,10 +1,20 @@
 <div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <h1 translate="proconcoappApp.report.detail.title">Report {{reportId.id}}</h1>
+            <h1 translate="proconcoappApp.report.detail.title">Report {{report.id}}</h1>
             <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
-
+				
                 <div class="modal-body">
+                	<div class="form-group">
+						<div class="alert alert-success" ng-show="success" translate="proconcoappApp.report.message.success">
+			                <strong>Report updated!</strong>
+			            </div>
+				    </div>
+				    <div class="form-group">
+						<div class="alert alert-danger" ng-show="updateError" translate="proconcoappApp.report.error.message.update">
+					        Update error!
+					    </div>
+				    </div>
                     <div class="form-group">
                         <label>ID</label>
                         <input type="text" class="form-control" name="id"
@@ -136,9 +146,11 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
-                    </button>
+                    <button type="submit"
+				            ui-sref="reportDetail({id:report.id})"
+				            class="btn btn-info">
+				        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+				    </button>
                     <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
                         <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
                     </button>

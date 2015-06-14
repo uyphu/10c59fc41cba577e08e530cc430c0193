@@ -53,7 +53,7 @@ angular.module('jhipsterApp')
 	            views: {
 	                'content@': {
 	                    templateUrl: 'scripts/app/entities/report/report-edit.html',
-	                    controller: 'ReportDetailController'
+	                    controller: 'ReportEditController'
 	                }
 	            },
 	            resolve: {

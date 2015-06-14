@@ -42,5 +42,25 @@ angular.module('jhipsterApp')
                         return $translate.refresh();
                     }]
                 }
-            });
+            })
+            .state('planningWeekEdit', {
+	            parent: 'entity',
+	            url: '/planningWeek/:id',
+	            data: {
+	                roles: ['ROLE_USER'],
+	                pageTitle: 'proconcoappApp.planningWeek.detail.title'
+	            },
+	            views: {
+	                'content@': {
+	                    templateUrl: 'scripts/app/entities/planningWeek/planningWeek-edit.html',
+	                    controller: 'PlanningWeekEditController'
+	                }
+	            },
+	            resolve: {
+	                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+	                    $translatePartialLoader.addPart('planningWeek');
+	                    return $translate.refresh();
+	                }]
+	            }
+	        });
     });

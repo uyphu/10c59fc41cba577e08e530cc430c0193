@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('jhipsterApp')
-	.controller('ReportEditController', function ($scope, $stateParams, Report, ReportId, ReportSearch, ParseLinks) {
-        $scope.report = {};
+	.controller('PlanningWeekEditController', function ($scope, $stateParams, PlanningWeek, PlanningWeekId, PlanningWeekSearch, ParseLinks) {
+        $scope.planningWeek = {};
         $scope.success = null;
         $scope.updateError = null;
         $scope.load = function (id) {
-        	if (!AppConstant.REPORT_ENDPOINT_LOADED) {
-      		   Report.init().then(function(){
-  					if (AppConstant.REPORT_ENDPOINT_LOADED) {
-  						console.log("reportendpoint loaded...")
+        	if (!AppConstant.PLANNINGWEEK_ENDPOINT_LOADED) {
+      		   PlanningWeek.init().then(function(){
+  					if (AppConstant.PLANNINGWEEK_ENDPOINT_LOADED) {
+  						console.log("planningWeekendpoint loaded...")
   						$scope.get(id);
   					}
   				},
@@ -23,17 +23,17 @@ angular.module('jhipsterApp')
         };
         
         $scope.get = function(id) {
-        	Report.get(id).then(function(result) {
-                $scope.report = result;
+        	PlanningWeek.get(id).then(function(result) {
+                $scope.planningWeek = result;
               });
         };
         
         $scope.save = function () {
         	$scope.success = null;
         	$scope.updateError = null;
-            if ($scope.report.id != null) {
-            	$scope.report.delFlag = 'N';
-                Report.update($scope.report).then(function (data){
+            if ($scope.planningWeek.id != null) {
+            	$scope.planningWeek.delFlag = 'N';
+                PlanningWeek.update($scope.planningWeek).then(function (data){
                 	if (data.error != null) {
              		   showError(data.code);
              	   	} else {

@@ -1,6 +1,11 @@
 
 <div>
     <h2><span translate="proconcoappApp.planningWeek.detail.title">PlanningWeek</span> {{planningWeek.id}}</h2>
+    <button type="submit"
+            ui-sref="planningWeekEdit({id:planningWeek.id})"
+            class="btn btn-primary btn-sm">
+        <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+    </button>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -111,7 +116,7 @@
     </div>
 
     <button type="submit"
-            ui-sref="planningWeek"
+            ui-sref="planningWeekId"
             class="btn btn-info">
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
     </button>

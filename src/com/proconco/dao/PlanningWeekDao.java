@@ -39,5 +39,18 @@ public class PlanningWeekDao extends AbstractDao<PlanningWeek> {
 			delete(item);
 		}
 	}
+	
+	/**
+	 * Insert.
+	 *
+	 * @param planningWeek the planningWeek
+	 * @return the planningWeek
+	 */
+	public PlanningWeek insert(PlanningWeek planningWeek) {
+		planningWeek.setCrtTms(Calendar.getInstance().getTime());
+		planningWeek.setUpdTms(Calendar.getInstance().getTime());
+		persist(planningWeek);
+		return planningWeek;
+	}
 
 }

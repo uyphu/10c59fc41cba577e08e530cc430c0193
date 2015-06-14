@@ -1,0 +1,34 @@
+{
+    "proconcoappApp": {
+        "user" : {
+            "home": {
+                "title": "Users",
+                "createLabel": "Créer un nouveau User",
+                "createOrEditLabel": "Créer ou éditer un User"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le User {{ id }} ?"
+            },
+            "detail": {
+                "title": "User"
+            },
+            "username": "Loginfr",
+            "email": "Emailfr",
+            "newpassword": "New passwordfr",
+            "confirmpassword": "New password confirmationfr",
+            "activated": "Activatedfr",
+            "crtTms": "CrtTmsfr",
+            "firstName": "Firstnamefr",
+            "lastName": "Lastnamefr",
+            "langKey": "Languagefr",
+            "group": "Groupfr",
+            "position": "Positionfr",
+            "error":{
+           		"message":{
+           			"querySearch":"Invalid query search!fr",
+           			"invalidName":"Invalid name!fr"
+           		}
+           }
+        }
+    }
+}

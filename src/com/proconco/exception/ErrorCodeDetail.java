@@ -28,7 +28,16 @@ public enum ErrorCodeDetail {
 	ERROR_INSERT_ENTITY(606, "[606] Insert entity error"),
 	
 	/** The error update entity. */
-	ERROR_UPDATE_ENTITY(607, "[607] Update entity error");
+	ERROR_UPDATE_ENTITY(607, "[607] Update entity error"),
+	
+	/** The error conflict login. */
+	ERROR_CONFLICT_LOGIN(608, "[608] Login already exists"),
+	
+	/** The error conflict email. */
+	ERROR_CONFLICT_EMAIL(609, "[609] Email already exists"),
+	
+	/** The error conflict login and email. */
+	ERROR_CONFLICT_LOGIN_AND_EMAIL(610, "[610] Login and Email already exists");
 
 	/** The id. */
 	private final int id;

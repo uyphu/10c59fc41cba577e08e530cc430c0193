@@ -1,5 +1,7 @@
 package com.proconco.entity;
 
+import java.util.Date;
+
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.googlecode.objectify.Key;
@@ -38,6 +40,9 @@ public class PlanningWeekId {
 	@IgnoreSave
 	private User user;
 	
+	/** The crt tms. */
+	private Date crtTms;
+	
 	/**
 	 * On load.
 	 */
@@ -46,6 +51,7 @@ public class PlanningWeekId {
 		if (userKey != null) {
 			UserDao dao = new UserDao();
 			user = dao.find(userKey);
+			userId = user.getId();
 		}
 	}
 	
@@ -214,6 +220,14 @@ public class PlanningWeekId {
 	 */
 	public final void setUser(User user) {
 		this.user = user;
+	}
+
+	public Date getCrtTms() {
+		return crtTms;
+	}
+
+	public void setCrtTms(Date crtTms) {
+		this.crtTms = crtTms;
 	}
 
 }

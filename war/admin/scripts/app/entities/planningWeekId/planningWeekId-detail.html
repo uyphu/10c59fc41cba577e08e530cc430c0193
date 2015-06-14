@@ -1,6 +1,11 @@
 
 <div>
     <h2><span translate="proconcoappApp.planningWeekId.detail.title">PlanningWeekId</span> {{planningWeekId.id}}</h2>
+    <button type="submit"
+            ui-sref="planningWeekDetail({id:planningWeekId.id})"
+            class="btn btn-info btn-sm">
+        <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.detail"> Detail</span>
+    </button>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -31,7 +36,15 @@
                         <span translate="proconcoappApp.planningWeekId.user">user</span>
                     </td>
                     <td>
-                        <input type="text" class="input-sm form-control" value="{{planningWeekId.userId}}" readonly>
+                        <input type="text" class="input-sm form-control" value="{{planningWeekId.user.login}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="proconcoappApp.planningWeekId.ctrTms">CtrTms</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{planningWeekId.crtTms}}" readonly>
                     </td>
                 </tr>
             </tbody>

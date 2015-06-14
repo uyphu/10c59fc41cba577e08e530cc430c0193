@@ -142,9 +142,13 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 		ReportDao reportDao = new ReportDao();
 		Report report = new Report();
 		report.setId(reportId.getId());
-		if (reportId.getUser() != null) {
-			report.setCrtUid(reportId.getUser().getLogin());
-			report.setUpdUid(reportId.getUser().getLogin());
+		if (reportId.getUserKey() != null) {
+			UserDao dao = new UserDao();
+			User user = dao.find(reportId.getUserKey());
+			if (user != null) {
+				report.setCrtUid(user.getLogin());
+				report.setUpdUid(user.getLogin());
+			}
 		}
 		
 		reportDao.insert(report);

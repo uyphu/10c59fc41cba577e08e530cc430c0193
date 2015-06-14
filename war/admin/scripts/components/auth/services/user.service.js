@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('jhipsterApp')
-    .factory('Report', function ($resource, $q, DateUtils) {
+    .factory('User', function ($q, DateUtils) {
     	return {
 		   	init: function() {
 				var hwdefer=$q.defer();
 				var oauthloaddefer=$q.defer();
 				var oauthdefer=$q.defer();
-				if (!AppConstant.REPORT_ENDPOINT_LOADED) {
-					gapi.client.load('reportendpoint', AppConstant.ENDPOINT_VERSION, function() {
-						AppConstant.REPORT_ENDPOINT_LOADED = true;
+				if (!AppConstant.USER_PROFILE_ENDPOINT_LOADED) {
+					gapi.client.load('userendpoint', AppConstant.ENDPOINT_VERSION, function() {
+						AppConstant.USER_PROFILE_ENDPOINT_LOADED = true;
 						hwdefer.resolve(gapi);
 					}, AppConstant.ROOT_API);
 				}
@@ -25,7 +25,7 @@ angular.module('jhipsterApp')
     			var requestData = {};
     			requestData.cursor = cursor;
     			requestData.count = AppConstant.MAX_PAGE_SIZE;
-    			gapi.client.reportendpoint.listReport(requestData).execute(function(resp) {
+    			gapi.client.userendpoint.listUser(requestData).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);
     				} else {
@@ -35,9 +35,9 @@ angular.module('jhipsterApp')
     			return p.promise;
    			},
    			
-   			insert: function (reportId) {
+   			insert: function (user) {
    				var p=$q.defer();
-    			gapi.client.reportendpoint.insertReport(reportId).execute(function(resp) {
+    			gapi.client.userendpoint.insertUser(user).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);
     				} else {
@@ -47,9 +47,9 @@ angular.module('jhipsterApp')
     			return p.promise;
    			},
    			
-   			update: function (reportId) {
+   			update: function (user) {
    				var p=$q.defer();
-    			gapi.client.reportendpoint.updateReport(reportId).execute(function(resp) {
+    			gapi.client.userendpoint.updateUser(user).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);
     				} else {
@@ -63,7 +63,7 @@ angular.module('jhipsterApp')
    				var p=$q.defer();
    				var requestData = {};
    				requestData.id = id;
-    			gapi.client.reportendpoint.removeReport(requestData).execute(function(resp) {
+    			gapi.client.userendpoint.removeUser(requestData).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);
     				} else {
@@ -77,7 +77,7 @@ angular.module('jhipsterApp')
    				var p=$q.defer();
    				var requestData = {};
    				requestData.id = id;
-    			gapi.client.reportendpoint.getReport(requestData).execute(function(resp) {
+    			gapi.client.userendpoint.getUser(requestData).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);
     				} else {
@@ -86,5 +86,5 @@ angular.module('jhipsterApp')
     			});
     			return p.promise;
    			}
-    	};
+	   };
     });

@@ -2,7 +2,7 @@
 <div>
     <h2><span translate="proconcoappApp.report.detail.title">Report</span> {{report.id}}</h2>
     <button type="submit"
-            ui-sref="reportEdit({id:reportId.id})"
+            ui-sref="reportEdit({id:report.id})"
             class="btn btn-primary btn-sm">
         <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
     </button>
@@ -132,7 +132,7 @@
     </div>
 
     <button type="submit"
-            ui-sref="report"
+            ui-sref="reportId"
             class="btn btn-info">
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
     </button>

@@ -33,6 +33,11 @@
                         <h4 class="modal-title" id="myPlanningWeekIdLabel" translate="proconcoappApp.planningWeekId.home.createOrEditLabel">Create or edit a PlanningWeekId</h4>
                     </div>
                     <div class="modal-body">
+                    	<div class="form-group">
+							<div class="alert alert-danger" ng-show="invalidName" translate="proconcoappApp.planningWeekId.error.message.invalidName">
+						        Invalid name!
+						    </div>
+					    </div>
                         <div class="form-group">
                             <label>ID</label>
                             <input type="text" class="form-control" name="id"
@@ -88,11 +93,11 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label translate="proconcoappApp.planningWeekId.user">user</label>
-                            <select class="form-control" name="user" ng-model="planningWeekId.userId" ng-options="user.id as user.id for user in users">
-                            </select>
-                        </div>
+<!--                         <div class="form-group"> -->
+<!--                             <label translate="proconcoappApp.planningWeekId.user">user</label> -->
+<!--                             <select class="form-control" name="user" ng-model="planningWeekId.userId" ng-options="user.id as user.id for user in users"> -->
+<!--                             </select> -->
+<!--                         </div> -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

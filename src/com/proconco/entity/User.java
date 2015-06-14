@@ -18,7 +18,6 @@ import com.proconco.dao.GroupDao;
 import com.proconco.dao.PositionDao;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserProfile.
  */
@@ -44,6 +43,7 @@ public class User {
     private String lastName;
 
     /** The email. */
+    @Index
     private String email;
 
     /** The activated. */

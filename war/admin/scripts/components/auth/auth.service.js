@@ -55,28 +55,41 @@ angular.module('jhipsterApp')
                         }
                     });
             },
-            createAccount: function (account, callback) {
-                var cb = callback || angular.noop;
-
-//                return Register.save(account,
-//                    function () {
-//                        return cb(account);
-//                    },
-//                    function (err) {
-//                        this.logout();
-//                        return cb(err);
-//                    }.bind(this)).$promise;
-                	Register.save(account).then(function(){
-                		return cb(account);
-    				},
-    				function(err){
-    					console.log(ErrorCode.ERROR_INIT_ENDPOINT_SERVICE);
-    					this.logout();
-                      return cb(err);
-    				}.bind(this)).$promise;
-                
+//            createAccount: function (account, callback) {
+//                var cb = callback || angular.noop;
+//
+////                return Register.save(account,
+////                    function () {
+////                        return cb(account);
+////                    },
+////                    function (err) {
+////                        this.logout();
+////                        return cb(err);
+////                    }.bind(this)).$promise;
+//                	Register.save(account).then(function(){
+//                		return cb(account);
+//    				},
+//    				function(err){
+//    					console.log(ErrorCode.ERROR_INIT_ENDPOINT_SERVICE);
+//    					this.logout();
+//                      return cb(err);
+//    				}.bind(this)).$promise;
+//                
+//            },
+            createAccount: function (account) {
+            	var p=$q.defer();
+            	Register.save(account).then(function(data){
+            		p.resolve(data);
+				},
+				function(error){
+					console.log(ErrorCode.ERROR_CALL_ENDPOINT_SERVICE + error);
+					this.logout();
+					p.resolve(error);
+				});
+				
+				return p.promise;
             },
-
+            
             updateAccount: function (account, callback) {
                 var cb = callback || angular.noop;
 

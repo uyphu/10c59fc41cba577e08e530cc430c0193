@@ -26,7 +26,16 @@
             "crtTms": "CrtTmsfr",
             "updUid": "UpdUidfr",
             "updTms": "UpdTmsfr",
-            "reportId": "reportIdfr"
+            "reportId": "reportIdfr",
+            "message": {
+            	"success":"Successfuly updated!fr"
+            },
+            "error":{
+           		"message":{
+           			"querySearch":"Invalid query search!fr",
+           			"update":"Update error!fr"
+           		}
+           }
         }
     }
 }

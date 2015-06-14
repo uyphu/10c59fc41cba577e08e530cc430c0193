@@ -18,6 +18,14 @@
             <div class="alert alert-danger" ng-show="errorEmailExists" translate="register.messages.error.emailexists">
                 <strong>E-mail is already in use!</strong> Please choose another one.
             </div>
+            
+            <div class="alert alert-danger" ng-show="errorUserAndEmailExists" translate="register.messages.error.userandemailexists">
+                <strong>User and E-mail is already in use!</strong> Please choose another one.
+            </div>
+            
+            <div class="alert alert-danger" ng-show="errorAccountExists" translate="register.messages.error.accountexists">
+                <strong>Account already exist!</strong> Please choose another one.
+            </div>
 
             <div class="alert alert-danger" ng-show="doNotMatch" translate="global.messages.error.dontmatch">
                 The password and its confirmation do not match!

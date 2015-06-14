@@ -24,7 +24,16 @@
             "crtTms": "CrtTms",
             "updUid": "UpdUid",
             "updTms": "UpdTms",
-            "planningWeekId": "planningWeekId"
+            "planningWeekId": "planningWeekId",
+            "message": {
+            	"success":"Successfuly updated!fr"
+            },
+            "error":{
+           		"message":{
+           			"querySearch":"Invalid query search!fr",
+           			"update":"Update error!fr"
+           		}
+           }
         }
     }
 }

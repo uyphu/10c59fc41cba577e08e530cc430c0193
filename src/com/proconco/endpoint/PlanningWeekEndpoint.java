@@ -12,7 +12,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.proconco.dao.PlanningWeekDao;
 import com.proconco.entity.PlanningWeek;
 
-@Api(name = "planningweekpoint", namespace = @ApiNamespace(ownerDomain = "proconco.com", ownerName = "proconco.com", packagePath = "entity"))
+@Api(name = "planningweekendpoint", namespace = @ApiNamespace(ownerDomain = "proconco.com", ownerName = "proconco.com", packagePath = "entity"))
 public class PlanningWeekEndpoint {
 
 	/**
