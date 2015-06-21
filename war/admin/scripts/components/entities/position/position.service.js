@@ -20,11 +20,11 @@ angular.module('jhipsterApp')
 				return chain;
    			},
    			
-   			loadAll: function (cursor){
+   			loadAll: function (cursor, count){
     			var p=$q.defer();
     			var requestData = {};
     			requestData.cursor = cursor;
-    			requestData.count = AppConstant.MAX_PAGE_SIZE;
+    			requestData.count = count;
     			gapi.client.positionendpoint.listPosition(requestData).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);

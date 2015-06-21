@@ -64,7 +64,7 @@ angular.module('jhipsterApp')
 
         $scope.save = function () {
             if ($scope.group.id != null) {
-            	group.updUid = AppConstant.ACCOUNT.login;
+            	$scope.group.updUid = AppConstant.ACCOUNT.login;
                 Group.update($scope.group).then(function (data){
                 	if (data.error != null) {
              		   showError(data.code);
@@ -73,8 +73,8 @@ angular.module('jhipsterApp')
              	   }
                 });
             } else {
-            	group.crtUid = AppConstant.ACCOUNT.login;
-    			group.updUid = AppConstant.ACCOUNT.login;
+            	$scope.group.crtUid = AppConstant.ACCOUNT.login;
+            	$scope.group.updUid = AppConstant.ACCOUNT.login;
          	   	Group.insert($scope.group).then(function (data){
          		  if (data.error != null) {
 	           		   showError(data.code);
@@ -102,6 +102,9 @@ angular.module('jhipsterApp')
 
         $scope.search = function () {
      	   $scope.invalidQuerySearch = null;
+     	   if ($scope.cursor == null) {
+    		   $scope.groups = [];
+    	   }
      	   if ($scope.searchQuery != null && $scope.searchQuery != '') {
      		  if ($scope.searchQuery.indexOf('id:') != -1) {
     			   var query = $scope.searchQuery.split(':', 2);

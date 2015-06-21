@@ -3,27 +3,52 @@
 angular.module('jhipsterApp')
     .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
         return {
-            login: function (credentials, callback) {
-                var cb = callback || angular.noop;
+//            login: function (credentials, callback) {
+//                var cb = callback || angular.noop;
+//                var deferred = $q.defer();
+//
+//                AuthServerProvider.login(credentials).then(function (data) {
+//                    // retrieve the logged account information
+//                	AppConstant.ACCOUNT = data;
+//                    Principal.identity(true).then(function(account) {
+//                        // After the login the language will be changed to
+//                        // the language selected by the user during his registration
+//                        $translate.use(account.langKey);
+//                        $translate.refresh();
+//                        deferred.resolve(data);
+//                    });
+//                	deferred.resolve(data);
+//                    return cb();
+//                }).catch(function (err) {
+//                    this.logout();
+//                    deferred.reject(err);
+//                    return cb(err);
+//                }.bind(this));
+//
+//                return deferred.promise;
+//            },
+        	
+        	login: function (credentials, callback) {
+                //var cb = callback || angular.noop;
                 var deferred = $q.defer();
 
                 AuthServerProvider.login(credentials).then(function (data) {
                     // retrieve the logged account information
-                	AppConstant.ACCOUNT = data;
-                    Principal.identity(true).then(function(account) {
-                        // After the login the language will be changed to
-                        // the language selected by the user during his registration
-                        $translate.use(account.langKey);
-                        $translate.refresh();
-                        deferred.resolve(data);
-                    });
-                	deferred.resolve(data);
-                    return cb();
-                }).catch(function (err) {
-                    this.logout();
-                    deferred.reject(err);
-                    return cb(err);
-                }.bind(this));
+                	if (data.error == null) {
+                		AppConstant.ACCOUNT = data;
+                        Principal.identity(true).then(function(account) {
+                            // After the login the language will be changed to
+                            // the language selected by the user during his registration
+                            $translate.use(account.langKey);
+                            $translate.refresh();
+                            deferred.resolve(data);
+                        });
+                    	//deferred.resolve(data);
+					} else {
+						deferred.resolve(data);
+					}
+                	
+                });
 
                 return deferred.promise;
             },
@@ -122,14 +147,28 @@ angular.module('jhipsterApp')
                     }.bind(this)).$promise;
             },
 
-            changePassword: function (newPassword, callback) {
-                var cb = callback || angular.noop;
-
-                return Password.save(newPassword, function () {
-                    return cb();
-                }, function (err) {
-                    return cb(err);
-                }).$promise;
+//            changePassword: function (newPassword, callback) {
+//                var cb = callback || angular.noop;
+//
+//                return Password.save(newPassword, function () {
+//                    return cb();
+//                }, function (err) {
+//                    return cb(err);
+//                }).$promise;
+//            },
+            
+            changePassword: function (account) {
+            	var p=$q.defer();
+            	Password.save(account).then(function(data){
+            		p.resolve(data);
+				},
+				function(error){
+					console.log(ErrorCode.ERROR_CALL_ENDPOINT_SERVICE + error);
+					this.logout();
+					p.resolve(error);
+				});
+				
+				return p.promise;
             },
 
             resetPasswordInit: function (mail, callback) {

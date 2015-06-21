@@ -1,12 +1,21 @@
 'use strict';
 
 angular.module('jhipsterApp')
-    .controller('UserController', function ($scope, $rootScope, $timeout, usSpinnerService, User, UserSearch, ParseLinks) {
+    .controller('UserController', function ($scope, $rootScope, $timeout, $translate, usSpinnerService, User, UserSearch, ParseLinks) {
     	$scope.users = [];
         $scope.page = 1;
         $scope.cursor = null;
         $scope.invalidQuerySearch = null;
         $scope.spinneractive = false;
+        
+        $scope.success = null;
+        $scope.error = null;
+        $scope.doNotMatch = null;
+        $scope.errorUserExists = null;
+        $scope.errorUserAndEmailExists = null;
+        $scope.errorAccountExists = null;
+        $scope.registerAccount = {};
+        $timeout(function (){angular.element('[ng-model="user.login"]').focus();});
         //$scope.startcounter = 0;
         $scope.loadAll = function() {
      	   if (!AppConstant.USER_PROFILE_ENDPOINT_LOADED) {
@@ -63,26 +72,42 @@ angular.module('jhipsterApp')
         };
 
         $scope.save = function () {
-            if ($scope.user.id != null) {
-            	user.updUid = AppConstant.ACCOUNT.login;
-                User.update($scope.user).then(function (data){
-                	if (data.error != null) {
-             		   showError(data.code);
-             	   } else {
-             		   $scope.refresh();
-             	   }
-                });
+        	
+        	if ($scope.user.password !== $scope.confirmPassword) {
+                $scope.doNotMatch = 'ERROR';
             } else {
-            	user.crtUid = AppConstant.ACCOUNT.login;
-    			user.updUid = AppConstant.ACCOUNT.login;
-         	   	User.insert($scope.user).then(function (data){
-         		  if (data.error != null) {
-	           		   showError(data.code);
-	           	   } else {
-	           		   $scope.refresh();
-	           	   }
-                });
+                $scope.user.langKey = $translate.use();
+                $scope.doNotMatch = null;
+                $scope.error = null;
+                $scope.errorUserExists = null;
+                $scope.errorEmailExists = null;
+                $scope.errorUserAndEmailExists = null;
+                $scope.errorAccountExists = null;
+                
+                if ($scope.user.id != null) {
+                    User.update($scope.user).then(function (data){
+                    	if (data.error != null) {
+                    		$scope.success = null;
+                    		showError(data.message);
+                 	   } else {
+                 		   $scope.success = 'OK';
+                 		   $scope.refresh();
+                 	   }
+                    });
+                } else {
+             	   	User.insert($scope.user).then(function (data){
+             		  if (data.error != null) {
+             			  $scope.success = null;
+             			  showError(data.message);
+    	           	   } else {
+    	           		   $scope.success = 'OK';
+    	           		   $scope.refresh();
+    	           	   }
+                    });
+                }
             }
+        	
+            
         };
 
         $scope.delete = function (id) {
@@ -102,6 +127,10 @@ angular.module('jhipsterApp')
 
         $scope.search = function () {
      	   $scope.invalidQuerySearch = null;
+     	   if ($scope.cursor == null) {
+     		   $scope.users = [];
+     	   }
+     	   
      	   if ($scope.searchQuery != null && $scope.searchQuery != '') {
      		  if ($scope.searchQuery.indexOf('id:') != -1) {
     			   var query = $scope.searchQuery.split(':', 2);
@@ -194,10 +223,24 @@ angular.module('jhipsterApp')
             //}, 6000);
         };
         
-        function showError(errorCode) {
- 		   if (errorCode == 409) {
- 			   $scope.invalidName = 'ERROR';
- 		   }
+        function showError(errorMsg) {
+        	if (errorMsg != null) {
+				if (errorMsg.indexOf('[602]') != -1) {
+					//account already exists
+					$scope.errorAccountExists = 'ERROR';
+				} else if (errorMsg.indexOf('[610]') != -1) {
+					//user and email already exists
+					$scope.errorUserAndEmailExists = 'ERROR';
+				} else if (errorMsg.indexOf('[608]') != -1) {
+					//login already in use
+					$scope.errorUserExists = 'ERROR';
+				} else if (errorMsg.indexOf('[609]') != -1) {
+					//e-mail address already in use
+					$scope.errorEmailExists = 'ERROR';
+				} else {
+					$scope.error = 'ERROR';
+				}
+			}
         };
         
         $scope.loadAll();

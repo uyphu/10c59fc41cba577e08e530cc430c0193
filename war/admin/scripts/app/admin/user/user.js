@@ -42,5 +42,25 @@ angular.module('jhipsterApp')
                         return $translate.refresh();
                     }]
                 }
+            })
+            .state('userEdit', {
+                parent: 'entity',
+                url: '/user/:id',
+                data: {
+                    roles: ['ROLE_USER'],
+                    pageTitle: 'proconcoappApp.user.detail.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/admin/user/user-edit.html',
+                        controller: 'UserEditController'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('user');
+                        return $translate.refresh();
+                    }]
+                }
             });
     });

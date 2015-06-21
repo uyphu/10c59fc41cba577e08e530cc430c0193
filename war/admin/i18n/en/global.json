@@ -10,6 +10,8 @@
                	"position": "Position",
                	"reportId": "ReportId",
                	"planningWeekId": "PlanningWeekId",
+               	"report": "Report",
+               	"planningWeek": "PlanningWeek",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

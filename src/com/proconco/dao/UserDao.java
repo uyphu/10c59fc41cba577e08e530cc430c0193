@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.api.server.spi.config.ApiMethod;
-import com.google.api.server.spi.response.NotFoundException;
+import com.google.api.server.spi.response.CollectionResponse;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
+import com.proconco.constants.AuthoritiesConstants;
+import com.proconco.constants.Constants;
 import com.proconco.entity.Authority;
 import com.proconco.entity.Group;
 import com.proconco.entity.Position;
@@ -17,6 +19,7 @@ import com.proconco.entity.User;
 import com.proconco.exception.ErrorCode;
 import com.proconco.exception.ErrorCodeDetail;
 import com.proconco.exception.ProconcoException;
+import com.proconco.utils.MathUtils;
 
 /**
  * The Class UserProfileDao.
@@ -51,29 +54,43 @@ public class UserDao extends AbstractDao<User> {
 		if (user.getPositionId() != null) {
 			oldUser.setPositionKey(Key.create(Position.class, user.getPositionId()));
 		}
+		if (user.isActivated() != oldUser.isActivated()) {
+			oldUser.setActivated(user.isActivated());
+		}
 		return super.update(oldUser);
 	}
 
 	/**
 	 * Login.
-	 * 
-	 * @param email
-	 *            the email
-	 * @param pwd
-	 *            the pwd
+	 *
+	 * @param login the login
+	 * @param password the password
 	 * @return the user profile
+	 * @throws ProconcoException the proconco exception
 	 */
 	@ApiMethod(name = "login")
-	public User login(String login, String password) {
+	public User login(String login, String password) throws ProconcoException {
 		Map<String, Object> columns = new HashMap<String, Object>();
 		columns.put("login", login);
-		columns.put("password", password);
+		//columns.put("password", MathUtils.cryptWithMD5(password));
 		Query<User> query = getQuery(columns);
 		List<User> list = executeQuery(query, 1);
 		if (list != null && list.size() > 0) {
-			return list.get(0);
+			User user = list.get(0);
+			if (!user.isActivated()) {
+				throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_NOT_ACTIVATED.getMsg());
+			}
+			if (!user.getPassword().equals(MathUtils.cryptWithMD5(password))) {
+				throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_INVALID_PASSWORD.getMsg());
+			} else {
+				return list.get(0);
+			}
+		} else {
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
 		}
-		return null;
 	}
 
 	/**
@@ -121,7 +138,7 @@ public class UserDao extends AbstractDao<User> {
 	 *            the role
 	 */
 	@ApiMethod(name = "addRole")
-	public void addRole(String login, String role) throws NotFoundException {
+	public void addRole(String login, String role) throws ProconcoException {
 		User user = getUserByLogin(login);
 		AuthorityDao authorityDao = new AuthorityDao();
 		Authority authority = authorityDao.getAuthorityByName(role);
@@ -136,10 +153,12 @@ public class UserDao extends AbstractDao<User> {
 				user.setAuthorityKeys(list);
 				persist(user);
 			} else {
-				throw new NotFoundException("Duplicated role.");
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_DUPLICATED_ROLE.getMsg());
 			}
 		} else {
-			throw new NotFoundException("Not found record to add role.");
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_NOT_FOUND_ROLE.getMsg());
 		}
 	}
 
@@ -158,19 +177,7 @@ public class UserDao extends AbstractDao<User> {
 						+ String.valueOf(i), "email" + String.valueOf(i) + "@gmail.com", "EN");
 			}
 
-			// Key<Group> groupKey = Key.create(Group.class, user.getGroupId());
-			// if (groupKey != null) {
-			// user.setGroupKey(groupKey);
-			// }
-			//
-			// Key<Position> posKey = Key.create(Position.class,
-			// user.getPositionId());
-			// if (posKey != null) {
-			// user.setPositionKey(posKey);
-			// }
-
 			user.setCreateDate(Calendar.getInstance().getTime());
-
 			persist(user);
 		}
 
@@ -187,13 +194,15 @@ public class UserDao extends AbstractDao<User> {
 
 	/**
 	 * Insert.
-	 *
-	 * @param user the user
+	 * 
+	 * @param user
+	 *            the user
 	 * @return the user
-	 * @throws ProconcoException the proconco exception
+	 * @throws ProconcoException
+	 *             the proconco exception
 	 */
 	public User insert(User user) throws ProconcoException {
-		
+
 		// If if is not null, then check if it exists. If yes, throw an
 		// Exception
 		// that it is already present
@@ -217,21 +226,100 @@ public class UserDao extends AbstractDao<User> {
 			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
 					ErrorCodeDetail.ERROR_CONFLICT_LOGIN_AND_EMAIL.getMsg());
 		}
-		
+
 		if (loginUser != null) {
 			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
 					ErrorCodeDetail.ERROR_CONFLICT_LOGIN.getMsg());
 		}
-		
+
 		if (emailUser != null) {
 			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
 					ErrorCodeDetail.ERROR_CONFLICT_EMAIL.getMsg());
 		}
-		
-		//Persist data.
+
+		// Persist data.
 		user.setCreateDate(Calendar.getInstance().getTime());
+		user.setPassword(MathUtils.cryptWithMD5(user.getPassword()));
 		user = persist(user);
-		
+		if (user.getId() != null) {
+			addRole(user.getLogin(), AuthoritiesConstants.USER);
+		}
+
 		return user;
 	}
+
+	/**
+	 * Gets the query.
+	 * 
+	 * @param querySearch
+	 *            the query search
+	 * @return the query
+	 * @throws ProconcoException
+	 *             the proconco exception
+	 */
+	public Query<User> getQuery(String querySearch) throws ProconcoException {
+		try {
+			if (querySearch != null) {
+				Query<User> query;
+				Map<String, Object> map = new HashMap<String, Object>();
+				if (querySearch.indexOf("delFlag:") != -1) {
+					String[] queries = querySearch.split(":");
+					map.put("delFlag", Long.parseLong(queries[1]));
+					query = getQuery(map);
+				} else if (querySearch.indexOf("email:") != -1) {
+					query = getQueryByName("email", querySearch);
+				} else {
+					query = getQueryByName("login", querySearch);
+				}
+				return query;
+			} else {
+				return ofy().load().type(User.class);
+			}
+		} catch (Exception e) {
+			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION.getId(), ErrorCodeDetail.ERROR_PARSE_QUERY
+					+ Constants.STRING_EXEPTION_DETAIL + e.getMessage());
+		}
+	}
+
+	/**
+	 * Search user.
+	 * 
+	 * @param querySearch
+	 *            the query search
+	 * @param cursorString
+	 *            the cursor string
+	 * @param count
+	 *            the count
+	 * @return the collection response
+	 * @throws ProconcoException
+	 *             the proconco exception
+	 */
+	public CollectionResponse<User> searchUser(String querySearch, String cursorString, Integer count)
+			throws ProconcoException {
+		Query<User> query = getQuery(querySearch);
+		return executeQuery(query, cursorString, count);
+	}
+
+	/**
+	 * Change password.
+	 *
+	 * @param user            the user
+	 * @return the user
+	 * @throws ProconcoException the proconco exception
+	 */
+	public User changePassword(User user) throws ProconcoException {
+		try {
+			User oldUser = find(user.getId());
+			if (oldUser == null) {
+				throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
+			}
+			oldUser.setPassword(MathUtils.cryptWithMD5(user.getPassword()));
+			return super.update(oldUser);
+		} catch (Exception e) {
+			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION.getId(), ErrorCodeDetail.ERROR_PARSE_QUERY
+					+ Constants.STRING_EXEPTION_DETAIL + e.getMessage());
+		}
+	}
+
 }

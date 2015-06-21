@@ -8,6 +8,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.IgnoreSave;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.OnLoad;
 import com.proconco.dao.UserDao;
@@ -41,6 +42,7 @@ public class ReportId {
 	private User user;
 	
 	/** The crt tms. */
+	@Index
 	private Date crtTms;
 	/**
 	 * Instantiates a new report id.

@@ -172,4 +172,9 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 		delete(reportId);
 	}
 	
+	@Override
+	public CollectionResponse<ReportId> list(String cursorString, Integer count) {
+		Query<ReportId> query = ofy().load().type(ReportId.class).order("-crtTms");
+		return executeQuery(query, cursorString, count);
+	}
 }

@@ -14,19 +14,22 @@ angular.module('jhipsterApp')
     		   Position.init().then(function(){
 					if (AppConstant.POSITION_ENDPOINT_LOADED) {
 						console.log("positionendpoint loaded...")
-						listData(null);
+						//listData(null);
+						listData($scope.cursor, AppConstant.MAX_PAGE_SIZE)
 					}
 				},
 				function(){
 					console.log(ErrorCode.ERROR_INIT_ENDPOINT_SERVICE);
 				});
     	   } else {
-    		   listData(null);
+    		   //listData(null);
+    		   listData($scope.cursor, AppConstant.MAX_PAGE_SIZE)
     	   }
     	   
        };
        $scope.reset = function() {
            $scope.page = 1;
+           $scope.cursor = null;
            $scope.positions = [];
            $scope.loadAll();
        };
@@ -36,7 +39,8 @@ angular.module('jhipsterApp')
         	   $scope.search();
            } else {
         	   if ($scope.cursor != null) {
-            	   listData($scope.cursor);
+            	   //listData($scope.cursor);
+        		   listData($scope.cursor, AppConstant.MAX_PAGE_SIZE);
                }
            }
        };
@@ -48,9 +52,9 @@ angular.module('jhipsterApp')
            });
        };
        
-       function listData(cursor) {
+       function listData(cursor, count) {
     	   $scope.startSpin();
-    	   Position.loadAll(cursor).then(function(data) {
+    	   Position.loadAll(cursor, count).then(function(data) {
     		   $scope.stopSpin();
     		   if (data != null) {
     			   if (data.items != null) {
@@ -103,6 +107,9 @@ angular.module('jhipsterApp')
 
        $scope.search = function () {
     	   $scope.invalidQuerySearch = null;
+    	   if ($scope.cursor == null) {
+     		   $scope.positions = [];
+     	   }
     	   if ($scope.searchQuery != null && $scope.searchQuery != '') {
     		   if ($scope.searchQuery.indexOf('id:') != -1) {
     			   var query = $scope.searchQuery.split(':', 2);
@@ -146,7 +153,7 @@ angular.module('jhipsterApp')
     	       		});
     		   }
     	   } else {
-    		   listData(null)
+    		   listData($scope.cursor, AppConstant.MAX_PAGE_SIZE);
     	   }
        };
 

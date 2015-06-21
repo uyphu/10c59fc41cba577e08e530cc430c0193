@@ -1,10 +1,20 @@
 <div>
     <div class="row">
+    	<!-- spinner -->
+		<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
+		<!-- end spinner -->
+		
         <div class="col-md-4 col-md-offset-4">
             <h1 translate="login.title">Authentication</h1>
 
             <div class="alert alert-danger" ng-show="authenticationError" translate="login.messages.error.authentication">
                 <strong>Authentication failed!</strong> Please check your credentials and try again.
+            </div>
+            <div class="alert alert-danger" ng-show="activatedError" translate="login.messages.error.activated">
+                <strong>User not activated!</strong> Please contact admin and try again.
+            </div>
+            <div class="alert alert-danger" ng-show="passwordError" translate="login.messages.error.password.invalid">
+                <strong>Password invalid!</strong> Please check your credentials and try again.
             </div>
             <form class="form" role="form" ng-submit="login($event)">
                 <div class="form-group">

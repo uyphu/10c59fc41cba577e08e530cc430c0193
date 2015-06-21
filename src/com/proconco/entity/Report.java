@@ -5,6 +5,7 @@ import java.util.Date;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class Report.
  */
@@ -20,6 +21,12 @@ public class Report {
 	
 	/** The market rpt. */
 	private String marketRpt;
+	
+	/** The competitors. */
+	private String competitors;
+	
+	/** The disease. */
+	private String disease;
 	
 	/** The monday. */
 	private String monday;
@@ -67,46 +74,11 @@ public class Report {
 	/**
 	 * Instantiates a new report.
 	 *
-	 * @param amt the amt
-	 * @param marketRpt the market rpt
-	 * @param monday the monday
-	 * @param tuesday the tuesday
-	 * @param wednesday the wednesday
-	 * @param thursday the thursday
-	 * @param friday the friday
-	 * @param saturday the saturday
-	 * @param sunday the sunday
-	 * @param delFlag the del flag
-	 * @param crtUid the crt uid
-	 * @param crtTms the crt tms
-	 * @param updUid the upd uid
-	 * @param updTms the upd tms
-	 */
-	public Report(Double amt, String marketRpt, String monday, String tuesday, String wednesday,
-			String thursday, String friday, String saturday, String sunday, String delFlag, String crtUid, Date crtTms,
-			String updUid, Date updTms) {
-		this.amt = amt;
-		this.marketRpt = marketRpt;
-		this.monday = monday;
-		this.tuesday = tuesday;
-		this.wednesday = wednesday;
-		this.thursday = thursday;
-		this.friday = friday;
-		this.saturday = saturday;
-		this.sunday = sunday;
-		this.delFlag = delFlag;
-		this.crtUid = crtUid;
-		this.crtTms = crtTms;
-		this.updUid = updUid;
-		this.updTms = updTms;
-	}
-	
-	/**
-	 * Instantiates a new report.
-	 *
 	 * @param id the id
 	 * @param amt the amt
 	 * @param marketRpt the market rpt
+	 * @param competitors the competitors
+	 * @param disease the disease
 	 * @param monday the monday
 	 * @param tuesday the tuesday
 	 * @param wednesday the wednesday
@@ -120,12 +92,14 @@ public class Report {
 	 * @param updUid the upd uid
 	 * @param updTms the upd tms
 	 */
-	public Report(Long id, Double amt, String marketRpt, String monday, String tuesday, String wednesday,
-			String thursday, String friday, String saturday, String sunday, String delFlag, String crtUid, Date crtTms,
-			String updUid, Date updTms) {
+	public Report(Long id, Double amt, String marketRpt, String competitors, String disease, String monday,
+			String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday,
+			String delFlag, String crtUid, Date crtTms, String updUid, Date updTms) {
 		this.id = id;
 		this.amt = amt;
 		this.marketRpt = marketRpt;
+		this.competitors = competitors;
+		this.disease = disease;
 		this.monday = monday;
 		this.tuesday = tuesday;
 		this.wednesday = wednesday;
@@ -139,7 +113,48 @@ public class Report {
 		this.updUid = updUid;
 		this.updTms = updTms;
 	}
-	
+
+	/**
+	 * Instantiates a new report.
+	 *
+	 * @param amt the amt
+	 * @param marketRpt the market rpt
+	 * @param competitors the competitors
+	 * @param disease the disease
+	 * @param monday the monday
+	 * @param tuesday the tuesday
+	 * @param wednesday the wednesday
+	 * @param thursday the thursday
+	 * @param friday the friday
+	 * @param saturday the saturday
+	 * @param sunday the sunday
+	 * @param delFlag the del flag
+	 * @param crtUid the crt uid
+	 * @param crtTms the crt tms
+	 * @param updUid the upd uid
+	 * @param updTms the upd tms
+	 */
+	public Report(Double amt, String marketRpt, String competitors, String disease, String monday,
+			String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday,
+			String delFlag, String crtUid, Date crtTms, String updUid, Date updTms) {
+		this.amt = amt;
+		this.marketRpt = marketRpt;
+		this.competitors = competitors;
+		this.disease = disease;
+		this.monday = monday;
+		this.tuesday = tuesday;
+		this.wednesday = wednesday;
+		this.thursday = thursday;
+		this.friday = friday;
+		this.saturday = saturday;
+		this.sunday = sunday;
+		this.delFlag = delFlag;
+		this.crtUid = crtUid;
+		this.crtTms = crtTms;
+		this.updUid = updUid;
+		this.updTms = updTms;
+	}
+
 	/**
 	 * Gets the id.
 	 *
@@ -408,6 +423,42 @@ public class Report {
 	 */
 	public final void setUpdTms(Date updTms) {
 		this.updTms = updTms;
+	}
+
+	/**
+	 * Gets the competitors.
+	 *
+	 * @return the competitors
+	 */
+	public final String getCompetitors() {
+		return this.competitors;
+	}
+
+	/**
+	 * Sets the competitors.
+	 *
+	 * @param competitors the new competitors
+	 */
+	public final void setCompetitors(String competitors) {
+		this.competitors = competitors;
+	}
+
+	/**
+	 * Gets the disease.
+	 *
+	 * @return the disease
+	 */
+	public final String getDisease() {
+		return this.disease;
+	}
+
+	/**
+	 * Sets the disease.
+	 *
+	 * @param disease the new disease
+	 */
+	public final void setDisease(String disease) {
+		this.disease = disease;
 	}
 	
 }

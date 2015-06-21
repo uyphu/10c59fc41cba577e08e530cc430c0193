@@ -14,12 +14,15 @@ angular.module('jhipsterApp')
                 $scope.doNotMatch = 'ERROR';
             } else {
                 $scope.doNotMatch = null;
-                Auth.changePassword($scope.password).then(function () {
-                    $scope.error = null;
-                    $scope.success = 'OK';
-                }).catch(function () {
-                    $scope.success = null;
-                    $scope.error = 'ERROR';
+                $scope.account.password = $scope.password;
+                Auth.changePassword($scope.account).then(function (data) {
+                	if (data.error != null) {
+                		$scope.success = null;
+                		$scope.error = 'ERROR';
+					} else {
+						$scope.error = null;
+						$scope.success = 'OK';
+					}
                 });
             }
         };

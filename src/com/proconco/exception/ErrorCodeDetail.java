@@ -37,7 +37,19 @@ public enum ErrorCodeDetail {
 	ERROR_CONFLICT_EMAIL(609, "[609] Email already exists"),
 	
 	/** The error conflict login and email. */
-	ERROR_CONFLICT_LOGIN_AND_EMAIL(610, "[610] Login and Email already exists");
+	ERROR_CONFLICT_LOGIN_AND_EMAIL(610, "[610] Login and Email already exists"),
+	
+	/** The error duplicated role. */
+	ERROR_DUPLICATED_ROLE(611, "[611] Duplicated role"),
+	
+	/** The error not found role. */
+	ERROR_NOT_FOUND_ROLE(612, "[612] Role not found"),
+	
+	/** The error not activated. */
+	ERROR_NOT_ACTIVATED(613, "[613] User not activated"),
+	
+	/** The error invalid password. */
+	ERROR_INVALID_PASSWORD(614, "[614] Invalid password");
 
 	/** The id. */
 	private final int id;

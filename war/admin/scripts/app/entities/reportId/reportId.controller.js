@@ -68,15 +68,15 @@ angular.module('jhipsterApp')
             if ($scope.reportId.id != null) {
                 ReportId.update($scope.reportId).then(function (data){
                 	if (data.error != null) {
-             		   showError(data.code);
+                		showError(data.message);
              	   	} else {
-             		   $scope.refresh();
+             	   		$scope.refresh();
              	   	}
                 });
             } else {
          	   ReportId.insert($scope.reportId).then(function (data){
          		   if (data.error != null) {
-	           		   showError(data.code);
+         			  showError(data.message);
 	           	   } else {
 	           		   $scope.refresh();
 	           	   }
@@ -185,18 +185,22 @@ angular.module('jhipsterApp')
  		   $scope.spinneractive = false;
  	   });
  	   
+ 	   function showError(errorMsg) {
+ 		   if (errorMsg.indexOf('[602]') != -1) {
+ 			   $scope.invalidName = 'ERROR';
+ 		   } else if (errorMsg.indexOf('[606]') != -1) {
+ 			   $scope.insertError = 'ERROR';
+ 		   } else {
+ 			  $scope.insertError = true;
+ 		   }
+	   };
+ 	   
  	   function startTimer() {
             //var timer = $timeout(function () {
          	   $scope.stopSpin();
             //}, 6000);
         }
  	   
- 	   function showError(errorCode) {
-		   if (errorCode == 409) {
-			   $scope.invalidName = 'ERROR';
-		   }
- 	   };
-        
         $scope.loadAll();
 
     });

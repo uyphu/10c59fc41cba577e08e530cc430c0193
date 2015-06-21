@@ -1,10 +1,22 @@
 <div>
     <h2><span translate="proconcoappApp.reportId.detail.title">ReportId</span> {{reportId.id}}</h2>
-    <button type="submit"
-            ui-sref="reportDetail({id:reportId.id})"
-            class="btn btn-info btn-sm">
-        <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.detail"> Detail</span>
-    </button>
+    
+    <div class="row">
+            <div class="col-md-4">
+                <button type="submit"
+			            ui-sref="reportDetail({id:reportId.id})"
+			            class="btn btn-info btn-sm">
+			        <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.detail"> Detail</span>
+			    </button>
+            </div>
+            <div class="col-md-8">
+                <button type="submit"
+			            ui-sref="planningWeekId"
+			            class="btn btn-info btn-sm">
+			        <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="global.menu.entities.planningWeek"> Plan</span>
+			    </button>
+            </div>
+        </div>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>

@@ -43,7 +43,7 @@
                     </div>
                     <div class="form-group">
                         <label translate="proconcoappApp.report.marketRpt">MarketRpt</label>
-                        <input type="text" class="form-control" name="marketRpt"
+                        <input type="textarea" class="form-control" name="marketRpt"
                                ng-model="report.marketRpt" required>
 
                         <div ng-show="editForm.marketRpt.$invalid">
@@ -52,6 +52,16 @@
                                 This field is required.
                             </p>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.competitors">Competitors</label>
+                        <input type="textarea" class="form-control" name="competitors"
+                               ng-model="report.competitors" required>
+                    </div>
+                    <div class="form-group">
+                        <label translate="proconcoappApp.report.disease">Disease</label>
+                        <input type="textarea" class="form-control" name="disease"
+                               ng-model="report.disease" required>
                     </div>
                     <div class="form-group">
                         <label translate="proconcoappApp.report.monday">Monday</label>

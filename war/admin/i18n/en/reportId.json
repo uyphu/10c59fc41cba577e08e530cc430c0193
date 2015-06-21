@@ -20,7 +20,8 @@
             "error":{
            		"message":{
            			"querySearch":"Invalid query search!",
-           			"invalidName":"Invalid name!"
+           			"invalidName":"Invalid name!",
+           			"insertError":"Insert Error!"
            		}
            }
         }

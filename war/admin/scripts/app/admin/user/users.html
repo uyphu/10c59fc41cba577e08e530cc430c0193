@@ -1,223 +1,250 @@
-<div>
-    <h2 translate="proconcoappApp.user.home.title">Users</h2>
+<h2 translate="proconcoappApp.user.home.title">Users</h2>
 
-    <div class="container">
-    	<!-- spinner -->
-		<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
-		<!-- end spinner -->
-		<div class="row">
-			<div class="col-md-8">
-				<div class="alert alert-danger" ng-show="invalidQuerySearch" translate="proconcoappApp.user.error.message.querySearch">
-			        Invalid query search!
-			    </div>
+<div class="container">
+	<!-- spinner -->
+	<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
+	<!-- end spinner -->
+	<div class="row">
+		<div class="col-md-8">
+			<div class="alert alert-danger" ng-show="invalidQuerySearch" translate="proconcoappApp.user.error.message.querySearch">
+		        Invalid query search!
 		    </div>
-		</div>
-        <div class="row">
-            <div class="col-md-4">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#saveUserModal" ng-click="clear()">
-                    <span class="glyphicon glyphicon-flash"></span> <span translate="proconcoappApp.user.home.createLabel">Create a new User</span>
+	    </div>
+	</div>
+    <div class="row">
+        <div class="col-md-4">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#saveUserModal" ng-click="clear()">
+                <span class="glyphicon glyphicon-flash"></span> <span translate="proconcoappApp.user.home.createLabel">Create a new User</span>
+            </button>
+        </div>
+        <div class="col-md-8">
+            <form name="searchForm" class="form-inline">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="searchQuery" ng-change="change()" id="searchQuery" placeholder="query">
+                </div>
+                <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a User</span>
                 </button>
-            </div>
-            <div class="col-md-8">
-                <form name="searchForm" class="form-inline">
-                    <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" ng-change="change()" id="searchQuery" placeholder="query">
-                    </div>
-                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a User</span>
-                    </button>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="saveUserModal" tabindex="-1" role="dialog" aria-labelledby="myUserLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+<div class="modal fade" id="saveUserModal" tabindex="-1" role="dialog" aria-labelledby="myUserLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                            ng-click="clear()">&times;</button>
+                    <h4 class="modal-title" id="myUserLabel" translate="proconcoappApp.user.home.createOrEditLabel">Create or edit a User</h4>
+                </div>
+                <div class="modal-body">
+				    <div class="form-group">
+				    	<div class="alert alert-success" ng-show="success" translate="proconcoappApp.user.messages.success">
+			                <strong>Registration saved!</strong> Please check your email for confirmation.
+			            </div>
+			        </div>      
+					<div class="form-group">
+			            <div class="alert alert-danger" ng-show="error" translate="proconcoappApp.user.messages.error.fail">
+			                <strong>Registration failed!</strong> Please check your input and try again.
+			            </div>
+			        </div>       
+					<div class="form-group">
+			            <div class="alert alert-danger" ng-show="errorUserExists" translate="proconcoappApp.user.messages.error.userexists">
+			                <strong>Login name already registered!</strong> Please choose another one.
+			            </div>
+			        </div>       
+					<div class="form-group">
+			            <div class="alert alert-danger" ng-show="errorEmailExists" translate="proconcoappApp.user.messages.error.emailexists">
+			                <strong>E-mail is already in use!</strong> Please choose another one.
+			            </div>
+			        </div>       
+		            <div class="form-group">
+			            <div class="alert alert-danger" ng-show="errorUserAndEmailExists" translate="proconcoappApp.user.messages.error.userandemailexists">
+			                <strong>User and E-mail is already in use!</strong> Please choose another one.
+			            </div>
+			        </div>       
+		            <div class="form-group">
+			            <div class="alert alert-danger" ng-show="errorAccountExists" translate="proconcoappApp.user.messages.error.accountexists">
+			                <strong>Account already exist!</strong> Please choose another one.
+			            </div>
+		            </div>   
+					<div class="form-group">
+			            <div class="alert alert-danger" ng-show="doNotMatch" translate="global.messages.error.dontmatch">
+			                The password and its confirmation do not match!
+			            </div>
+			        </div>    
+                       <div class="form-group">
+                           <label>ID</label>
+                           <input type="text" class="form-control" name="id"
+                                  ng-model="user.id" readonly>
+                       </div>
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                                ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myUserLabel" translate="proconcoappApp.user.home.createOrEditLabel">Create or edit a User</h4>
-                    </div>
-                    <div class="modal-body">
-                    	<div class="form-group">
-							<div class="alert alert-danger" ng-show="invalidName" translate="proconcoappApp.user.error.message.invalidName">
-						        Invalid name!
-						    </div>
-					    </div>
-                        <div class="form-group">
-                            <label>ID</label>
-                            <input type="text" class="form-control" name="id"
-                                   ng-model="user.id" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label translate="global.form.username">Login</label>
-		                    <input type="text" class="form-control" name="login" placeholder="{{'global.form.username.placeholder' | translate}}"
-		                           ng-model="registerAccount.login" ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/" required>
-		                    <div ng-show="form.login.$dirty && form.login.$invalid">
-		                        <p class="help-block"
-		                               ng-show="form.login.$error.required" translate="register.messages.validate.login.required">
-		                            Your login is required.
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.login.$error.minlength" translate="register.messages.validate.login.minlength">
-		                            Your login is required to be at least 1 character
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.login.$error.maxlength" translate="register.messages.validate.login.maxlength">
-		                            Your login cannot be longer than 50 characters
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.login.$error.pattern" translate="register.messages.validate.login.pattern">
-		                            Your login can only contain lower-case letters and digits
-		                    </p>
-		                    </div>
-                        </div>
-                        <div class="form-group">
-                            <label translate="global.form.email">E-mail</label>
-		                    <input type="email" class="form-control" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
-		                           ng-model="registerAccount.email" ng-minlength=5 ng-maxlength=100 required>
-		                    <div ng-show="form.email.$dirty && form.email.$invalid">
-		                        <p class="help-block"
-		                               ng-show="form.email.$error.required" translate="global.messages.validate.email.required">
-		                            Your e-mail is required.
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.email.$error.email" translate="global.messages.validate.email.invalid">
-		                            Your e-mail is invalid.
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.email.$error.minlength" translate="global.messages.validate.email.minlength">
-		                            Your e-mail is required to be at least 5 characters
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.email.$error.maxlength" translate="global.messages.validate.email.maxlength">
-		                            Your e-mail cannot be longer than 100 characters
-		                        </p>
-		                    </div>
-                        </div>
-                        
-                        <div class="form-group">
-                        	<label translate="global.form.newpassword">New password</label>
-		                    <input type="password" class="form-control" name="password" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
-		                           ng-model="registerAccount.password" ng-minlength=5 ng-maxlength=50 required>
-		                    <div ng-show="form.password.$dirty && form.password.$invalid">
-		                        <p class="help-block"
-		                               ng-show="form.password.$error.required" translate="global.messages.validate.newpassword.required">
-		                            Your password is required.
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.password.$error.minlength" translate="global.messages.validate.newpassword.minlength">
-		                            Your password is required to be at least 5 characters
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.password.$error.maxlength" translate="global.messages.validate.newpassword.maxlength">
-		                            Your password cannot be longer than 50 characters
-		                        </p>
-		                    </div>
-		                    <password-strength-bar password-to-check="registerAccount.password"></password-strength-bar>
-                        </div>
-                        
-                        <div class="form-group">
-                        	<label translate="global.form.confirmpassword">New password confirmation</label>
-		                    <input type="password" class="form-control" name="confirmPassword" placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
-		                           ng-model="confirmPassword" ng-minlength=5 ng-maxlength=50 required>
-		                    <div ng-show="form.confirmPassword.$dirty && form.confirmPassword.$invalid">
-		                        <p class="help-block"
-		                               ng-show="form.confirmPassword.$error.required" translate="global.messages.validate.confirmpassword.required">
-		                            Your password confirmation is required.
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.confirmPassword.$error.minlength" translate="global.messages.validate.confirmpassword.minlength">
-		                            Your password confirmation is required to be at least 5 characters
-		                        </p>
-		                        <p class="help-block"
-		                               ng-show="form.confirmPassword.$error.maxlength" translate="global.messages.validate.confirmpassword.maxlength">
-		                            Your password confirmation cannot be longer than 50 characters
-		                        </p>
-		                    </div>
-                        </div>
+                       <div class="form-group">
+                           <label translate="global.form.username">Login</label>
+	                    <input type="text" class="form-control" name="login" placeholder="{{'global.form.username.placeholder' | translate}}"
+	                           ng-model="user.login" ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/" required>
+	                    <div ng-show="editForm.login.$dirty && editForm.login.$invalid">
+	                        <p class="help-block"
+	                               ng-show="editForm.login.$error.required" translate="proconcoappApp.user.messages.validate.login.required">
+	                            Your login is required.
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.login.$error.minlength" translate="proconcoappApp.user.messages.validate.login.minlength">
+	                            Your login is required to be at least 1 character
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.login.$error.maxlength" translate="proconcoappApp.user.messages.validate.login.maxlength">
+	                            Your login cannot be longer than 50 characters
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.login.$error.pattern" translate="proconcoappApp.user.messages.validate.login.pattern">
+	                            Your login can only contain lower-case letters and digits
+	                    </p>
+	                    </div>
+                       </div>
+                       <div class="form-group">
+                           <label translate="global.form.email">E-mail</label>
+	                    <input type="email" class="form-control" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
+	                           ng-model="user.email" ng-minlength=5 ng-maxlength=100 required>
+	                    <div ng-show="editForm.email.$dirty && editForm.email.$invalid">
+	                        <p class="help-block"
+	                               ng-show="editForm.email.$error.required" translate="global.messages.validate.email.required">
+	                            Your e-mail is required.
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.email.$error.email" translate="global.messages.validate.email.invalid">
+	                            Your e-mail is invalid.
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.email.$error.minlength" translate="global.messages.validate.email.minlength">
+	                            Your e-mail is required to be at least 5 characters
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.email.$error.maxlength" translate="global.messages.validate.email.maxlength">
+	                            Your e-mail cannot be longer than 100 characters
+	                        </p>
+	                    </div>
+                       </div>
                        
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
-                        </button>
-                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+                       <div class="form-group">
+                       	<label translate="global.form.newpassword">New password</label>
+	                    <input type="password" class="form-control" name="password" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
+	                           ng-model="user.password" ng-minlength=5 ng-maxlength=50 required>
+	                    <div ng-show="editForm.password.$dirty && editForm.password.$invalid">
+	                        <p class="help-block"
+	                               ng-show="editForm.password.$error.required" translate="global.messages.validate.newpassword.required">
+	                            Your password is required.
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.password.$error.minlength" translate="global.messages.validate.newpassword.minlength">
+	                            Your password is required to be at least 5 characters
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.password.$error.maxlength" translate="global.messages.validate.newpassword.maxlength">
+	                            Your password cannot be longer than 50 characters
+	                        </p>
+	                    </div>
+	                    <password-strength-bar password-to-check="user.password"></password-strength-bar>
+                       </div>
+                       
+                       <div class="form-group">
+                       	<label translate="global.form.confirmpassword">New password confirmation</label>
+	                    <input type="password" class="form-control" name="confirmPassword" placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
+	                           ng-model="confirmPassword" ng-minlength=5 ng-maxlength=50 required>
+	                    <div ng-show="editForm.confirmPassword.$dirty && editForm.confirmPassword.$invalid">
+	                        <p class="help-block"
+	                               ng-show="editForm.confirmPassword.$error.required" translate="global.messages.validate.confirmpassword.required">
+	                            Your password confirmation is required.
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.confirmPassword.$error.minlength" translate="global.messages.validate.confirmpassword.minlength">
+	                            Your password confirmation is required to be at least 5 characters
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.confirmPassword.$error.maxlength" translate="global.messages.validate.confirmpassword.maxlength">
+	                            Your password confirmation cannot be longer than 50 characters
+	                        </p>
+	                    </div>
+                       </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                    </button>
+                    <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="deleteUserConfirmation">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form name="deleteForm" ng-submit="confirmDelete(user.id)">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                                ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p translate="proconcoappApp.user.delete.question" translate-values="{id: '{{user.id}}'}">Are you sure you want to delete this User?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
-                        </button>
-                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+<div class="modal fade" id="deleteUserConfirmation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="deleteForm" ng-submit="confirmDelete(user.id)">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                            ng-click="clear()">&times;</button>
+                    <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                </div>
+                <div class="modal-body">
+                    <p translate="proconcoappApp.user.delete.question" translate-values="{id: '{{user.id}}'}">Are you sure you want to delete this User?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                    </button>
+                    <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th translate="proconcoappApp.user.username">Login</th>
-                    <th translate="proconcoappApp.user.email">Email</th>
-                    <th translate="proconcoappApp.user.activated">Activated</th>
-                    <th translate="proconcoappApp.user.crtTms">CrtTms</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
-                <tr ng-repeat="user in users">
-                    <td><a ui-sref="userDetail({id:user.id})">{{user.id}}</a></td>
-                    <td>{{user.login}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.activated}}</td>
-                    <td>{{user.crtTms}}</td>
-                    <td>
-                        <button type="submit"
-                                ui-sref="userDetail({id:user.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
-                        </button>
-                        <button type="submit"
-                                ng-click="showUpdate(user.id)"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
-                        </button>
-                        <button type="submit"
-                                ng-click="delete(user.id)"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th translate="proconcoappApp.user.username">Login</th>
+                <th translate="proconcoappApp.user.email">Email</th>
+                <th translate="proconcoappApp.user.activated">Activated</th>
+<!--                 <th translate="proconcoappApp.user.crtTms">CrtTms</th> -->
+                <th></th>
+            </tr>
+        </thead>
+        <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
+            <tr ng-repeat="user in users">
+                <td><a ui-sref="userDetail({id:user.id})">{{user.id}}</a></td>
+                <td>{{user.login}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.activated}}</td>
+<!--                 <td>{{user.crtTms}}</td> -->
+                <td>
+                    <button type="submit"
+                            ui-sref="userDetail({id:user.id})"
+                            class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                    </button>
+                    <button type="submit"
+                            ng-click="showUpdate(user.id)"
+                            class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                    </button>
+                    <button type="submit"
+                            ng-click="delete(user.id)"
+                            class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

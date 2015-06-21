@@ -38,10 +38,12 @@ public class ReportIdEndpoint {
 
 	/**
 	 * This inserts a new <code>ReportId</code> object.
-	 *
-	 * @param reportId            The object to be added.
+	 * 
+	 * @param reportId
+	 *            The object to be added.
 	 * @return The object to be added.
-	 * @throws ProconcoException the proconco exception
+	 * @throws ProconcoException
+	 *             the proconco exception
 	 */
 	@ApiMethod(name = "insertReportId")
 	public ReportId insertReportId(ReportId reportId) throws ProconcoException {
@@ -83,10 +85,12 @@ public class ReportIdEndpoint {
 
 	/**
 	 * This updates an existing <code>ReportId</code> object.
-	 *
-	 * @param reportId            The object to be added.
+	 * 
+	 * @param reportId
+	 *            The object to be added.
 	 * @return The object to be updated.
-	 * @throws ProconcoException the proconco exception
+	 * @throws ProconcoException
+	 *             the proconco exception
 	 */
 	@ApiMethod(name = "updateReportId")
 	public ReportId updateReportId(ReportId reportId) throws ProconcoException {
@@ -108,7 +112,7 @@ public class ReportIdEndpoint {
 			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION.getId(),
 					ErrorCodeDetail.ERROR_UPDATE_ENTITY.getMsg() + Constants.STRING_EXEPTION_DETAIL + e.getMessage());
 		}
-		
+
 	}
 
 	/**

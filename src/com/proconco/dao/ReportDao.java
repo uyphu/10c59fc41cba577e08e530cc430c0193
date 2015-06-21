@@ -26,7 +26,7 @@ public class ReportDao extends AbstractDao<Report> {
 		for (Long i = 1L; i < 1000; i++) {
 			if (reportIdDao.find(i) != null) {
 				Double amt = i * 100.0;
-				report = new Report(i, amt, "marketRpt", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday",
+				report = new Report(i, amt, "marketRpt","competitor", "disease", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday",
 						"sunday", "N", "crtUid", Calendar.getInstance().getTime(), "updUid", Calendar.getInstance()
 								.getTime());
 				persist(report);

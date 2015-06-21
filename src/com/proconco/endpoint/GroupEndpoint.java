@@ -97,14 +97,14 @@ public class GroupEndpoint {
 
 	/**
 	 * This deletes an existing <code>Group</code> object.
-	 * 
-	 * @param id
-	 *            The id of the object to be deleted.
+	 *
+	 * @param id            The id of the object to be deleted.
+	 * @throws ProconcoException the proconco exception
 	 */
 	@ApiMethod(name = "removeGroup")
 	public void removeGroup(@Named("id") Long id) throws ProconcoException {
 		Group record = findRecord(id);
-		if (record != null) {
+		if (record == null) {
 			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
 					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
 		}
