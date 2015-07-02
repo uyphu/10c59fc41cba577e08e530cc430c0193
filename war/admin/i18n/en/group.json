@@ -18,10 +18,13 @@
             "ctrTms": "CtrTms",
             "updUid": "UpdUid",
             "updTms": "UpdTms",
+            "manager": "Manager",
             "error":{
            		"message":{
            			"querySearch":"Invalid query search!",
-           			"invalidName":"Invalid name!"
+           			"invalidName":"Invalid name!",
+           			"invalidUser":"Invalid user!",
+           			"saveError":"Save Error!"
            		}
            }
         }

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('jhipsterApp')
-    .factory('User', function ($q, DateUtils) {
+    .factory('Approval', function ($q, DateUtils) {
     	return {
 		   	init: function() {
 				var hwdefer=$q.defer();
@@ -26,23 +26,6 @@ angular.module('jhipsterApp')
     			requestData.cursor = cursor;
     			requestData.count = AppConstant.MAX_PAGE_SIZE;
     			gapi.client.userendpoint.listUser(requestData).execute(function(resp) {
-                    if (resp != null) {
-                    	p.resolve(resp);
-    				} else {
-    					p.resolve(null);
-    				}
-    			});
-    			return p.promise;
-   			},
-   			
-   			listUserByGroup: function (groupId, queryString, cursor){
-    			var p=$q.defer();
-    			var requestData = {};
-    			requestData.groupId = groupId;
-    			requestData.queryString = queryString;
-    			requestData.cursor = cursor;
-    			requestData.count = AppConstant.MAX_PAGE_SIZE;
-    			gapi.client.userendpoint.listUserByGroup(requestData).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);
     				} else {
@@ -94,21 +77,6 @@ angular.module('jhipsterApp')
    				var p=$q.defer();
    				var requestData = {};
    				requestData.id = id;
-    			gapi.client.userendpoint.getUser(requestData).execute(function(resp) {
-                    if (resp != null) {
-                    	p.resolve(resp);
-    				} else {
-    					p.resolve(null);
-    				}
-    			});
-    			return p.promise;
-   			},
-   			
-   			getByGroup: function (id, groupId) {
-   				var p=$q.defer();
-   				var requestData = {};
-   				requestData.id = id;
-   				requestData.groupId = groupId;
     			gapi.client.userendpoint.getUser(requestData).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);

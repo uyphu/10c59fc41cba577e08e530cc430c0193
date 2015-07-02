@@ -56,8 +56,8 @@ public class ReportIdEndpoint {
 					reportId = createId(reportId);
 				} else {
 					if (findRecord(reportId.getId()) != null) {
-						throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-								ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+						throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
+								ErrorCodeDetail.ERROR_EXIST_OBJECT);
 					}
 				}
 			} else {
@@ -72,13 +72,13 @@ public class ReportIdEndpoint {
 			if (rep == null) {
 				dao.insert(reportId);
 			} else {
-				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-						ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
+						ErrorCodeDetail.ERROR_EXIST_OBJECT);
 			}
 			return reportId;
 		} catch (Exception e) {
-			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_INSERT_ENTITY.getMsg() + Constants.STRING_EXEPTION_DETAIL + e.getMessage());
+			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION,
+					ErrorCodeDetail.ERROR_INSERT_ENTITY + Constants.STRING_EXEPTION_DETAIL + e.getMessage());
 		}
 
 	}
@@ -96,21 +96,21 @@ public class ReportIdEndpoint {
 	public ReportId updateReportId(ReportId reportId) throws ProconcoException {
 		try {
 			if (findRecord(reportId.getId()) == null) {
-				throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
-						ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
+				throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+						ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
 			}
 			ReportIdDao dao = new ReportIdDao();
 			ReportId rep = findRecord(reportId.getId());
 			if (rep != null) {
 				dao.update(rep);
 			} else {
-				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-						ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
+						ErrorCodeDetail.ERROR_EXIST_OBJECT);
 			}
 			return rep;
 		} catch (Exception e) {
-			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_UPDATE_ENTITY.getMsg() + Constants.STRING_EXEPTION_DETAIL + e.getMessage());
+			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION, ErrorCodeDetail.ERROR_UPDATE_ENTITY.getMsg()
+					+ Constants.STRING_EXEPTION_DETAIL + e.getMessage());
 		}
 
 	}
@@ -126,14 +126,14 @@ public class ReportIdEndpoint {
 		try {
 			ReportId record = findRecord(id);
 			if (record == null) {
-				throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
-						ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
+				throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+						ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
 			}
 			ReportIdDao dao = new ReportIdDao();
 			dao.remove(record);
 		} catch (Exception e) {
-			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_REMOVE_ENTITY.getMsg() + Constants.STRING_EXEPTION_DETAIL + e.getMessage());
+			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION,
+					ErrorCodeDetail.ERROR_REMOVE_ENTITY + Constants.STRING_EXEPTION_DETAIL + e.getMessage());
 		}
 
 	}
@@ -162,8 +162,8 @@ public class ReportIdEndpoint {
 		ReportIdDao dao = new ReportIdDao();
 		ReportId reportId = dao.getReportIdByName(name);
 		if (reportId == null) {
-			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
 		}
 		return reportId;
 	}

@@ -137,7 +137,6 @@ public class UserDao extends AbstractDao<User> {
 	 * @param role
 	 *            the role
 	 */
-	@ApiMethod(name = "addRole")
 	public void addRole(String login, String role) throws ProconcoException {
 		User user = getUserByLogin(login);
 		AuthorityDao authorityDao = new AuthorityDao();
@@ -159,6 +158,44 @@ public class UserDao extends AbstractDao<User> {
 		} else {
 			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
 					ErrorCodeDetail.ERROR_NOT_FOUND_ROLE.getMsg());
+		}
+	}
+	
+	/**
+	 * Adds the position.
+	 *
+	 * @param login the login
+	 * @param positionId the position id
+	 * @throws ProconcoException the proconco exception
+	 */
+	public void addPosition(String login, Long positionId) throws ProconcoException {
+		try {
+			User user = getUserByLogin(login);
+			if (user != null && positionId != null) {
+				user.setPositionKey(Key.create(Position.class, positionId));
+				persist(user);
+			}
+		} catch (Exception e) {
+			throw new ProconcoException(ErrorCode.BAD_REQUEST_EXCEPTION, ErrorCodeDetail.ERROR_UPDATE_ENTITY);
+		}
+	}
+	
+	/**
+	 * Adds the group.
+	 *
+	 * @param login the login
+	 * @param groupId the group id
+	 * @throws ProconcoException the proconco exception
+	 */
+	public void addGroup(String login, Long groupId) throws ProconcoException {
+		try {
+			User user = getUserByLogin(login);
+			if (user != null && groupId != null) {
+				user.setGroupKey(Key.create(Group.class, groupId));
+				persist(user);
+			}
+		} catch (Exception e) {
+			throw new ProconcoException(ErrorCode.BAD_REQUEST_EXCEPTION, ErrorCodeDetail.ERROR_UPDATE_ENTITY);
 		}
 	}
 
@@ -187,8 +224,9 @@ public class UserDao extends AbstractDao<User> {
 	 * Clean data.
 	 */
 	public void cleanData() {
-		for (Long i = 1L; i < 1000; i++) {
-			delete(find(i));
+		List<User> list = findAll();
+		for (User item : list) {
+			delete(item);
 		}
 	}
 
@@ -202,50 +240,60 @@ public class UserDao extends AbstractDao<User> {
 	 *             the proconco exception
 	 */
 	public User insert(User user) throws ProconcoException {
-
-		// If if is not null, then check if it exists. If yes, throw an
-		// Exception
-		// that it is already present
-		if (user.getId() != null) {
-			if (user.getId() == 0) {
-				user.setId(null);
-			} else {
-				if (find(user.getId()) != null) {
-					throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-							ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+		try {
+			// If if is not null, then check if it exists. If yes, throw an
+			// Exception
+			// that it is already present
+			if (user.getId() != null) {
+				if (user.getId().equals(0)) {
+					user.setId(null);
+				} else {
+					if (find(user.getId()) != null) {
+						throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+								ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+					}
 				}
 			}
-		}
-		// Since our @Id field is a Long, Objectify will generate a unique value
-		// for us
-		// when we use put
+			// Since our @Id field is a Long, Objectify will generate a unique value
+			// for us
+			// when we use put
 
-		User loginUser = getUserByLogin(user.getLogin());
-		User emailUser = getUserByEmail(user.getEmail());
-		if (loginUser != null && emailUser != null) {
-			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_CONFLICT_LOGIN_AND_EMAIL.getMsg());
+			User loginUser = getUserByLogin(user.getLogin());
+			User emailUser = getUserByEmail(user.getEmail());
+			if (loginUser != null && emailUser != null) {
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_CONFLICT_LOGIN_AND_EMAIL.getMsg());
+			}
+
+			if (loginUser != null) {
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_CONFLICT_LOGIN.getMsg());
+			}
+
+			if (emailUser != null) {
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_CONFLICT_EMAIL.getMsg());
+			}
+
+			// Persist data.
+			user.setCreateDate(Calendar.getInstance().getTime());
+			user.setPassword(MathUtils.cryptWithMD5(user.getPassword()));
+			
+			//Add dedault role: ROLE_USER
+			AuthorityDao authorityDao = new AuthorityDao();
+			Authority authority = authorityDao.getAuthorityByName(AuthoritiesConstants.USER);
+			List<Key<Authority>> list = new ArrayList<Key<Authority>>();
+			list.add(Key.create(Authority.class, authority.getId()));
+			user.setAuthorityKeys(list);
+			
+			//Save user
+			persist(user);
+			return user;
+		} catch (Exception e) {
+			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION, ErrorCodeDetail.ERROR_PARSE_QUERY
+					+ Constants.STRING_EXEPTION_DETAIL + e.getMessage());
 		}
 
-		if (loginUser != null) {
-			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_CONFLICT_LOGIN.getMsg());
-		}
-
-		if (emailUser != null) {
-			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_CONFLICT_EMAIL.getMsg());
-		}
-
-		// Persist data.
-		user.setCreateDate(Calendar.getInstance().getTime());
-		user.setPassword(MathUtils.cryptWithMD5(user.getPassword()));
-		user = persist(user);
-		if (user.getId() != null) {
-			addRole(user.getLogin(), AuthoritiesConstants.USER);
-		}
-
-		return user;
 	}
 
 	/**
@@ -320,6 +368,44 @@ public class UserDao extends AbstractDao<User> {
 			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION.getId(), ErrorCodeDetail.ERROR_PARSE_QUERY
 					+ Constants.STRING_EXEPTION_DETAIL + e.getMessage());
 		}
+	}
+	
+	/**
+	 * Find by group.
+	 *
+	 * @param groupId the group id
+	 * @param cursorString the cursor string
+	 * @param count the count
+	 * @return the collection response
+	 * @throws ProconcoException the proconco exception
+	 */
+	public CollectionResponse<User> findByGroup(Long groupId, String querySearch, String cursorString, Integer count)
+			throws ProconcoException {
+		Query<User> query = ofy().load().type(User.class);
+		if (querySearch != null) {
+			query = getQuery(querySearch);
+		}
+		query = query.filter("groupKey", Key.create(Group.class, groupId));
+		return executeQuery(query, cursorString, count);
+	}
+
+	/**
+	 * Activate user.
+	 *
+	 * @param login the login
+	 * @throws ProconcoException the proconco exception
+	 */
+	public void activateUser(String login) throws ProconcoException{
+		try {
+			User user = getUserByLogin(login);
+			if (user != null) {
+				user.setActivated(true);
+				persist(user);
+			}
+		} catch (Exception e) {
+			throw new ProconcoException(ErrorCode.BAD_REQUEST_EXCEPTION, ErrorCodeDetail.ERROR_UPDATE_ENTITY);
+		}
+		
 	}
 
 }

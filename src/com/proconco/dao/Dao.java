@@ -99,4 +99,13 @@ public interface Dao<T> {
 	 */
 	public CollectionResponse<T> list(String cursorString, Integer count);
 	
+	/**
+	 * Builds the collection response.
+	 *
+	 * @param t the t
+	 * @param cursorString the cursor string
+	 * @return the collection response
+	 */
+	public CollectionResponse<T> buildCollectionResponse(T t, String cursorString);
+	
 }

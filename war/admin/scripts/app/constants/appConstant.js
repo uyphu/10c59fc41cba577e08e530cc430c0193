@@ -64,6 +64,9 @@ AppConstant.API_LOAD_TYPE = 0;
 /** The Constant ACCOUNT. */
 AppConstant.ACCOUNT = null;
 
+/** The Constant GROUP_ENDPOINT_LOADED. */
+AppConstant.GROUP_ENDPOINT_LOADED = false;
+
 /** The Constant POSITION_ENDPOINT_LOADED. */
 AppConstant.POSITION_ENDPOINT_LOADED = false;
 
@@ -78,3 +81,4 @@ AppConstant.PLANNINGWEEKID_ENDPOINT_LOADED = false;
 
 /** The Constant PLANNINGWEEK_ENDPOINT_LOADED. */
 AppConstant.PLANNINGWEEK_ENDPOINT_LOADED = false;
+

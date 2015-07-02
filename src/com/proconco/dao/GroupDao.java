@@ -111,4 +111,23 @@ public class GroupDao extends AbstractDao<Group> {
 		} 
 		return null;
 	}
+	
+	/**
+	 * Gets the group by manager.
+	 *
+	 * @param manager the manager
+	 * @return the group by manager
+	 */
+	public Group getGroupByManager(String manager) {
+		if (manager != null) {
+			Map<String,Object> map = new HashMap<String, Object>();
+			map.put("manager", manager);
+			Query<Group> query = getQuery(map);
+			List<Group> list = executeQuery(query, 1); 
+			if (list != null && list.size() > 0) {
+				return list.get(0);
+			}
+		} 
+		return null;
+	}
 }

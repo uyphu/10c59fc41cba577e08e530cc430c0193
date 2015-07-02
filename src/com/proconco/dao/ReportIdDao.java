@@ -177,4 +177,41 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 		Query<ReportId> query = ofy().load().type(ReportId.class).order("-crtTms");
 		return executeQuery(query, cursorString, count);
 	}
+	
+	/**
+	 * Find.
+	 *
+	 * @param year the year
+	 * @param week the week
+	 * @param userId the user id
+	 * @return the report id
+	 */
+	public ReportId find(Integer year, Integer week, Long userId) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("year", year);
+		map.put("week", week);
+		map.put("userKey", Key.create(User.class, userId));
+		Query<ReportId> query = getQuery(map);
+		List<ReportId> list = executeQuery(query, 1); 
+		if (list != null && list.size() > 0) {
+			return list.get(0);
+		}
+		return null;
+	}
+	
+	/**
+	 * Find.
+	 *
+	 * @param userId the user id
+	 * @param cursorString the cursor string
+	 * @param count the count
+	 * @return the collection response
+	 */
+	public CollectionResponse<ReportId> find(Long userId, String cursorString, Integer count) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("userKey", Key.create(User.class, userId));
+		Query<ReportId> query = getQuery(map);
+		query.order("-year").order("-week");
+		return executeQuery(query, cursorString, count);
+	}
 }

@@ -49,7 +49,10 @@ public enum ErrorCodeDetail {
 	ERROR_NOT_ACTIVATED(613, "[613] User not activated"),
 	
 	/** The error invalid password. */
-	ERROR_INVALID_PASSWORD(614, "[614] Invalid password");
+	ERROR_INVALID_PASSWORD(614, "[614] Invalid password"),
+	
+	/** The error user not found. */
+	ERROR_USER_NOT_FOUND(615, "[615] User not found");
 
 	/** The id. */
 	private final int id;

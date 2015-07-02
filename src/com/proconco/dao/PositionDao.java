@@ -1,13 +1,16 @@
 package com.proconco.dao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.api.server.spi.response.CollectionResponse;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 import com.proconco.constants.Constants;
+import com.proconco.entity.Authority;
 import com.proconco.entity.Position;
 import com.proconco.exception.ErrorCode;
 import com.proconco.exception.ErrorCodeDetail;
@@ -110,6 +113,35 @@ public class PositionDao extends AbstractDao<Position> {
 			}
 		} 
 		return null;
+	}
+	
+	/**
+	 * Adds the role.
+	 *
+	 * @param positionId the position id
+	 * @param role the role
+	 * @throws ProconcoException the proconco exception
+	 */
+	public void addRole(Long positionId, String role) throws ProconcoException {
+		Position position = find(positionId);
+		AuthorityDao authorityDao = new AuthorityDao();
+		Authority authority = authorityDao.getAuthorityByName(role);
+		if (position != null && authority != null) {
+			Key<Authority> key = Key.create(Authority.class, authority.getId());
+			List<Key<Authority>> list = position.getAuthorityKeys();
+			if (list == null) {
+				list = new ArrayList<Key<Authority>>();
+			}
+			if (!list.contains(key)) {
+				list.add(key);
+				position.setAuthorityKeys(list);
+				persist(position);
+			} else {
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION, ErrorCodeDetail.ERROR_DUPLICATED_ROLE);
+			}
+		} else {
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION, ErrorCodeDetail.ERROR_NOT_FOUND_ROLE);
+		}
 	}
 
 }

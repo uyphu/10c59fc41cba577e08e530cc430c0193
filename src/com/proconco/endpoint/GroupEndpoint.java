@@ -11,7 +11,9 @@ import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.proconco.dao.GroupDao;
+import com.proconco.dao.UserDao;
 import com.proconco.entity.Group;
+import com.proconco.entity.User;
 import com.proconco.exception.ErrorCode;
 import com.proconco.exception.ErrorCodeDetail;
 import com.proconco.exception.ProconcoException;
@@ -48,8 +50,8 @@ public class GroupEndpoint {
 				group.setId(null);
 			} else {
 				if (findRecord(group.getId()) != null) {
-					throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-							ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+					throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
+							ErrorCodeDetail.ERROR_EXIST_OBJECT);
 				}
 			}
 		}
@@ -63,8 +65,8 @@ public class GroupEndpoint {
 			group.setUpdTms(Calendar.getInstance().getTime());
 			dao.persist(group);
 		} else {
-			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
+					ErrorCodeDetail.ERROR_EXIST_OBJECT);
 		}
 		return group;
 	}
@@ -78,19 +80,31 @@ public class GroupEndpoint {
 	 */
 	@ApiMethod(name = "updateGroup")
 	public Group updateGroup(Group group) throws ProconcoException {
-		if (findRecord(group.getId()) == null) {
-			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
+		Group oldGroup = findRecord(group.getId());
+		if (oldGroup == null) {
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
 		}
 		GroupDao dao = new GroupDao();
 		Group pos = dao.getGroupByName(group.getGrpName());
-		if (pos == null || pos.getId() == group.getId()) {
-			group.setCrtTms(Calendar.getInstance().getTime());
-			group.setUpdTms(Calendar.getInstance().getTime());
+		if (pos == null || pos.getId().equals(group.getId())) {
+			oldGroup.setGrpName(group.getGrpName());
+			oldGroup.setUpdTms(Calendar.getInstance().getTime());
+			oldGroup.setUpdUid(group.getUpdUid());
+			if (group.getManager() != null) {
+				UserDao userDao = new UserDao();
+				User manager = userDao.getUserByLogin(group.getManager());
+				if (manager != null) {
+					group.setManager(manager.getLogin());
+				} else {
+					throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+							ErrorCodeDetail.ERROR_USER_NOT_FOUND);
+				}
+			}
 			dao.update(group);
 		} else {
-			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
+					ErrorCodeDetail.ERROR_EXIST_OBJECT);
 		}
 		return group;
 	}
@@ -105,8 +119,8 @@ public class GroupEndpoint {
 	public void removeGroup(@Named("id") Long id) throws ProconcoException {
 		Group record = findRecord(id);
 		if (record == null) {
-			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
 		}
 		GroupDao dao = new GroupDao();
 		dao.delete(record);

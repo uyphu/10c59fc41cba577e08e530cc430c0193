@@ -11,8 +11,10 @@ import com.googlecode.objectify.annotation.IgnoreSave;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.OnLoad;
+import com.proconco.constants.Constants;
 import com.proconco.dao.UserDao;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ReportId.
  */
@@ -24,9 +26,11 @@ public class ReportId {
 	private Long id; //One To One Report
 	
 	/** The week. */
+	@Index
 	private Integer week;
 	
 	/** The year. */
+	@Index
 	private Integer year;
 	
 	/** The user profile key. */
@@ -41,6 +45,10 @@ public class ReportId {
 	@IgnoreSave
 	private User user;
 	
+	/** The yyyyww. */
+	@IgnoreSave
+	private String yyyyww;
+	
 	/** The crt tms. */
 	@Index
 	private Date crtTms;
@@ -54,8 +62,17 @@ public class ReportId {
 			user = dao.find(userKey);
 			userId = user.getId();
 		}
+		
+		if (week < 10) {
+			yyyyww = year + "0" + week;
+		} else {
+			yyyyww = year + week + Constants.STRING_EMPTY;
+		}
 	}
 	
+	/**
+	 * Instantiates a new report id.
+	 */
 	public ReportId() {
 		
 	}
@@ -233,12 +250,40 @@ public class ReportId {
 		this.user = user;
 	}
 
+	/**
+	 * Gets the crt tms.
+	 *
+	 * @return the crt tms
+	 */
 	public Date getCrtTms() {
 		return crtTms;
 	}
 
+	/**
+	 * Sets the crt tms.
+	 *
+	 * @param crtTms the new crt tms
+	 */
 	public void setCrtTms(Date crtTms) {
 		this.crtTms = crtTms;
+	}
+
+	/**
+	 * Gets the yyyyww.
+	 *
+	 * @return the yyyyww
+	 */
+	public final String getYyyyww() {
+		return this.yyyyww;
+	}
+
+	/**
+	 * Sets the yyyyww.
+	 *
+	 * @param yyyyww the new yyyyww
+	 */
+	public final void setYyyyww(String yyyyww) {
+		this.yyyyww = yyyyww;
 	}
 	
 }

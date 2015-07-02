@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.googlecode.objectify.cmd.Query;
+import com.proconco.constants.AuthoritiesConstants;
 import com.proconco.entity.Authority;
 
 /**
@@ -40,13 +41,23 @@ public class AuthorityDao extends AbstractDao<Authority>{
 	public void initData() {
 		Authority authority;
 		
-		authority = new Authority(1L, "Admin");
+		authority = new Authority(1L, "ROLE_ADMIN");
 		persist(authority);
-		authority = new Authority(2L, "Moderator");
+		authority = new Authority(2L, "ROLE_USER");
 		persist(authority);
-		authority = new Authority(3L, "Super User");
+		authority = new Authority(3L, "ROLE_ANONYMOUS");
 		persist(authority);
-		authority = new Authority(4L, "User");
+		authority = new Authority(4L, "READ_ONLY");
+		persist(authority);
+		authority = new Authority(5L, "READ_ALL");
+		persist(authority);
+		authority = new Authority(6L, "EDIT");
+		persist(authority);
+		authority = new Authority(7L, "APPROVAL");
+		persist(authority);
+		authority = new Authority(8L, "MANAGER");
+		persist(authority);
+		authority = new Authority(9L, AuthoritiesConstants.TEAM_LEADER);
 		persist(authority);
 	}
 

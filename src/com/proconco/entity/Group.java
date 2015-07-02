@@ -39,15 +39,22 @@ public class Group {
 	
 	/** The upd tms. */
 	private Date updTms;
-
+	
+	/** The manager login. */
+	@Index
+	private String manager;
+	
 	/** The user profiles. */
 	@Ignore
 	@IgnoreSave
 	private List<User> users;
 	
+	/**
+	 * Load data.
+	 */
 	@OnLoad
     private void loadData() {
-    	
+		
     }
 
 	/**
@@ -111,6 +118,38 @@ public class Group {
 		this.updTms = updTms;
 	}
 	
+	/**
+	 * Instantiates a new group.
+	 *
+	 * @param id the id
+	 * @param grpName the grp name
+	 * @param crtUid the crt uid
+	 * @param updUid the upd uid
+	 * @param manager the manager login
+	 */
+	public Group(Long id, String grpName, String crtUid, String updUid, String manager) {
+		this.id = id;
+		this.grpName = grpName;
+		this.crtUid = crtUid;
+		this.updUid = updUid;
+		this.manager = manager;
+	}
+	
+	/**
+	 * Instantiates a new group.
+	 *
+	 * @param grpName the grp name
+	 * @param crtUid the crt uid
+	 * @param updUid the upd uid
+	 * @param manager the manager login
+	 */
+	public Group(String grpName, String crtUid, String updUid, String manager) {
+		this.grpName = grpName;
+		this.crtUid = crtUid;
+		this.updUid = updUid;
+		this.manager = manager;
+	}
+
 	/**
 	 * Gets the id.
 	 *
@@ -253,6 +292,24 @@ public class Group {
 	 */
 	public final void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	/**
+	 * Gets the manager login.
+	 *
+	 * @return the manager login
+	 */
+	public final String getManager() {
+		return this.manager;
+	}
+
+	/**
+	 * Sets the manager login.
+	 *
+	 * @param manager the new manager login
+	 */
+	public final void setManager(String manager) {
+		this.manager = manager;
 	}
 	
 }

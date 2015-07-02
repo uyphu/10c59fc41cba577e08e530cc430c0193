@@ -7,7 +7,9 @@ angular.module('jhipsterApp')
         $scope.cursor = null;
         $scope.invalidQuerySearch = null;
         $scope.spinneractive = false;
-        //$scope.startcounter = 0;
+        $scope.invalidName = null;
+        $scope.invalidUser = null;
+        $scope.saveError = null;
         $scope.loadAll = function() {
      	   if (!AppConstant.GROUP_ENDPOINT_LOADED) {
      		   Group.init().then(function(){
@@ -63,11 +65,14 @@ angular.module('jhipsterApp')
         };
 
         $scope.save = function () {
+        	$scope.invalidName = null;
+            $scope.invalidUser = null;
+            $scope.saveError = null;
             if ($scope.group.id != null) {
             	$scope.group.updUid = AppConstant.ACCOUNT.login;
                 Group.update($scope.group).then(function (data){
                 	if (data.error != null) {
-             		   showError(data.code);
+             		   showError(data.message);
              	   } else {
              		   $scope.refresh();
              	   }
@@ -75,6 +80,7 @@ angular.module('jhipsterApp')
             } else {
             	$scope.group.crtUid = AppConstant.ACCOUNT.login;
             	$scope.group.updUid = AppConstant.ACCOUNT.login;
+            	$scope.group.delFlag = 'N';
          	   	Group.insert($scope.group).then(function (data){
          		  if (data.error != null) {
 	           		   showError(data.code);
@@ -197,10 +203,15 @@ angular.module('jhipsterApp')
             //}, 6000);
         };
         
-        function showError(errorCode) {
- 		   if (errorCode == 409) {
- 			   $scope.invalidName = 'ERROR';
- 		   }
+        function showError(errorMsg) {
+ 		   
+ 		  if (errorMsg.indexOf('[602]') != -1) {
+ 			  $scope.invalidName = 'ERROR';
+		   	} else if (errorMsg.indexOf('[615]') != -1) {
+		   		$scope.invalidUser = 'ERROR';
+		   	} else {
+		   		$scope.saveError = 'ERROR';
+		   	}
         };
         
         $scope.loadAll();

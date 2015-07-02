@@ -12,6 +12,7 @@
                	"planningWeekId": "PlanningWeekIdfr",
                	"report": "Reportfr",
                	"planningWeek": "PlanningWeekfr",
+               	"approval":"Approvalfr",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -84,7 +85,8 @@
             "delete": "Supprimer",
             "save": "Sauvegarder",
             "view": "Voir",
-            "detail": "Detailfr"
+            "detail": "Detailfr",
+            "report": "Reportfr"
         },
         "detail": {
             "field": "Champs",

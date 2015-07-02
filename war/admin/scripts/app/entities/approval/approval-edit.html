@@ -1,0 +1,134 @@
+<div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1 translate="proconcoappApp.user.detail.title">User {{user.id}}</h1>
+            <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+				
+                <div class="modal-body">
+				    <div class="form-group">
+					    <div class="alert alert-success" ng-show="success" translate="proconcoappApp.user.messages.updated">
+			                <strong>User saved!</strong>
+			            </div>
+					</div>
+					<div class="form-group">
+			            <div class="alert alert-danger" ng-show="errorEmailExists" translate="proconcoappApp.user.messages.error.emailexists">
+			                <strong>E-mail is already in use!</strong> Please choose another one.
+			            </div>
+					</div>
+					<div class="form-group">
+			            <div class="alert alert-danger" ng-show="error" translate="proconcoappApp.user.messages.error.fail">
+			                <strong>An error has occurred!</strong> User could not be saved.
+			            </div>
+				    </div>
+                    <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" class="form-control" name="id"
+                               ng-model="user.id" readonly>
+                    </div>
+
+                    <div class="form-group">
+	                    <label translate="proconcoappApp.user.form.firstname">First Name</label>
+	                    <input type="text" class="form-control" name="firstName" placeholder="{{'proconcoappApp.user.form.firstname.placeholder' | translate}}"
+	                           ng-model="user.firstName" ng-minlength=1 ng-maxlength=50 required maxlength="50">
+	                    <div ng-show="editForm.firstName.$dirty && editForm.firstName.$invalid">
+	                        <p class="help-block"
+	                               ng-show="editForm.firstName.$error.required" translate="proconcoappApp.user.messages.validate.firstname.required">
+	                            Your first name is required.
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.firstName.$error.minlength" translate="proconcoappApp.user.messages.validate.firstname.minlength">
+	                            Your first name is required to be at least 1 character
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.firstName.$error.maxlength" translate="proconcoappApp.user.messages.validate.firstname.maxlength">
+	                            Your first name cannot be longer than 50 characters
+	                        </p>
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <label translate="proconcoappApp.user.form.lastname">Last Name</label>
+	                    <input type="text" class="form-control" name="lastName" placeholder="{{'proconcoappApp.user.form.lastname.placeholder' | translate}}"
+	                           ng-model="user.lastName" ng-minlength=1 ng-maxlength=50 required maxlength="50">
+	                    <div ng-show="editForm.lastName.$dirty && editForm.lastName.$invalid">
+	                        <p class="help-block"
+	                               ng-show="editForm.lastName.$error.required" translate="proconcoappApp.user.messages.validate.lastname.required">
+	                            Your last name is required.
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.lastName.$error.minlength" translate="proconcoappApp.user.messages.validate.lastname.minlength">
+	                            Your last name is required to be at least 1 character
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.lastName.$error.maxlength" translate="proconcoappApp.user.messages.validate.lastname.maxlength">
+	                            Your last name cannot be longer than 50 characters
+	                        </p>
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <label translate="global.form.email">E-mail</label>
+	                    <input type="email" class="form-control" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
+	                           ng-model="user.email" ng-minlength=5 ng-maxlength=100 required maxlength="100" readonly>
+	                    <div ng-show="editForm.email.$dirty && editForm.email.$invalid">
+	                        <p class="help-block"
+	                               ng-show="editForm.email.$error.required" translate="global.messages.validate.email.required">
+	                            Your e-mail is required.
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.email.$error.email" translate="global.messages.validate.email.invalid">
+	                            Your e-mail is invalid.
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.email.$error.minlength" translate="global.messages.validate.email.minlength">
+	                            Your e-mail is required to be at least 5 characters
+	                        </p>
+	                        <p class="help-block"
+	                               ng-show="editForm.email.$error.maxlength" translate="global.messages.validate.email.maxlength">
+	                            Your e-mail cannot be longer than 100 characters
+	                        </p>
+	                    </div>
+	                </div>
+	                
+	                <div class="form-group">
+	                    <label translate="proconcoappApp.user.group">Group</label>
+	                    <select name="group" class="form-control" ng-model="user.groupId" 
+	                    	ng-options="group.id as group.grpName for group in groups">
+	                    	<option value=""></option>
+	                    </select>
+	                </div>
+	                
+	                <div class="form-group">
+	                    <label translate="proconcoappApp.user.position">Position</label>
+	                    <select name="position" class="form-control" ng-model="user.positionId" 
+	                    	ng-options="position.id as position.postName for position in positions">
+	                    	<option value=""></option>
+	                    </select>
+	                </div>
+	                
+	                <div class="form-group">
+	                    <label translate="proconcoappApp.user.form.language">Language</label>
+	                    <select name="langKey" class="form-control" ng-model="user.langKey" 
+	                    	ng-controller="LanguageController" 
+	                    	ng-options="code as ('language.' + code | translate) for code in languages"></select>
+	                </div>
+	                
+	                <div class="form-group">
+	                    <label for="activated">
+	                        <input type="checkbox" name="activated" ng-model="user.activated" checked>
+	                        {{"proconcoappApp.user.activated" | translate}}
+	                    </label>
+	                </div>
+	            </div>    
+                <div class="modal-footer">
+                    <button type="submit"
+				            ui-sref="userDetail({id:user.id})"
+				            class="btn btn-info">
+				        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+				    </button>
+                    <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

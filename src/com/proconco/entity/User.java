@@ -37,9 +37,11 @@ public class User {
     private String password;
 
     /** The first name. */
+	@Index
     private String firstName;
 
     /** The last name. */
+	@Index
     private String lastName;
 
     /** The email. */
@@ -47,6 +49,7 @@ public class User {
     private String email;
 
     /** The activated. */
+    @Index
     private boolean activated = false;
 
     /** The lang key. */
@@ -68,16 +71,14 @@ public class User {
     @Load
     private List<Key<Authority>> authorityKeys;
 
-    /** The authority keys. */
-    //@Load
-    //private Key<Authority>[] authorityKeys;
-
 	/** The group key. */
 	@Load
+	@Index
 	private Key<Group> groupKey;
 	
 	/** The position key. */
 	@Load
+	@Index
 	private Key<Position> positionKey;
 	
 	/** The reports. */

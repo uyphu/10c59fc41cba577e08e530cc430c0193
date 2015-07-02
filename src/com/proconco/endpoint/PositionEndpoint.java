@@ -50,8 +50,8 @@ public class PositionEndpoint {
 				position.setId(null);
 			} else {
 				if (findRecord(position.getId()) != null) {
-					throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-							ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+					throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
+							ErrorCodeDetail.ERROR_EXIST_OBJECT);
 				}
 			}
 		}
@@ -65,8 +65,8 @@ public class PositionEndpoint {
 			position.setUpdTms(Calendar.getInstance().getTime());
 			dao.persist(position);
 		} else {
-			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
+					ErrorCodeDetail.ERROR_EXIST_OBJECT);
 		}
 		return position;
 	}
@@ -81,17 +81,17 @@ public class PositionEndpoint {
 	@ApiMethod(name = "updatePosition")
 	public Position updatePosition(Position position) throws ProconcoException {
 		if (findRecord(position.getId()) == null) {
-			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
 		}
 		PositionDao dao = new PositionDao();
 		Position pos = dao.getPositionByName(position.getPostName());
-		if (pos == null || (pos.getId() == position.getId())) {
+		if (pos == null || (pos.getId().equals(position.getId()))) {
 			position.setUpdTms(Calendar.getInstance().getTime());
 			dao.update(position);
 		} else {
-			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_EXIST_OBJECT.getMsg());
+			throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
+					ErrorCodeDetail.ERROR_EXIST_OBJECT);
 		}
 		return position;
 	}
@@ -106,8 +106,8 @@ public class PositionEndpoint {
 	public void removePosition(@Named("id") Long id) throws ProconcoException {
 		Position record = findRecord(id);
 		if (record == null) {
-			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
 		}
 		PositionDao dao = new PositionDao();
 		dao.delete(record);
@@ -136,8 +136,8 @@ public class PositionEndpoint {
 		PositionDao dao = new PositionDao();
 		Position position = dao.getPositionByName(name);
 		if (position == null) {
-			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
-					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND.getMsg());
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+					ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
 		}
 		return position;
 	}
@@ -172,12 +172,27 @@ public class PositionEndpoint {
 		dao.cleanData();
 	}
 
+	/**
+	 * Search position.
+	 *
+	 * @param querySearch the query search
+	 * @param cursorString the cursor string
+	 * @param count the count
+	 * @return the collection response
+	 * @throws ProconcoException the proconco exception
+	 */
 	@ApiMethod(name = "searchPosition", httpMethod = HttpMethod.GET, path = "search_position")
 	public CollectionResponse<Position> searchPosition(@Nullable @Named("querySearch") String querySearch,
 			@Nullable @Named("cursor") String cursorString, @Nullable @Named("count") Integer count)
 			throws ProconcoException {
 		PositionDao dao = new PositionDao();
 		return dao.searchPosition(querySearch, cursorString, count);
+	}
+	
+	@ApiMethod(name = "addRole", httpMethod = HttpMethod.POST, path = "add_role")
+	public void addRole(@Named("positionId") Long positionId, @Named("role") String role) throws ProconcoException {
+		PositionDao dao = new PositionDao();
+		dao.addRole(positionId, role);
 	}
 
 }

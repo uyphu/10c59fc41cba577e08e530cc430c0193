@@ -1,11 +1,20 @@
 package com.proconco.entity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import com.google.api.server.spi.config.AnnotationBoolean;
+import com.google.api.server.spi.config.ApiResourceProperty;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.IgnoreSave;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Load;
+import com.googlecode.objectify.annotation.OnLoad;
+import com.proconco.dao.AuthorityDao;
 
 /**
  * The Class Position.
@@ -35,6 +44,37 @@ public class Position {
 
 	/** The upd tms. */
 	private Date updTms;
+	
+	/** The authority keys. */
+	@Load
+    private List<Key<Authority>> authorityKeys;
+	
+	/** The authority ids. */
+	@IgnoreSave
+	private List<Long> authorityIds;
+	
+	/** The authorities. */
+	@IgnoreSave
+	private List<Authority> authorities;
+	
+	/** The roles. */
+	@IgnoreSave
+	private List<String> roles;
+	
+	@OnLoad
+	private void onLoad() {
+		
+		if (authorityKeys != null) {
+			roles = new ArrayList<String>();
+			for (Key<Authority> key : authorityKeys) {
+				AuthorityDao dao = new AuthorityDao();
+				Authority authority = dao.find(key.getId());
+				if (authority != null) {
+					roles.add(authority.getName());
+				}
+			}
+		}
+	}
 
 	/**
 	 * Instantiates a new position.
@@ -243,4 +283,76 @@ public class Position {
 		this.updTms = updTms;
 	}
 
+	/**
+	 * Gets the authority keys.
+	 *
+	 * @return the authority keys
+	 */
+	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
+	public final List<Key<Authority>> getAuthorityKeys() {
+		return this.authorityKeys;
+	}
+
+	/**
+	 * Sets the authority keys.
+	 *
+	 * @param authorityKeys the new authority keys
+	 */
+	public final void setAuthorityKeys(List<Key<Authority>> authorityKeys) {
+		this.authorityKeys = authorityKeys;
+	}
+
+	/**
+	 * Gets the authority ids.
+	 *
+	 * @return the authority ids
+	 */
+	public final List<Long> getAuthorityIds() {
+		return this.authorityIds;
+	}
+
+	/**
+	 * Sets the authority ids.
+	 *
+	 * @param authorityIds the new authority ids
+	 */
+	public final void setAuthorityIds(List<Long> authorityIds) {
+		this.authorityIds = authorityIds;
+	}
+
+	/**
+	 * Gets the authorities.
+	 *
+	 * @return the authorities
+	 */
+	public final List<Authority> getAuthorities() {
+		return this.authorities;
+	}
+
+	/**
+	 * Sets the authorities.
+	 *
+	 * @param authorities the new authorities
+	 */
+	public final void setAuthorities(List<Authority> authorities) {
+		this.authorities = authorities;
+	}
+
+	/**
+	 * Gets the roles.
+	 *
+	 * @return the roles
+	 */
+	public final List<String> getRoles() {
+		return this.roles;
+	}
+
+	/**
+	 * Sets the roles.
+	 *
+	 * @param roles the new roles
+	 */
+	public final void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
 }

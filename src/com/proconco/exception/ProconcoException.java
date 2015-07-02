@@ -19,6 +19,26 @@ public class ProconcoException extends ServiceException {
 	public ProconcoException(int statusCode, String statusMessage) {
 		super(statusCode, statusMessage);
 	}
+	
+	/**
+	 * Instantiates a new proconco exception.
+	 *
+	 * @param code the code
+	 * @param codeDetail the code detail
+	 */
+	public ProconcoException(ErrorCode code, ErrorCodeDetail codeDetail) {
+		super(code.getId(), codeDetail.getMsg());
+	}
+	
+	/**
+	 * Instantiates a new proconco exception.
+	 *
+	 * @param code the code
+	 * @param statusMessage the status message
+	 */
+	public ProconcoException(ErrorCode code, String statusMessage) {
+		super(code.getId(), statusMessage);
+	}
 
 	/**
 	 * Instantiates a new proconco exception.

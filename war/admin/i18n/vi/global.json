@@ -12,6 +12,7 @@
                	"planningWeekId": "PlanningWeekIdvivi",
                	"report": "Reportvi",
                	"planningWeek": "PlanningWeekvi",
+               	"approval":"Approvalvi",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -84,7 +85,8 @@
             "delete": "Supprimervi",
             "save": "Sauvegardervi",
             "view": "Voirvi",
-            "detail": "Detailvi"
+            "detail": "Detailvi",
+            "report": "Reportvi"
         },
         "detail": {
             "field": "Champsvi",

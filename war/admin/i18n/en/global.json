@@ -12,6 +12,7 @@
                	"planningWeekId": "PlanningWeekId",
                	"report": "Report",
                	"planningWeek": "PlanningWeek",
+               	"approval":"Approval",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -84,7 +85,8 @@
             "edit": "Edit",
             "save": "Save",
             "view": "View",
-            "detail": "Detail"
+            "detail": "Detail",
+            "report": "Report"
         },
         "detail": {
             "field": "Field",
