@@ -86,7 +86,8 @@
             "save": "Sauvegarder",
             "view": "Voir",
             "detail": "Detailfr",
-            "report": "Reportfr"
+            "report": "Reportfr",
+            "approval": "Approvalfr"
         },
         "detail": {
             "field": "Champs",

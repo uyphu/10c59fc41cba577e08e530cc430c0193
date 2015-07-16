@@ -14,7 +14,8 @@
             },
             "week": "Week",
             "year": "Year",
-            "user": "user",
+            "user": "User",
+            "status": "Status",
             "ctrTms": "CtrTms",
             "report": "report",
             "error":{

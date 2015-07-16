@@ -1,5 +1,9 @@
 package com.proconco.constants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Constants.
+ */
 public class Constants {
 
 	/** The Constant STRING_EMPTY. */
@@ -13,4 +17,16 @@ public class Constants {
     
     /** The Constant ACTIVATED. */
     public static final boolean ACTIVATED = true;
+    
+    /** The Constant IN_WORK_STATUS. */
+    public static final int IN_WORK_STATUS = 0;
+    
+    /** The Constant PENDING_STATUS. */
+    public static final int PENDING_STATUS = 1;
+    
+    /** The Constant APPROVED_STATUS. */
+    public static final int APPROVED_STATUS = 2;
+    
+    /** The Constant CANCELLED_STATUS. */
+    public static final int CANCELLED_STATUS = 3;
 }

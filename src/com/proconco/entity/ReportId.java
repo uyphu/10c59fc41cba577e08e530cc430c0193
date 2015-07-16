@@ -35,11 +35,20 @@ public class ReportId {
 	
 	/** The user profile key. */
 	@Load
+	@Index
 	private Key<User> userKey;
+	
+	/** The status. */
+	@Index
+	private int status;
 	
 	/** The user profile id. */
 	@IgnoreSave
 	private Long userId;
+	
+	/** The username. */
+	@IgnoreSave
+	private String username;
 	
 	/** The user profile. */
 	@IgnoreSave
@@ -59,8 +68,11 @@ public class ReportId {
 	public void onLoad() {
 		if (userKey != null) {
 			UserDao dao = new UserDao();
-			user = dao.find(userKey);
-			userId = user.getId();
+			User user = dao.find(userKey);
+			if (user != null) {
+				userId = user.getId();
+				username = user.getLogin();
+			}
 		}
 		
 		if (week < 10) {
@@ -285,5 +297,43 @@ public class ReportId {
 	public final void setYyyyww(String yyyyww) {
 		this.yyyyww = yyyyww;
 	}
+
+	/**
+	 * Gets the username.
+	 *
+	 * @return the username
+	 */
+	public final String getUsername() {
+		return this.username;
+	}
+
+	/**
+	 * Sets the username.
+	 *
+	 * @param username the new username
+	 */
+	public final void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
+	public final int getStatus() {
+		return this.status;
+	}
+
+	/**
+	 * Sets the status.
+	 *
+	 * @param status the new status
+	 */
+	public final void setStatus(int status) {
+		this.status = status;
+	}
+	
+	
 	
 }

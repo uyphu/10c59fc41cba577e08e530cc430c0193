@@ -10,6 +10,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.proconco.constants.Constants;
 import com.proconco.dao.UserDao;
+import com.proconco.entity.Authority;
 import com.proconco.entity.User;
 import com.proconco.exception.ErrorCode;
 import com.proconco.exception.ErrorCodeDetail;
@@ -295,6 +296,12 @@ public class UserEndpoint {
 	public void activateUser(@Named("login") String login) throws ProconcoException {
 		UserDao dao = new UserDao();
 		dao.activateUser(login);
+	} 
+	
+	@ApiMethod(name = "listAuthority", httpMethod = HttpMethod.GET, path = "list_authority")
+	public CollectionResponse<Authority> listAuthority(@Named("userId") Long userId) throws ProconcoException {
+		UserDao dao = new UserDao();
+		return dao.listAuthority(userId);
 	} 
 
 }

@@ -1,5 +1,6 @@
 package com.proconco.dao;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 	/**
 	 * Inits the data.
 	 */
-	public void initData() {
+	public void initData(){
 		ReportId reportId;
 		Integer week = 0;
 		int year = 2015;
@@ -58,7 +59,7 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 	/**
 	 * Clean data.
 	 */
-	public void cleanData() {
+	public void cleanData(){
 		List<ReportId> list = findAll();
 		for (ReportId item : list) {
 			delete(item);
@@ -103,9 +104,13 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 	 * @return the collection response
 	 * @throws ProconcoException the proconco exception
 	 */
-	public CollectionResponse<ReportId> searchReportId(String querySearch, String cursorString, Integer count)
+	public CollectionResponse<ReportId> searchReportId(String querySearch, String cursorString, Integer count, Long userId)
 			throws ProconcoException {
 		Query<ReportId> query = getQuery(querySearch);
+		if (userId != null) {
+			query = query.filter("userKey", Key.create(User.class, userId));
+		}
+		query.order("-year").order("-week");
 		return executeQuery(query, cursorString, count);
 	}
 	
@@ -133,26 +138,61 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 	 *
 	 * @param reportId the report id
 	 * @return the report id
+	 * @throws ProconcoException the proconco exception
 	 */
-	public ReportId insert(ReportId reportId) {
-		//Insert into reportId
-		persist(reportId);
-		
-		//Insert into Report
-		ReportDao reportDao = new ReportDao();
-		Report report = new Report();
-		report.setId(reportId.getId());
-		if (reportId.getUserKey() != null) {
-			UserDao dao = new UserDao();
-			User user = dao.find(reportId.getUserKey());
-			if (user != null) {
-				report.setCrtUid(user.getLogin());
-				report.setUpdUid(user.getLogin());
+	public ReportId insert(ReportId reportId) throws ProconcoException{
+		try {
+			ReportId reportIdFound = find(reportId.getYear(), reportId.getWeek(), reportId.getUserId());
+			if (reportIdFound == null) {
+				//Insert into reportId
+				reportId.setUserKey(Key.create(User.class, reportId.getUserId()));
+				reportId.setCrtTms(Calendar.getInstance().getTime());
+				persist(reportId);
+				
+				//Insert into Report
+				ReportDao reportDao = new ReportDao();
+				Report report = new Report();
+				report.setId(reportId.getId());
+				if (reportId.getUserKey() != null) {
+					UserDao dao = new UserDao();
+					User user = dao.find(reportId.getUserKey());
+					if (user != null) {
+						report.setCrtUid(user.getLogin());
+						report.setUpdUid(user.getLogin());
+					}
+				}
+				
+				reportDao.insert(report);
+				return reportId;
+				
+			} else {
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION, ErrorCodeDetail.ERROR_EXIST_OBJECT);
 			}
+			
+		} catch (Exception e) {
+			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_PARSE_QUERY + Constants.STRING_EXEPTION_DETAIL + e.getMessage());
+		}
+	}
+	
+	public ReportId merge(ReportId reportId) throws ProconcoException{
+		try {
+			ReportId oldReportId = find(reportId.getId());
+			if (oldReportId == null) {
+				throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
+						ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
+			}
+			
+			if (reportId.getStatus() != 0) {
+				oldReportId.setStatus(reportId.getStatus());
+			}
+			persist(oldReportId);
+			return oldReportId;
+		} catch (Exception e) {
+			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION, ErrorCodeDetail.ERROR_UPDATE_ENTITY.getMsg()
+					+ Constants.STRING_EXEPTION_DETAIL + e.getMessage());
 		}
 		
-		reportDao.insert(report);
-		return reportId;
 	}
 	
 	/**
@@ -192,7 +232,7 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 		map.put("week", week);
 		map.put("userKey", Key.create(User.class, userId));
 		Query<ReportId> query = getQuery(map);
-		List<ReportId> list = executeQuery(query, 1); 
+		List<ReportId> list = executeQuery(query, 10); 
 		if (list != null && list.size() > 0) {
 			return list.get(0);
 		}
@@ -208,10 +248,27 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 	 * @return the collection response
 	 */
 	public CollectionResponse<ReportId> find(Long userId, String cursorString, Integer count) {
-		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("userKey", Key.create(User.class, userId));
-		Query<ReportId> query = getQuery(map);
-		query.order("-year").order("-week");
+		Query<ReportId> query = ofy().load().type(ReportId.class);
+		query = query.filter("userKey", Key.create(User.class, userId));
+		query = query.order("-year");
+		query = query.order("-week");
 		return executeQuery(query, cursorString, count);
 	}
+	
+	/**
+	 * Find.
+	 *
+	 * @param id the id
+	 * @param userId the user id
+	 * @return the report id
+	 */
+	public ReportId find(Long id, Long userId) {
+		Query<ReportId> query = ofy().load().type(ReportId.class);
+		query = query.filter("userKey", Key.create(User.class, userId));
+		query = query.order("-year");
+		query = query.order("-week");
+		ReportIdDao dao = new ReportIdDao();
+		return dao.find(id);
+	}
+	
 }

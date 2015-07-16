@@ -215,6 +215,8 @@
                 <th>ID</th>
                 <th translate="proconcoappApp.user.username">Login</th>
                 <th translate="proconcoappApp.user.email">Email</th>
+                <th translate="proconcoappApp.user.group">Group</th>
+                <th translate="proconcoappApp.user.position">Position</th>
                 <th translate="proconcoappApp.user.activated">Activated</th>
 <!--                 <th translate="proconcoappApp.user.crtTms">CrtTms</th> -->
                 <th></th>
@@ -225,6 +227,8 @@
                 <td><a ui-sref="userDetail({id:user.id})">{{user.id}}</a></td>
                 <td>{{user.login}}</td>
                 <td>{{user.email}}</td>
+                <td>{{user.group.grpName}}</td>
+                <td>{{user.position.postName}}</td>
                 <td>{{user.activated}}</td>
 <!--                 <td>{{user.crtTms}}</td> -->
                 <td>

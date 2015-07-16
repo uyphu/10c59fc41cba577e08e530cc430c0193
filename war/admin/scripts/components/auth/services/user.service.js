@@ -35,11 +35,11 @@ angular.module('jhipsterApp')
     			return p.promise;
    			},
    			
-   			listUserByGroup: function (groupId, queryString, cursor){
+   			listUserByGroup: function (groupId, querySearch, cursor){
     			var p=$q.defer();
     			var requestData = {};
     			requestData.groupId = groupId;
-    			requestData.queryString = queryString;
+    			requestData.querySearch = querySearch;
     			requestData.cursor = cursor;
     			requestData.count = AppConstant.MAX_PAGE_SIZE;
     			gapi.client.userendpoint.listUserByGroup(requestData).execute(function(resp) {
@@ -94,21 +94,6 @@ angular.module('jhipsterApp')
    				var p=$q.defer();
    				var requestData = {};
    				requestData.id = id;
-    			gapi.client.userendpoint.getUser(requestData).execute(function(resp) {
-                    if (resp != null) {
-                    	p.resolve(resp);
-    				} else {
-    					p.resolve(null);
-    				}
-    			});
-    			return p.promise;
-   			},
-   			
-   			getByGroup: function (id, groupId) {
-   				var p=$q.defer();
-   				var requestData = {};
-   				requestData.id = id;
-   				requestData.groupId = groupId;
     			gapi.client.userendpoint.getUser(requestData).execute(function(resp) {
                     if (resp != null) {
                     	p.resolve(resp);

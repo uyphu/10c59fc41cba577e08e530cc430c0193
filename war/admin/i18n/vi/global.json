@@ -86,7 +86,8 @@
             "save": "Sauvegardervi",
             "view": "Voirvi",
             "detail": "Detailvi",
-            "report": "Reportvi"
+            "report": "Reportvi",
+            "approval": "Approvalvi"
         },
         "detail": {
             "field": "Champsvi",

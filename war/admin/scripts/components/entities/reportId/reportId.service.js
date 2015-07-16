@@ -20,9 +20,10 @@ angular.module('jhipsterApp')
 				return chain;
    			},
    			
-   			loadAll: function (cursor){
+   			loadAll: function (userId, cursor){
     			var p=$q.defer();
     			var requestData = {};
+    			requestData.userId = userId;
     			requestData.cursor = cursor;
     			requestData.count = AppConstant.MAX_PAGE_SIZE;
     			gapi.client.reportidendpoint.listReportId(requestData).execute(function(resp) {

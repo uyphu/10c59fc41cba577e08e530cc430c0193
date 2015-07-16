@@ -23,6 +23,26 @@ angular.module('jhipsterApp')
                     }]
                 }
             })
+            .state('reportIdUser', {
+                parent: 'entity',
+                url: '/reportIdUser/:userId',
+                data: {
+                    roles: ['ROLE_USER'],
+                    pageTitle: 'proconcoappApp.reportId.home.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/entities/reportId/reportId-user.html',
+                        controller: 'ReportIdUserController'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('reportId');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('reportIdDetail', {
                 parent: 'entity',
                 url: '/reportId/:id',

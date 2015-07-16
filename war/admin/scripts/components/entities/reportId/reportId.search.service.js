@@ -3,9 +3,10 @@
 angular.module('jhipsterApp')
    .factory('ReportIdSearch', function ($resource, $q) {
 	   return {
-		   searchReportId: function(querySearch, cursor){
+		   searchReportId: function(userId, querySearch, cursor){
 			    var p=$q.defer();
 	   			var requestData = {};
+	   			requestData.userId = userId;
 	   			requestData.cursor = cursor;
 	   			requestData.count = AppConstant.MAX_PAGE_SIZE;
 	   			requestData.querySearch = querySearch;

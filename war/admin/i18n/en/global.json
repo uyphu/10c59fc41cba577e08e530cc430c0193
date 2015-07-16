@@ -86,7 +86,8 @@
             "save": "Save",
             "view": "View",
             "detail": "Detail",
-            "report": "Report"
+            "report": "Report",
+            "approval": "Approval"
         },
         "detail": {
             "field": "Field",

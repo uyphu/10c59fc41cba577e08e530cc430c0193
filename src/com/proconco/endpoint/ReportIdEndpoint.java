@@ -1,7 +1,5 @@
 package com.proconco.endpoint;
 
-import java.util.Calendar;
-
 import javax.annotation.Nullable;
 import javax.inject.Named;
 
@@ -10,11 +8,9 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
-import com.googlecode.objectify.Key;
 import com.proconco.constants.Constants;
 import com.proconco.dao.ReportIdDao;
 import com.proconco.entity.ReportId;
-import com.proconco.entity.User;
 import com.proconco.exception.ErrorCode;
 import com.proconco.exception.ErrorCodeDetail;
 import com.proconco.exception.ProconcoException;
@@ -30,10 +26,14 @@ public class ReportIdEndpoint {
 	 * @return a list of ReportIds
 	 */
 	@ApiMethod(name = "listReportId")
-	public CollectionResponse<ReportId> listReportId(@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("count") Integer count) {
+	public CollectionResponse<ReportId> listReportId(@Nullable @Named("userId") Long userId,
+			@Nullable @Named("cursor") String cursorString, @Nullable @Named("count") Integer count) {
 		ReportIdDao dao = new ReportIdDao();
-		return dao.list(cursorString, count);
+		if (userId != null) {
+			return dao.find(userId, cursorString, count);
+		} else {
+			return dao.list(cursorString, count);
+		}
 	}
 
 	/**
@@ -53,29 +53,22 @@ public class ReportIdEndpoint {
 			// that it is already present
 			if (reportId.getId() != null) {
 				if (reportId.getId() == 0) {
-					reportId = createId(reportId);
+					//reportId = createId(null);
+					reportId.setId(null);
+					reportId.setStatus(Constants.IN_WORK_STATUS);
 				} else {
 					if (findRecord(reportId.getId()) != null) {
 						throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
 								ErrorCodeDetail.ERROR_EXIST_OBJECT);
 					}
 				}
-			} else {
-				reportId = createId(reportId);
-			}
+			} 
 			// Since our @Id field is a Long, Objectify will generate a unique
 			// value
 			// for us
 			// when we use put
 			ReportIdDao dao = new ReportIdDao();
-			ReportId rep = dao.find(reportId.getId());
-			if (rep == null) {
-				dao.insert(reportId);
-			} else {
-				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
-						ErrorCodeDetail.ERROR_EXIST_OBJECT);
-			}
-			return reportId;
+			return dao.insert(reportId);
 		} catch (Exception e) {
 			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION,
 					ErrorCodeDetail.ERROR_INSERT_ENTITY + Constants.STRING_EXEPTION_DETAIL + e.getMessage());
@@ -94,25 +87,8 @@ public class ReportIdEndpoint {
 	 */
 	@ApiMethod(name = "updateReportId")
 	public ReportId updateReportId(ReportId reportId) throws ProconcoException {
-		try {
-			if (findRecord(reportId.getId()) == null) {
-				throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION,
-						ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
-			}
-			ReportIdDao dao = new ReportIdDao();
-			ReportId rep = findRecord(reportId.getId());
-			if (rep != null) {
-				dao.update(rep);
-			} else {
-				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION,
-						ErrorCodeDetail.ERROR_EXIST_OBJECT);
-			}
-			return rep;
-		} catch (Exception e) {
-			throw new ProconcoException(ErrorCode.SYSTEM_EXCEPTION, ErrorCodeDetail.ERROR_UPDATE_ENTITY.getMsg()
-					+ Constants.STRING_EXEPTION_DETAIL + e.getMessage());
-		}
-
+		ReportIdDao dao = new ReportIdDao();
+		return dao.merge(reportId);
 	}
 
 	/**
@@ -179,12 +155,17 @@ public class ReportIdEndpoint {
 		ReportIdDao dao = new ReportIdDao();
 		return dao.find(id);
 	}
+	
+	private ReportId findRecord(Long id, Long userId) {
+		ReportIdDao dao = new ReportIdDao();
+		return dao.find(id, userId);
+	}
 
 	/**
 	 * Inits the data.
 	 */
 	@ApiMethod(name = "initData")
-	public void initData() {
+	public void initData() throws ProconcoException{
 		ReportIdDao dao = new ReportIdDao();
 		dao.initData();
 	}
@@ -200,10 +181,16 @@ public class ReportIdEndpoint {
 
 	@ApiMethod(name = "searchReportId", httpMethod = HttpMethod.GET, path = "search_reportId")
 	public CollectionResponse<ReportId> searchReportId(@Nullable @Named("querySearch") String querySearch,
-			@Nullable @Named("cursor") String cursorString, @Nullable @Named("count") Integer count)
+			@Nullable @Named("cursor") String cursorString, @Nullable @Named("count") Integer count, 
+			@Nullable @Named("userId") Long userId)
 			throws ProconcoException {
 		ReportIdDao dao = new ReportIdDao();
-		return dao.searchReportId(querySearch, cursorString, count);
+		if (querySearch != null && querySearch.indexOf("id:") != -1) {
+			String id = querySearch.split(":")[1];
+			ReportId reportId =  findRecord(Long.parseLong(id), userId);
+			return dao.buildCollectionResponse(reportId, null);
+		}
+		return dao.searchReportId(querySearch, cursorString, count, userId);
 	}
 
 	/**
@@ -213,22 +200,22 @@ public class ReportIdEndpoint {
 	 *            the report id
 	 * @return the report id
 	 */
-	private ReportId createId(ReportId reportId) {
-		StringBuilder id = new StringBuilder();
-		id.append(reportId.getYear());
-		if (reportId.getWeek() < 10) {
-			id.append(Constants.STRING_ZERO + reportId.getWeek());
-		} else {
-			id.append(reportId.getWeek());
-		}
-		reportId.setId(Long.parseLong(id.toString()));
-		if (reportId.getUserId() != null) {
-			Key<User> key = Key.create(User.class, reportId.getUserId());
-			reportId.setUserKey(key);
-		}
-
-		reportId.setCrtTms(Calendar.getInstance().getTime());
-		return reportId;
-	}
+//	private ReportId createId(ReportId reportId) {
+//		StringBuilder id = new StringBuilder();
+//		id.append(reportId.getYear());
+//		if (reportId.getWeek() < 10) {
+//			id.append(Constants.STRING_ZERO + reportId.getWeek());
+//		} else {
+//			id.append(reportId.getWeek());
+//		}
+//		reportId.setId(Long.parseLong(id.toString()));
+//		if (reportId.getUserId() != null) {
+//			Key<User> key = Key.create(User.class, reportId.getUserId());
+//			reportId.setUserKey(key);
+//		}
+//
+//		reportId.setCrtTms(Calendar.getInstance().getTime());
+//		return reportId;
+//	}
 
 }

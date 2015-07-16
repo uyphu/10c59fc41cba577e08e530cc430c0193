@@ -120,48 +120,9 @@ angular.module('jhipsterApp')
             }
 
             if ($scope.searchQuery != null && $scope.searchQuery != '') {
-                if ($scope.searchQuery.indexOf('id:') != -1) {
-                    var query = $scope.searchQuery.split(':', 2);
-                    try {
-                        var id = parseInt(query[1]);
-                        if (!isNaN(id)) {
-                            $scope.startSpin();
-                            User.get(id).then(function(data) {
-                                startTimer();
-                                $scope.users = [];
-                                if (data != null) {
-                                    $scope.users.push(data.result);
-                                }
-                            });
-                        } else {
-                            $scope.invalidQuerySearch = 'ERROR';
-                        }
-                    } catch (e) {
-                        $scope.invalidQuerySearch = 'ERROR';
-                    }
-
-                } else {
-                    $scope.startSpin();
-                    UserSearch.searchUser($scope.searchQuery, $scope.cursor).then(function(data) {
-                            $scope.stopSpin();
-                            if ($scope.cursor == null) {
-                                $scope.users = [];
-                            }
-                            if (data != null) {
-                                for (var i = 0; i < data.items.length; i++) {
-                                    $scope.users.push(data.items[i]);
-                                }
-                                $scope.cursor = data.nextPageToken;
-                            }
-                        },
-                        function(response) {
-                            if (response.status === 404) {
-                                $scope.loadAll();
-                            }
-                        });
-                }
+            	listData($scope.groupId, $scope.searchQuery, $scope.cursor);
             } else {
-                listData(null);
+                listData($scope.groupId, null, null);
             }
         };
 
@@ -260,7 +221,7 @@ angular.module('jhipsterApp')
                         if (data.result != null) {
                             $scope.groups.push(data.result);
                             $scope.groupId = $scope.groups[0].id;
-                            listData($scope.groupId, null);
+                            listData($scope.groupId, null, null);
                         }
                     }
                 });
@@ -271,7 +232,7 @@ angular.module('jhipsterApp')
 	                    if (data.items != null) {
 	                        $scope.groups = data.items;
 	                        $scope.groupId = $scope.groups[0].id;
-	                        listData($scope.groupId, null);
+	                        listData($scope.groupId, null, null);
 	                    }
 	                }
 	            });
@@ -281,7 +242,7 @@ angular.module('jhipsterApp')
         $scope.onChange = function() {
         	var groupId = $scope.groupId;
         	$scope.users = [];
-        	listData(groupId, null);
+        	listData(groupId, null, null);
         }
         
         $scope.loadPage = function(page) {
@@ -290,7 +251,7 @@ angular.module('jhipsterApp')
          	   $scope.search();
             } else {
          	   if ($scope.cursor != null) {
-             	   listData($scope.groupId, $scope.cursor);
+             	   listData($scope.groupId, null, $scope.cursor);
                 }
             }
         };

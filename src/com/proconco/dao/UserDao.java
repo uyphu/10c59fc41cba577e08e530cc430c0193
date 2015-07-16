@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Named;
+
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.googlecode.objectify.Key;
@@ -407,5 +409,33 @@ public class UserDao extends AbstractDao<User> {
 		}
 		
 	}
+	
+	/**
+	 * List authority.
+	 *
+	 * @param userId the user id
+	 * @return the collection response
+	 * @throws ProconcoException the proconco exception
+	 */
+	public CollectionResponse<Authority> listAuthority(@Named("userId") Long userId) throws ProconcoException {
+		User user = find(userId);
+		if (user != null) {
+			List<Key<Authority>> list = user.getAuthorityKeys();
+			if (list != null && list.size() > 0) {
+				List<Authority> authorities = new ArrayList<Authority>();
+				for (Key<Authority> key : list) {
+					AuthorityDao dao = new AuthorityDao();
+					Authority authority = dao.find(key.getId());
+					if (authority != null) {
+						authorities.add(authority);
+					}
+				}
+				AuthorityDao dao = new AuthorityDao();
+				return dao.buildCollectionResponse(authorities);
+			}
+		} 
+		
+		throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION, ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
+	} 
 
 }

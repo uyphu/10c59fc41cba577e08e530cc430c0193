@@ -25,6 +25,8 @@
             "newpassword": "New password",
             "confirmpassword": "New password confirmation",
             "activated": "Activated",
+            "group": "Group",
+            "position": "Position",
             "crtTms": "CrtTms",
             "firstName": "Firstname",
             "lastName": "LastName",

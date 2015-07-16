@@ -243,6 +243,17 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	}
 	
 	/**
+	 * Builds the collection response.
+	 *
+	 * @param records the records
+	 * @return the collection response
+	 */
+	public CollectionResponse<T> buildCollectionResponse(List<T> records) {
+		return CollectionResponse.<T> builder().setItems(records)
+				.setNextPageToken(null).build();
+	}
+	
+	/**
 	 * Inits the data.
 	 */
 	abstract public void initData();

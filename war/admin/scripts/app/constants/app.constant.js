@@ -35,7 +35,7 @@ AppConstant.OAUTH2_VERSION = 'v2';
 AppConstant.OAUTH2 = 'oauth2';
 
 /** The Constant OAUTH2. */
-AppConstant.MAX_PAGE_SIZE = 10;
+AppConstant.MAX_PAGE_SIZE = 20;
 
 /** The Constant OAUTH2_ENDPOINT_LOADED. */
 AppConstant.OAUTH2_ENDPOINT_LOADED = false;
@@ -81,4 +81,18 @@ AppConstant.PLANNINGWEEKID_ENDPOINT_LOADED = false;
 
 /** The Constant PLANNINGWEEK_ENDPOINT_LOADED. */
 AppConstant.PLANNINGWEEK_ENDPOINT_LOADED = false;
+
+/** The Constant IN_WORK. */
+AppConstant.IN_WORK = "In Work";
+
+/** The Constant PENDING. */
+AppConstant.PENDING = "Pending";
+
+/** The Constant APPROVED. */
+AppConstant.APPROVED = "Approved";
+
+/** The Constant CANCELLED. */
+AppConstant.CANCELLED = "Cancelled";
+
+
 
