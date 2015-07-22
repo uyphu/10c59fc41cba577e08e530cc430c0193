@@ -18,7 +18,7 @@ angular.module('jhipsterApp')
       	   } else {
       		   $scope.get(id);
       	   }
-            
+        	
         };
         
         $scope.get = function(id) {

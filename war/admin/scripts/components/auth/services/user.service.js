@@ -52,6 +52,51 @@ angular.module('jhipsterApp')
     			return p.promise;
    			},
    			
+   			listAuthority: function (userId){
+    			var p=$q.defer();
+    			var requestData = {};
+    			requestData.userId = userId;
+    			requestData.count = AppConstant.MAX_PAGE_SIZE;
+    			gapi.client.userendpoint.listAuthority(requestData).execute(function(resp) {
+                    if (resp != null) {
+                    	p.resolve(resp);
+    				} else {
+    					p.resolve(null);
+    				}
+    			});
+    			return p.promise;
+   			},
+   			
+   			addAuthority: function (userId, role){
+    			var p=$q.defer();
+    			var requestData = {};
+    			requestData.userId = userId;
+    			requestData.role = role;
+    			gapi.client.userendpoint.addAuthority(requestData).execute(function(resp) {
+                    if (resp != null) {
+                    	p.resolve(resp);
+    				} else {
+    					p.resolve(null);
+    				}
+    			});
+    			return p.promise;
+   			},
+   			
+   			removeAuthority: function (userId, role){
+    			var p=$q.defer();
+    			var requestData = {};
+    			requestData.userId = userId;
+    			requestData.role = role;
+    			gapi.client.userendpoint.removeAuthority(requestData).execute(function(resp) {
+                    if (resp != null) {
+                    	p.resolve(resp);
+    				} else {
+    					p.resolve(null);
+    				}
+    			});
+    			return p.promise;
+   			},
+   			
    			insert: function (user) {
    				var p=$q.defer();
     			gapi.client.userendpoint.insertUser(user).execute(function(resp) {

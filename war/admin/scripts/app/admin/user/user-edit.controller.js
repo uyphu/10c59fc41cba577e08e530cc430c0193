@@ -37,7 +37,6 @@ angular.module('jhipsterApp')
         $scope.startSpin = function() {
      	   	if (!$scope.spinneractive) {
      		   usSpinnerService.spin('spinner-1');
-     		   //$scope.startcounter++;
      	   	}
         };
 
@@ -94,7 +93,6 @@ angular.module('jhipsterApp')
  					console.log(ErrorCode.ERROR_INIT_ENDPOINT_SERVICE);
  				});
      	   } else {
-     		   //listData(null);
      		  getPositionList(cursor, count);
      	   }
         };
@@ -112,7 +110,6 @@ angular.module('jhipsterApp')
  					console.log(ErrorCode.ERROR_INIT_ENDPOINT_SERVICE);
  				});
      	   } else {
-     		   //listData(null);
      		  getGroupList(cursor, count);
      	   }
         };

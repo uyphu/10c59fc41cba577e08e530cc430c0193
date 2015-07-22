@@ -271,4 +271,25 @@ public class ReportIdDao extends AbstractDao<ReportId> {
 		return dao.find(id);
 	}
 	
+	/**
+	 * Approve.
+	 *
+	 * @param id the id
+	 * @param login the login
+	 * @return the report id
+	 * @throws ProconcoException the proconco exception
+	 */
+	public ReportId approve(Long id, String login) throws ProconcoException{
+		ReportId reportId = find(id);
+		if (reportId != null) {
+			reportId.setApprovalUser(login);
+			reportId.setApprovalTms(Calendar.getInstance().getTime());
+			reportId.setStatus(Constants.APPROVED_STATUS);
+			update(reportId);
+			return reportId;
+		} else {
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION, ErrorCodeDetail.ERROR_RECORD_NOT_FOUND);
+		}
+	}
+	
 }

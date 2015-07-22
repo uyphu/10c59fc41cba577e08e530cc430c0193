@@ -192,6 +192,21 @@ public class ReportIdEndpoint {
 		}
 		return dao.searchReportId(querySearch, cursorString, count, userId);
 	}
+	
+	/**
+	 * Approve.
+	 *
+	 * @param id the id
+	 * @param login the login
+	 * @return the report id
+	 * @throws ProconcoException the proconco exception
+	 */
+	@ApiMethod(name = "approveReportId", httpMethod = HttpMethod.POST, path = "approve_reportId")
+	public ReportId approveReportId(@Nullable @Named("id") Long id, @Nullable @Named("login") String login)
+			throws ProconcoException {
+		ReportIdDao dao = new ReportIdDao();
+		return dao.approve(id, login);
+	}
 
 	/**
 	 * Creates the id.

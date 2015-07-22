@@ -41,23 +41,21 @@ public class AuthorityDao extends AbstractDao<Authority>{
 	public void initData() {
 		Authority authority;
 		
-		authority = new Authority(1L, "ROLE_ADMIN");
+		authority = new Authority(1L, AuthoritiesConstants.ROLE_ADMIN);
 		persist(authority);
-		authority = new Authority(2L, "ROLE_USER");
+		authority = new Authority(2L, AuthoritiesConstants.ROLE_USER);
 		persist(authority);
-		authority = new Authority(3L, "ROLE_ANONYMOUS");
+		authority = new Authority(3L, AuthoritiesConstants.ROLE_ANONYMOUS);
 		persist(authority);
-		authority = new Authority(4L, "READ_ONLY");
+		authority = new Authority(4L, AuthoritiesConstants.ROLE_READONLY);
 		persist(authority);
-		authority = new Authority(5L, "READ_ALL");
+		authority = new Authority(5L, AuthoritiesConstants.ROLE_EDIT);
 		persist(authority);
-		authority = new Authority(6L, "EDIT");
+		authority = new Authority(6L, AuthoritiesConstants.ROLE_APPROVAL);
 		persist(authority);
-		authority = new Authority(7L, "APPROVAL");
+		authority = new Authority(7L, AuthoritiesConstants.ROLE_MANAGER);
 		persist(authority);
-		authority = new Authority(8L, "MANAGER");
-		persist(authority);
-		authority = new Authority(9L, AuthoritiesConstants.TEAM_LEADER);
+		authority = new Authority(8L, AuthoritiesConstants.ROLE_LEADER);
 		persist(authority);
 	}
 

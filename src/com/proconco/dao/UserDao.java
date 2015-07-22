@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.inject.Named;
 
@@ -27,6 +28,8 @@ import com.proconco.utils.MathUtils;
  * The Class UserProfileDao.
  */
 public class UserDao extends AbstractDao<User> {
+	
+	private static final Logger log = Logger.getLogger(UserDao.class.getName());
 
 	/**
 	 * Instantiates a new group dao.
@@ -58,6 +61,9 @@ public class UserDao extends AbstractDao<User> {
 		}
 		if (user.isActivated() != oldUser.isActivated()) {
 			oldUser.setActivated(user.isActivated());
+		}
+		if (!user.getPassword().equals(oldUser.getPassword())) {
+			oldUser.setPassword(MathUtils.cryptWithMD5(user.getPassword()));
 		}
 		return super.update(oldUser);
 	}
@@ -163,6 +169,92 @@ public class UserDao extends AbstractDao<User> {
 		}
 	}
 	
+	public void addRole(Long userId, String role) throws ProconcoException {
+		User user = find(userId);
+		AuthorityDao authorityDao = new AuthorityDao();
+		Authority authority = authorityDao.getAuthorityByName(role);
+		if (user != null && authority != null) {
+			Key<Authority> key = Key.create(Authority.class, authority.getId());
+			List<Key<Authority>> list = user.getAuthorityKeys();
+			if (list == null) {
+				list = new ArrayList<Key<Authority>>();
+			}
+			if (!list.contains(key)) {
+				list.add(key);
+				user.setAuthorityKeys(list);
+				persist(user);
+			} else {
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_DUPLICATED_ROLE.getMsg());
+			}
+		} else {
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_NOT_FOUND_ROLE.getMsg());
+		}
+	}
+	
+	/**
+	 * Removes the role.
+	 *
+	 * @param login the login
+	 * @param role the role
+	 * @throws ProconcoException the proconco exception
+	 */
+	public void removeRole(String login, String role) throws ProconcoException {
+		User user = getUserByLogin(login);
+		AuthorityDao authorityDao = new AuthorityDao();
+		Authority authority = authorityDao.getAuthorityByName(role);
+		if (user != null && authority != null) {
+			Key<Authority> key = Key.create(Authority.class, authority.getId());
+			List<Key<Authority>> list = user.getAuthorityKeys();
+			if (list == null) {
+				list = new ArrayList<Key<Authority>>();
+			}
+			if (list.contains(key)) {
+				list.remove(key);
+				user.setAuthorityKeys(list);
+				persist(user);
+			} else {
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_DUPLICATED_ROLE.getMsg());
+			}
+		} else {
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_NOT_FOUND_ROLE.getMsg());
+		}
+	}
+	
+	/**
+	 * Removes the authority.
+	 *
+	 * @param userId the user id
+	 * @param role the role
+	 * @throws ProconcoException the proconco exception
+	 */
+	public void removeAuthority(Long userId, String role) throws ProconcoException {
+		User user = find(userId);
+		AuthorityDao authorityDao = new AuthorityDao();
+		Authority authority = authorityDao.getAuthorityByName(role);
+		if (user != null && authority != null) {
+			Key<Authority> key = Key.create(Authority.class, authority.getId());
+			List<Key<Authority>> list = user.getAuthorityKeys();
+			if (list == null) {
+				list = new ArrayList<Key<Authority>>();
+			}
+			if (list.contains(key)) {
+				list.remove(key);
+				user.setAuthorityKeys(list);
+				persist(user);
+			} else {
+				throw new ProconcoException(ErrorCode.CONFLICT_EXCEPTION.getId(),
+						ErrorCodeDetail.ERROR_DUPLICATED_ROLE.getMsg());
+			}
+		} else {
+			throw new ProconcoException(ErrorCode.NOT_FOUND_EXCEPTION.getId(),
+					ErrorCodeDetail.ERROR_NOT_FOUND_ROLE.getMsg());
+		}
+	}
+	
 	/**
 	 * Adds the position.
 	 *
@@ -207,18 +299,33 @@ public class UserDao extends AbstractDao<User> {
 	public void initData() {
 		User user;
 
-		for (Long i = 1L; i < 1000; i++) {
-			if (i % 2 == 0) {
-				user = new User(i, "login" + String.valueOf(i), "123456", "firstName" + String.valueOf(i), "lastName"
-						+ String.valueOf(i), "email" + String.valueOf(i) + "@yahoo.com", "EN");
-			} else {
-				user = new User(i, "login" + String.valueOf(i), "123456", "firstName" + String.valueOf(i), "lastName"
-						+ String.valueOf(i), "email" + String.valueOf(i) + "@gmail.com", "EN");
-			}
-
-			user.setCreateDate(Calendar.getInstance().getTime());
-			persist(user);
+//		for (Long i = 1L; i < 1000; i++) {
+//			if (i % 2 == 0) {
+//				user = new User(i, "login" + String.valueOf(i), "123456", "firstName" + String.valueOf(i), "lastName"
+//						+ String.valueOf(i), "email" + String.valueOf(i) + "@yahoo.com", "EN");
+//			} else {
+//				user = new User(i, "login" + String.valueOf(i), "123456", "firstName" + String.valueOf(i), "lastName"
+//						+ String.valueOf(i), "email" + String.valueOf(i) + "@gmail.com", "EN");
+//			}
+//
+//			user.setCreateDate(Calendar.getInstance().getTime());
+//			persist(user);
+//		}
+		
+		
+		
+		try {
+			user = new User("admin", "admin", "Phu", "Le", "uyphu@yhaoo.com", "en");
+			insert(user);
+			
+			user = new User("user1", "user1", "user1", "user1", "user1@yhaoo.com", "en");
+			insert(user);
+			addRole("admin", "ROLE_USER");
+			addRole("admin", "ROLE_ADMIN");
+		} catch (ProconcoException e) {
+			log.severe(e.getMessage());
 		}
+		
 
 	}
 
@@ -283,7 +390,7 @@ public class UserDao extends AbstractDao<User> {
 			
 			//Add dedault role: ROLE_USER
 			AuthorityDao authorityDao = new AuthorityDao();
-			Authority authority = authorityDao.getAuthorityByName(AuthoritiesConstants.USER);
+			Authority authority = authorityDao.getAuthorityByName(AuthoritiesConstants.ROLE_USER);
 			List<Key<Authority>> list = new ArrayList<Key<Authority>>();
 			list.add(Key.create(Authority.class, authority.getId()));
 			user.setAuthorityKeys(list);

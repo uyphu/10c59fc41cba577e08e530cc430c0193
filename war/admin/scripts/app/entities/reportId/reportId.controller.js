@@ -56,7 +56,7 @@ angular.module('jhipsterApp')
      		   if (data != null) {
      			   if (data.items != null) {
  	    			   for (var i = 0; i < data.items.length; i++) {
- 	    				  $scope.reportIds.push(convert(data.items[i]));
+ 	    				  $scope.reportIds.push(new AppUtils().convert(data.items[i]));
  	    			   }
  	    			   $scope.cursor = data.nextPageToken;
      			   }
@@ -112,7 +112,7 @@ angular.module('jhipsterApp')
 	    		   }
 	    		   if (data != null) {
 	    			   for (var i = 0; i < data.items.length; i++) {
-	                       $scope.reportIds.push(convert(data.items[i]));
+	                       $scope.reportIds.push(new AppUtils().convert(data.items[i]));
 	      			   }
 	    			   $scope.cursor = data.nextPageToken;
 	    		   }
@@ -127,19 +127,6 @@ angular.module('jhipsterApp')
      	   }
         };
         
-        function convert(item) {
-        	if (item.status == 0) {
-				item.statusString = AppConstant.IN_WORK;
-			} else if (item.status == 1) {
-				item.statusString = AppConstant.PENDING;
-			} else if (item.status == 2) {
-				item.statusString = AppConstant.APPROVED;
-			} else if (item.status == 3) {
-				item.statusString = AppConstant.CANCELLED;
-			}
-        	return item;
-        }
-
         $scope.refresh = function () {
             $scope.reset();
             $('#saveReportIdModal').modal('hide');

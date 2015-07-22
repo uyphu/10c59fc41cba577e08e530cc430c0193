@@ -3,6 +3,7 @@
     <h2><span translate="proconcoappApp.report.detail.title">Report</span> {{report.id}}</h2>
     <button type="submit"
             ui-sref="reportEdit({id:report.id})"
+            ng-hide="report.status != 0"
             class="btn btn-primary btn-sm">
         <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
     </button>

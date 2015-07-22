@@ -22,7 +22,9 @@
            		"message":{
            			"querySearch":"Invalid query search!",
            			"invalidName":"Invalid name!",
-           			"insertError":"Insert Error!"
+           			"insertError":"Insert Error!",
+           			"sucessfullyApproved": "Successfully approved!"
+           			
            		}
            }
         }

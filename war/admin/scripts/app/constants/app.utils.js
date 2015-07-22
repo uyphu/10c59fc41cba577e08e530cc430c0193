@@ -23,3 +23,16 @@ AppUtils.prototype.getWeekYear = function() {
 	date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
 	return date.getFullYear();
 }
+
+AppUtils.prototype.convert = function(item) {
+	if (item.status == 0) {
+		item.statusString = AppConstant.IN_WORK;
+	} else if (item.status == 1) {
+		item.statusString = AppConstant.PENDING;
+	} else if (item.status == 2) {
+		item.statusString = AppConstant.APPROVED;
+	} else if (item.status == 3) {
+		item.statusString = AppConstant.CANCELLED;
+	}
+	return item;
+}

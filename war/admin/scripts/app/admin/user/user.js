@@ -62,5 +62,25 @@ angular.module('jhipsterApp')
                         return $translate.refresh();
                     }]
                 }
+            })
+            .state('userAuthority', {
+                parent: 'entity',
+                url: '/user-authority/:id',
+                data: {
+                    roles: ['ROLE_ADMIN'],
+                    pageTitle: 'proconcoappApp.user.authority.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/admin/user/user-authority.html',
+                        controller: 'UserAuthorityController'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('authority');
+                        return $translate.refresh();
+                    }]
+                }
             });
     });

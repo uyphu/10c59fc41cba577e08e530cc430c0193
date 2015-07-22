@@ -22,7 +22,8 @@
            		"message":{
            			"querySearch":"Invalid query search!fr",
            			"invalidName":"Invalid name!fr",
-           			"insertError":"Insert Error!fr"
+           			"insertError":"Insert Error!fr",
+           			"sucessfullyApproved": "Successfully approved!"
            		}
            }
         }

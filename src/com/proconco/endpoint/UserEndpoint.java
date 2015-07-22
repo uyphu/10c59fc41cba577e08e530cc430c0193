@@ -156,6 +156,38 @@ public class UserEndpoint {
 		UserDao dao = new UserDao();
 		dao.addRole(login, role);
 	}
+	
+	/**
+	 * Adds the authority.
+	 *
+	 * @param userId the user id
+	 * @param role the role
+	 * @throws ProconcoException the proconco exception
+	 */
+	@ApiMethod(name = "addAuthority", httpMethod = HttpMethod.POST, path = "add_auhtority")
+	public void addAuthority(@Named("userId") Long userId, @Named("role") String role) throws ProconcoException {
+		UserDao dao = new UserDao();
+		dao.addRole(userId, role);
+	}
+	
+	/**
+	 * Removes the role.
+	 *
+	 * @param login the login
+	 * @param role the role
+	 * @throws ProconcoException the proconco exception
+	 */
+	@ApiMethod(name = "removeRole", httpMethod = HttpMethod.POST, path = "remove_role")
+	public void removeRole(@Named("login") String login, @Named("role") String role) throws ProconcoException {
+		UserDao dao = new UserDao();
+		dao.removeRole(login, role);
+	}
+	
+	@ApiMethod(name = "removeAuthority", httpMethod = HttpMethod.POST, path = "remove_authority")
+	public void removeAuthority(@Named("userId") Long userId, @Named("role") String role) throws ProconcoException {
+		UserDao dao = new UserDao();
+		dao.removeAuthority(userId, role);
+	}
 
 	/**
 	 * Inits the data.
@@ -298,6 +330,13 @@ public class UserEndpoint {
 		dao.activateUser(login);
 	} 
 	
+	/**
+	 * List authority.
+	 *
+	 * @param userId the user id
+	 * @return the collection response
+	 * @throws ProconcoException the proconco exception
+	 */
 	@ApiMethod(name = "listAuthority", httpMethod = HttpMethod.GET, path = "list_authority")
 	public CollectionResponse<Authority> listAuthority(@Named("userId") Long userId) throws ProconcoException {
 		UserDao dao = new UserDao();

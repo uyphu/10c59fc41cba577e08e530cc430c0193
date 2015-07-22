@@ -4,6 +4,9 @@ import java.util.Date;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.IgnoreSave;
+import com.googlecode.objectify.annotation.OnLoad;
+import com.proconco.dao.ReportIdDao;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -63,6 +66,16 @@ public class Report {
 	
 	/** The upd tms. */
 	private Date updTms;
+	
+	@IgnoreSave
+	private int status;
+	
+	@OnLoad
+	public void onLoad() {
+		ReportIdDao dao = new ReportIdDao();
+		ReportId reportId = dao.find(this.id);
+		status = reportId.getStatus();
+	}
 	
 	/**
 	 * Instantiates a new report.
@@ -459,6 +472,24 @@ public class Report {
 	 */
 	public final void setDisease(String disease) {
 		this.disease = disease;
+	}
+
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
+	public final int getStatus() {
+		return this.status;
+	}
+
+	/**
+	 * Sets the status.
+	 *
+	 * @param status the new status
+	 */
+	public final void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

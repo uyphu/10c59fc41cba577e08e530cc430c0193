@@ -35,7 +35,8 @@
             "error":{
            		"message":{
            			"querySearch":"Invalid query search!fr",
-           			"update":"Update error!fr"
+           			"update":"Update error!fr",
+           			"sucessfullyApproved": "Successfully approved!"
            		}
            }
         }

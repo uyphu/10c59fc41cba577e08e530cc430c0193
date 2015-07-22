@@ -82,6 +82,9 @@ AppConstant.PLANNINGWEEKID_ENDPOINT_LOADED = false;
 /** The Constant PLANNINGWEEK_ENDPOINT_LOADED. */
 AppConstant.PLANNINGWEEK_ENDPOINT_LOADED = false;
 
+/** The Constant AUTHORITY_ENDPOINT_LOADED. */
+AppConstant.AUTHORITY_ENDPOINT_LOADED = false;
+
 /** The Constant IN_WORK. */
 AppConstant.IN_WORK = "In Work";
 

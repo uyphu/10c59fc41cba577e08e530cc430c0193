@@ -21,9 +21,8 @@ angular.module('jhipsterApp')
         $scope.loadAll = function() {
             var account = AppConstant.ACCOUNT;
             if (account != null) {
-            	var position = account.position;
-            	if (position.roles != null) {
-            		if (position.roles.indexOf('MANAGER') != -1) {
+            	if (account.roles != null) {
+            		if (account.roles.indexOf('ROLE_MANAGER') != -1) {
                 		listGroup(null, null);
     				} else {
     					if (account.groupId != null) {

@@ -13,30 +13,27 @@ public class AuthoritiesConstants {
     }
 
     /** The Constant ADMIN. */
-    public static final String ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     /** The Constant USER. */
-    public static final String USER = "ROLE_USER";
+    public static final String ROLE_USER = "ROLE_USER";
 
     /** The Constant ANONYMOUS. */
-    public static final String ANONYMOUS = "ROLE_ANONYMOUS";
+    public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
     
     /** The Constant READ_ONLY. */
-    public static final String READ_ONLY = "READ_ONLY";
-    
-    /** The Constant READ_ALL. */
-    public static final String READ_ALL = "READ_ALL";
+    public static final String ROLE_READONLY = "ROLE_READONLY";
     
     /** The Constant EDIT. */
-    public static final String EDIT = "EDIT";
+    public static final String ROLE_EDIT = "ROLE_EDIT";
     
     /** The Constant APPROVAL. */
-    public static final String APPROVAL = "APPROVAL";
+    public static final String ROLE_APPROVAL = "ROLE_APPROVAL";
     
     /** The Constant MANAGER. */
-    public static final String MANAGER = "MANAGER";
+    public static final String ROLE_MANAGER = "ROLE_MANAGER";
     
     /** The Constant TEAM_LEADER. */
-    public static final String TEAM_LEADER = "TEAM_LEADER";
+    public static final String ROLE_LEADER = "ROLE_LEADER";
     
 }

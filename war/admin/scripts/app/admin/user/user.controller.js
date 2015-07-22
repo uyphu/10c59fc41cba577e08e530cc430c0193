@@ -8,6 +8,9 @@ angular.module('jhipsterApp')
         $scope.invalidQuerySearch = null;
         $scope.spinneractive = false;
         
+        $scope.orderby = 'login';
+        $scope.reverse = false;
+        
         $scope.success = null;
         $scope.error = null;
         $scope.doNotMatch = null;
@@ -187,6 +190,12 @@ angular.module('jhipsterApp')
         };
 
         $scope.clear = function () {
+        	$scope.success = null;
+            $scope.error = null;
+            $scope.doNotMatch = null;
+            $scope.errorUserExists = null;
+            $scope.errorUserAndEmailExists = null;
+            $scope.errorAccountExists = null;
             $scope.user = {login: null, email: null, ctrTms: null, password: null, id: null};
             $scope.editForm.$setPristine();
             $scope.editForm.$setUntouched();
@@ -207,6 +216,13 @@ angular.module('jhipsterApp')
  		   if ($scope.spinneractive) {
  			   usSpinnerService.stop('spinner-1');
  		   }
+ 	   	};
+ 	   	
+ 	   $scope.setOrder = function (orderby) {
+           if (orderby === $scope.orderby) {
+        	   $scope.reverse = !$scope.reverse;
+           }
+           $scope.orderby = orderby;
  	   	};
 
  	   	$rootScope.$on('us-spinner:spin', function(event, key) {

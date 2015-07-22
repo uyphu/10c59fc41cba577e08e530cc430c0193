@@ -3,12 +3,14 @@
 angular.module('jhipsterApp')
     .controller('ReportIdUserController', function ($scope, $timeout, $rootScope, $stateParams, usSpinnerService, ReportId, User, ReportIdSearch, ParseLinks) {
     	$scope.reportIds = [];
+    	$scope.success = null;
         $scope.page = 1;
         $scope.cursor = null;
         $scope.invalidQuerySearch = null;
         $scope.spinneractive = false;
         $scope.invalidName = null;
-        $scope.userId = ($stateParams.id != null && $stateParams.id !== undefined) ? $stateParams.id : AppConstant.ACCOUNT.id;
+        $scope.userId = ($stateParams.userId != null && $stateParams.userId !== undefined) ? $stateParams.userId : AppConstant.ACCOUNT.id;
+        var timer;
         //$scope.startcounter = 0;
         $scope.loadAll = function() {
      	   if (!AppConstant.REPORTID_ENDPOINT_LOADED) {
@@ -56,7 +58,8 @@ angular.module('jhipsterApp')
      		   if (data != null) {
      			   if (data.items != null) {
  	    			   for (var i = 0; i < data.items.length; i++) {
- 	                     $scope.reportIds.push(data.items[i]);
+ 	                     //$scope.reportIds.push(data.items[i]);
+ 	                     $scope.reportIds.push(new AppUtils().convert(data.items[i]));
  	    			   }
  	    			   $scope.cursor = data.nextPageToken;
      			   }
@@ -86,12 +89,16 @@ angular.module('jhipsterApp')
         };
         
         $scope.approve = function (id) {
-        	alert('Doing...');
-//      	   ReportId.get(id).then(function (data){
-//      		   $scope.reportId = data;
-//      		   $('#deleteReportIdConfirmation').modal('show');
-//      	   });
-         };
+        	ReportId.approve(id, AppConstant.ACCOUNT.login).then(function (data) {
+        		if (data.error != null) {
+       			  showError(data.message);
+	           	} else {
+	           		$scope.success = true;
+	           		startTimer();
+	           		$scope.refresh();
+	           	}
+        	});
+        };
 
         $scope.delete = function (id) {
      	   ReportId.get(id).then(function (data){
@@ -120,7 +127,8 @@ angular.module('jhipsterApp')
 	    		   }
 	    		   if (data != null) {
 	    			   for (var i = 0; i < data.items.length; i++) {
-	                       $scope.reportIds.push(data.items[i]);
+	                       //$scope.reportIds.push(data.items[i]);
+	    				   $scope.reportIds.push(new AppUtils().convert(data.items[i]));
 	      			   }
 	    			   $scope.cursor = data.nextPageToken;
 	    		   }
@@ -181,12 +189,13 @@ angular.module('jhipsterApp')
  			  $scope.insertError = true;
  		   }
 	   };
- 	   
- 	   function startTimer() {
-            //var timer = $timeout(function () {
-         	   $scope.stopSpin();
-            //}, 6000);
-        }
+	   
+	   function startTimer() {
+           timer = $timeout(function () {
+               $timeout.cancel(timer);
+               $scope.success = null;
+           }, 3000);
+       }
  	   
         $scope.loadAll();
 

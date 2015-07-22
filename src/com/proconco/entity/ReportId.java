@@ -61,6 +61,14 @@ public class ReportId {
 	/** The crt tms. */
 	@Index
 	private Date crtTms;
+	
+	/** The approval user. */
+	private String approvalUser;
+	
+	/** The approval tms. */
+	@Index
+	private Date approvalTms;
+	
 	/**
 	 * Instantiates a new report id.
 	 */
@@ -333,7 +341,41 @@ public class ReportId {
 	public final void setStatus(int status) {
 		this.status = status;
 	}
-	
-	
+
+	/**
+	 * Gets the approval user.
+	 *
+	 * @return the approval user
+	 */
+	public final String getApprovalUser() {
+		return this.approvalUser;
+	}
+
+	/**
+	 * Sets the approval user.
+	 *
+	 * @param approvalUser the new approval user
+	 */
+	public final void setApprovalUser(String approvalUser) {
+		this.approvalUser = approvalUser;
+	}
+
+	/**
+	 * Gets the approval tms.
+	 *
+	 * @return the approval tms
+	 */
+	public final Date getApprovalTms() {
+		return this.approvalTms;
+	}
+
+	/**
+	 * Sets the approval tms.
+	 *
+	 * @param approvalTms the new approval tms
+	 */
+	public final void setApprovalTms(Date approvalTms) {
+		this.approvalTms = approvalTms;
+	}
 	
 }

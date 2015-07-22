@@ -213,11 +213,11 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th translate="proconcoappApp.user.username">Login</th>
-                <th translate="proconcoappApp.user.email">Email</th>
-                <th translate="proconcoappApp.user.group">Group</th>
-                <th translate="proconcoappApp.user.position">Position</th>
-                <th translate="proconcoappApp.user.activated">Activated</th>
+                <th translate="proconcoappApp.user.username" ng-click="setOrder('login')">Login</th>
+                <th translate="proconcoappApp.user.email" ng-click="setOrder('email')">Email</th>
+                <th translate="proconcoappApp.user.group" ng-click="setOrder('group')">Group</th>
+                <th translate="proconcoappApp.user.position"ng-click="setOrder('position')">Position</th>
+                <th translate="proconcoappApp.user.activated" ng-click="setOrder('activated')">Activated</th>
 <!--                 <th translate="proconcoappApp.user.crtTms">CrtTms</th> -->
                 <th></th>
             </tr>

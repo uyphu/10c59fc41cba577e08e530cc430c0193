@@ -31,6 +31,7 @@
             "langKey": "Languagevi",
             "group": "Groupvi",
             "position": "Positionvi",
+            "authorities": "Authoritiesvi",
             "messages": {
 	            "validate": {
 	                "login": {
