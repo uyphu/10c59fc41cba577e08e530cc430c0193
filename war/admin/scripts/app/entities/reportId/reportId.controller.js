@@ -137,6 +137,7 @@ angular.module('jhipsterApp')
             $scope.reportId = {week: new AppUtils().getWeek(), year: new Date().getFullYear(), id: null, status:0};
             $scope.editForm.$setPristine();
             $scope.editForm.$setUntouched();
+            $scope.invalidName = null;
         };
         
         $scope.change = function() {

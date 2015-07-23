@@ -100,12 +100,15 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="form-group">
+                        	<label translate="proconcoappApp.reportId.status">Status</label>
+                        	<select name="status" class="form-control" ng-model="reportId.status"  convert-to-number>
+		                    	<option value="0" selected="selected">In Work</option>
+		                    	<option value="1">Pending</option>
+		                    	<option value="3">Cancelled</option>
+		                    </select>
+                        </div>
                         
-                        <select name="status" class="form-control" ng-model="reportId.status"  convert-to-number>
-	                    	<option value="0" selected="selected">In Work</option>
-	                    	<option value="1">Pending</option>
-	                    	<option value="3">Cancelled</option>
-	                    </select>
 
 <!--                         <div class="form-group"> -->
 <!--                             <label translate="proconcoappApp.reportId.user">user</label> -->
@@ -178,13 +181,13 @@
                         </button>
                         <button type="submit" 
                                 ng-click="showUpdate(reportId.id)"
-                                ng-hide="reportId.status != 0"
+                                ng-hide="reportId.status == 2"
                                 class="btn btn-primary btn-sm">
                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
                         </button>
                         <button type="submit"
                                 ng-click="delete(reportId.id)"
-                                ng-hide="reportId.status != 0"
+                                ng-hide="reportId.status == 2"
                                 class="btn btn-danger btn-sm">
                             <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
                         </button>

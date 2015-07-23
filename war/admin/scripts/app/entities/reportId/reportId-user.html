@@ -186,7 +186,7 @@
                                 ng-click="approve(reportId.id)"
                                 class="btn btn-primary btn-sm"
                                 has-role="ROLE_MANAGER"
-                                ng-hide="reportId.status==2">
+                                ng-show="reportId.status==1">
                             <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.approval"> Approval</span>
                         </button>
                     </td>
